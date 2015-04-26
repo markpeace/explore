@@ -1,77 +1,28 @@
-explore.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider) {
 
         $stateProvider
-
-                .state('connect', {
-                url: '/connect',
-                controller:'Connect',
-                templateUrl: 'pages/connect.html'
-        })
-
-                .state('menu', {
-                url: '/menu',
+                .state('ui', {
+                url: "/ui",
                 abstract: true,
-                //controller:'MainUI',
-                templateUrl: 'pages/mainUI.html'
+                templateUrl: "pages/ui.html"
         })
-                .state('menu.clues', {
-                url: '/clues',
+                .state('ui.clues', {
+                url: "/clues",
                 views: {
-                        'centre-panel': {
-                                templateUrl: 'pages/clues.html',
-                        },
-                        'left-panel': {
-                                templateUrl: 'pages/menu.html'
+                        'mainContent' :{
+                                templateUrl: "pages/clues.html",
+                                controller: "Clues"
                         }
                 }
         })
-         .state('menu.badges', {
-                url: '/badges',
+                .state('ui.badges', {
+                url: "/badges",
                 views: {
-                        'centre-panel': {
-                                templateUrl: 'pages/badges.html',
-                        },
-                        'left-panel': {
-                                templateUrl: 'pages/menu.html'
-                        }
-                }
-        })
-         .state('menu.notifications', {
-                url: '/notifications',
-                views: {
-                        'centre-panel': {
-                                templateUrl: 'pages/notifications.html',
-                        },
-                        'left-panel': {
-                                templateUrl: 'pages/menu.html'
-                        }
-                }
-        })
-         .state('menu.leaguetable', {
-                url: '/leaguetable',
-                views: {
-                        'centre-panel': {
-                                templateUrl: 'pages/leaguetable.html',
-                        },
-                        'left-panel': {
-                                templateUrl: 'pages/menu.html'
-                        }
-                }
-        })
-         .state('menu.groups', {
-                url: '/groups',
-                views: {
-                        'centre-panel': {
-                                templateUrl: 'pages/groups.html',
-                        },
-                        'left-panel': {
-                                templateUrl: 'pages/menu.html'
+                        'mainContent' :{
+                                templateUrl: "pages/badges.html",
                         }
                 }
         })
 
-
-
-        $urlRouterProvider.otherwise("/connect");
-
+        $urlRouterProvider.otherwise("/ui/clues");
 })

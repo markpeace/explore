@@ -1,12 +1,12 @@
-<!--
-To change this template use Tools | Templates.
--->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<ion-view view-title="Clues">
+        <ion-content>                    
+                <ul class="list">             
+                        <a class="item item-icon-right" ng-repeat="clue in clues | orderBy:'distance'" ui-sref="menu.clueSelected">
+                                {{clue.title}}
+                                <p>{{clue.category.label}} [{{clue.distance}}m]</p>
+                                <i class="icon ion-ios-arrow-right" ng-hide="clue.found"></i>
+                                <i class="icon ion-ios-checkmark-empty" ng-show="clue.found"></i>
+                        </a>
+                </ul>     
+        </ion-content>
+</ion-view>
