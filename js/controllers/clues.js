@@ -1,4 +1,3 @@
-app.controller('Clues', function($scope, $ionicSideMenuDelegate, DataService) { 
-        //      $ionicSideMenuDelegate.toggleRight(); 
+app.controller('Clues', function($scope, DataService) { 
         $scope.clues = DataService.clues;
 });

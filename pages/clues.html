@@ -1,7 +1,7 @@
 <ion-view view-title="Clues">
         <ion-content>                    
                 <ul class="list">             
-                        <a class="item item-icon-right" ng-repeat="clue in clues | orderBy:'distance'" ui-sref="menu.clueSelected">
+                        <a class="item item-icon-right" ng-repeat="clue in clues | orderBy:'distance'" ui-sref="clueDetail({id:clue.id})">
                                 {{clue.title}}
                                 <p>{{clue.category.label}} [{{clue.distance}}m]</p>
                                 <i class="icon ion-ios-arrow-right" ng-hide="clue.found"></i>

@@ -1,12 +1,12 @@
 app.config(function($stateProvider, $urlRouterProvider) {
 
-        $stateProvider
-                .state('ui', {
+        $stateProvider.state('ui', {
                 url: "/ui",
                 abstract: true,
                 templateUrl: "pages/ui.html"
         })
-                .state('ui.clues', {
+
+        $stateProvider.state('ui.clues', {
                 url: "/clues",
                 views: {
                         'mainContent' :{
@@ -15,7 +15,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
                         }
                 }
         })
-                .state('ui.badges', {
+
+        $stateProvider.state('clueDetail', {
+                url: "/clue/:id",    
+                templateUrl: "pages/cluedetail.html",
+                controller: "ClueDetail"
+        })
+
+        $stateProvider.state('ui.badges', {
                 url: "/badges",
                 views: {
                         'mainContent' :{
