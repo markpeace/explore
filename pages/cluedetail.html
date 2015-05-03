@@ -1,10 +1,30 @@
 <ion-header-bar class="bar-positive">
         <button class="button button-icon icon ion-ios-arrow-left" ui-sref="ui.clues"></button>
-        <h1 class="title">Clue Details</h1>
+        <h1 class="title">Location Details</h1>
+        <button ng-show="clue.distance<15 && clue.found==false" ng-class="'button button-icon icon '+checkinIcons[clue.type]"></button>     
 </ion-header-bar>
 <ion-content>        
-        <h1>Not written yet. This page will allow users to view a clue and check in.</h1>
-        <ul class="list">
-                <li></li>
-        </ul>
+
+        <div class="card">
+                <div class="item item-divider item-icon-right">
+                        <i ng-show="clue.found" class="icon ion-ios-checkmark-outline"></i>
+                        <i ng-hide="clue.found" class="icon ion-ios-circle-outline"></i>
+                        <h2>{{ clue.title }}</h2>
+                        <p>{{ clue.category.label }}</p>
+                </div>
+                <span ng-show="clue.photo">
+                        <div class="item item-image">                                
+                                <img src="{{clue.photo}}">
+                        </div>
+                </span>
+
+                <div ng-show="!clue.found" class="item item-text-wrap" style="text-align:center;">                       
+                        {{ clue.enigma }}
+                </div>
+                <div ng-show="clue.found" class="item item-text-wrap" style="text-align:center;">                       
+                        {{ clue.information }}
+                </div>
+
+        </div>
+
 </ion-content>
