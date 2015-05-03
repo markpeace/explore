@@ -1,1 +1,5 @@
-app = angular.module('explore', ['ionic']);
+try {
+        app = angular.module('explore', ['ionic']);
+} catch(ex){
+        alert(ex);
+}
