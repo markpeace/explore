@@ -1,7 +1,7 @@
 <ion-view view-title="Locations">
         <ion-content>                    
                 <ul class="list">             
-                        <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="clueDetail({id:clue.id})">
+                        <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="locationDetail({id:location.id})">
                                 {{location.title}}
                                 <p>{{location.category.label}} [{{location.distance}}m]</p>
                                 <i class="icon ion-ios-arrow-right" ng-hide="location.found"></i>

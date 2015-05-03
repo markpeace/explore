@@ -7,19 +7,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
         $stateProvider.state('ui.clues', {
-                url: "/clues",
+                url: "/locations",
                 views: {
                         'mainContent' :{
-                                templateUrl: "pages/clues.html",
-                                controller: "Clues"
+                                templateUrl: "pages/locations.html",
+                                controller: "Locations"
                         }
                 }
         })
 
-        $stateProvider.state('clueDetail', {
-                url: "/clue/:id",    
-                templateUrl: "pages/cluedetail.html",
-                controller: "ClueDetail"
+        $stateProvider.state('locationDetail', {
+                url: "/location/:id",    
+                templateUrl: "pages/locationdetail.html",
+                controller: "LocationDetail"
         })
 
         $stateProvider.state('ui.badges', {
@@ -31,5 +31,5 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 }
         })
 
-        $urlRouterProvider.otherwise("/ui/clues");
+        $urlRouterProvider.otherwise("/ui/locations");
 })
