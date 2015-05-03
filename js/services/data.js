@@ -2,7 +2,7 @@ app.service('DataService', function() {
 
         cache = {
                 categories: [],
-                clues: []
+                locations: []
         }
         
         //Generate Random Categories
@@ -12,11 +12,11 @@ app.service('DataService', function() {
                
         //Generate Random Clues        
         for(x=0; x<100; x++) {
-                cache.clues.push({
+                cache.locations.push({
                         id: x,
                         title:"Location #" + x,
                         category: cache.categories[Math.round(Math.random() * cache.categories.length)],
-                        enigma: "The enigma is a 'clue' which guides participants towards the site - it should be accessible, but offer challenge",
+                        clue: "The clue guides participants towards the site - it should be accessible, but offer challenge",
                         photo: ["","http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png"][Math.round(Math.random() * 0.75)],
                         information: "The informatio is the blurb which appears once a participant has found a particular clue - it should offer context and information on the site.",
                         type: ['Checkin','QR Code','Selfie'][Math.round(Math.random() * 3)],
@@ -26,6 +26,6 @@ app.service('DataService', function() {
         }                        
         
         return {
-                clues: cache.clues
+                locations: cache.locations      
         };
 });

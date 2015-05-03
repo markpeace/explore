@@ -1,11 +1,11 @@
-<ion-view view-title="Clues">
+<ion-view view-title="Locations">
         <ion-content>                    
                 <ul class="list">             
-                        <a class="item item-icon-right" ng-repeat="clue in clues | orderBy:'distance'" ui-sref="clueDetail({id:clue.id})">
-                                {{clue.title}}
-                                <p>{{clue.category.label}} [{{clue.distance}}m]</p>
-                                <i class="icon ion-ios-arrow-right" ng-hide="clue.found"></i>
-                                <i class="icon ion-ios-checkmark-empty" ng-show="clue.found"></i>
+                        <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="clueDetail({id:clue.id})">
+                                {{location.title}}
+                                <p>{{location.category.label}} [{{location.distance}}m]</p>
+                                <i class="icon ion-ios-arrow-right" ng-hide="location.found"></i>
+                                <i class="icon ion-ios-checkmark-empty" ng-show="location.found"></i>
                         </a>
                 </ul>     
         </ion-content>
