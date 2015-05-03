@@ -1,2 +1,1 @@
-app = angular.module('explore', ['ionic'])       
-alert(app);
+app = angular.module('explore', ['ionic']);
