@@ -1,4 +1,4 @@
-alert("started!");
+alert(typeof cordova);
 if (typeof cordova === 'object') {
         document.addEventListener("deviceready", function() {
                 angular.bootstrap(document, ["explore"]);    
