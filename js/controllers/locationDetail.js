@@ -1,7 +1,7 @@
 app.controller('LocationDetail', function($scope, DataService, $stateParams) { 
         console.info("Navigated to Clue Details for " + $stateParams.id)
         $scope.location = DataService.locations[$stateParams.id];
-        $scope.location.distance=1
+        navigator.geolocation.watchPosition(function(e) { $scope.location.updateDistance(e.coords) }, function() {}, { maximumAge: 10000, timeout: 5000, enableHighAccuracy: true })
         
         $scope.checkinIcons = {
                 "Checkin" : "ion-location",
