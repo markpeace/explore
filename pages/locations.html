@@ -1,6 +1,7 @@
 <ion-view view-title="Locations">
         <ion-content>                    
-                <ul class="list">             
+                <ul class="list">      
+                        <li>{{geoloc}}</li>
                         <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="locationDetail({id:location.id})">
                                 {{location.title}}
                                 <p>{{location.category.label}} [{{location.distance}}m]</p>

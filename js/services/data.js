@@ -1,15 +1,16 @@
 app.service('DataService', function() {
 
         cache = {
+                dataUpdate: new Date(),
                 categories: [],
                 locations: []
         }
-        
+
         //Generate Random Categories
         for(x=0; x<10; x++) {
                 cache.categories.push({ id: x, label: "Category #" + x })
         }
-               
+
         //Generate Random Clues        
         for(x=0; x<100; x++) {
                 cache.locations.push({
@@ -20,12 +21,13 @@ app.service('DataService', function() {
                         photo: ["","http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png"][Math.round(Math.random() * 0.75)],
                         information: "The informatio is the blurb which appears once a participant has found a particular clue - it should offer context and information on the site.",
                         type: ['Checkin','QR Code','Selfie'][Math.round(Math.random() * 3)],
+                        location: { latitude:0, longitude:0 },
                         distance: Math.round(Math.random() * 2500),
                         found: Math.round(Math.random() * 0.75),
                 })
-        }                        
-        
+        }         
+
         return {
-                locations: cache.locations      
+                locations:  cache.locations      
         };
 });
