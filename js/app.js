@@ -3,3 +3,5 @@ try {
 } catch(ex){
         alert(ex);
 }        
+
+alert(typeof cordova);
