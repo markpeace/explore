@@ -3,13 +3,14 @@ app.controller('Locations', function($scope, DataService) {
         $scope.geoloc = {}
         $scope.locationIndicator = "*";
 
-        //document.addEventListener("deviceready", function() {
-        navigator.geolocation.watchPosition(
+
+        geoWatch = navigator.geolocation.watchPosition(
                 function(e) { $scope.locationIndicator = ""; $scope.locations.forEach(function(l) {l.updateDistance(e.coords)}) }, 
                 function(e) {}, 
                 { maximumAge: 10000, timeout: 10000, enableHighAccuracy: true })         
-        //}, false);
 
-
+        $scope.$on('$stateChangeStart', function() {
+                navigator.geolocation.clearWatch(geoWatch)
+        })   
 
 });
