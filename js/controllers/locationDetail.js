@@ -1,12 +1,20 @@
-app.controller('LocationDetail', function($scope, DataService, $stateParams) { 
+app.controller('LocationDetail', function($scope, DataService, $stateParams, GeoLocator) { 
         console.info("Navigated to Clue Details for " + $stateParams.id)
         $scope.location = DataService.locations[$stateParams.id];
-        navigator.geolocation.watchPosition(function(e) { $scope.location.updateDistance(e.coords) }, function() {}, { maximumAge: 10000, timeout: 5000, enableHighAccuracy: true })
+        $scope.locationIndicator = "*";
         
         $scope.checkinIcons = {
                 "Checkin" : "ion-location",
                 "QR Code" : "ion-qr-scanner",
                 "Selfie" : "ion-person",
         }
-        
+
+        GeoLocator.go({
+                scope:$scope,
+                success: function(e) {
+                        $scope.locationIndicator = "";
+                        $scope.location.updateDistance(e.coords)
+                }
+        });
+
 });

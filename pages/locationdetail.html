@@ -1,6 +1,6 @@
 <ion-header-bar class="bar-positive">
         <button class="button button-icon icon ion-ios-arrow-left" ui-sref="ui.clues"></button>
-        <h1 class="title">Location Details</h1>
+        <h1 class="title">Location Details{{locationIndicator}}</h1>
         <button ng-show="location.distance<15 && location.found==false" ng-class="'button button-icon icon '+checkinIcons[location.type]"></button>     
 </ion-header-bar>
 <ion-content>        
@@ -10,7 +10,10 @@
                         <i ng-show="location.found" class="icon ion-ios-checkmark-outline"></i>
                         <i ng-hide="location.found" class="icon ion-ios-circle-outline"></i>
                         <h2>{{ location.title }}</h2>
-                        <p>{{ location.category.label }}</p>
+                        <p>
+                                {{ location.category.label }}
+                                 ({{ location.distance }}m)
+                        </p>
                 </div>
                 <span ng-show="location.photo">
                         <div class="item item-image">                                

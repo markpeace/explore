@@ -1,5 +1,7 @@
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
+        $ionicConfigProvider.views.maxCache(0);
+        
         $stateProvider.state('ui', {
                 url: "/ui",
                 abstract: true,
@@ -17,7 +19,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
         })
 
         $stateProvider.state('locationDetail', {
-                url: "/location/:id",    
+                url: "/location/:id",                   
                 templateUrl: "pages/locationdetail.html",
                 controller: "LocationDetail"
         })
