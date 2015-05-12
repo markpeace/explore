@@ -1,4 +1,7 @@
 <ion-view view-title="Locations{{ locationIndicator }}">
+        <ion-nav-buttons side="right">
+                <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addLocation"></button>
+        </ion-nav-buttons>
         <ion-content>                    
                 <ul class="list">      
                         <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="locationDetail({id:location.id})">

@@ -1,11 +1,18 @@
 app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         $ionicConfigProvider.views.maxCache(0);
-        
+
         $stateProvider.state('ui', {
                 url: "/ui",
                 abstract: true,
                 templateUrl: "pages/ui.html"
+        })
+
+        $stateProvider.state('addLocation', {
+                url: "/location/add",
+                templateUrl: "pages/addLocation.html",
+                controller:"AddLocation"
+
         })
 
         $stateProvider.state('ui.clues', {
@@ -23,6 +30,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 templateUrl: "pages/locationdetail.html",
                 controller: "LocationDetail"
         })
+
 
         $stateProvider.state('ui.badges', {
                 url: "/badges",
