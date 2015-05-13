@@ -21,7 +21,7 @@ app.service('DataService', function() {
                         clue: "The clue guides participants towards the site - it should be accessible, but offer challenge",
                         photo: ["","http://cumbrianrun.co.uk/wp-content/uploads/2014/02/default-placeholder.png"][Math.round(Math.random() * 0.75)],
                         information: "The informatio is the blurb which appears once a participant has found a particular clue - it should offer context and information on the site.",
-                        type: ['Checkin','QR Code','Selfie'][Math.round(Math.random() * 3)],
+                        type: ['GPS','QR','SELF'][Math.round(Math.random() * 3)],
                         geolocation: { latitude:0, longitude:0 },
                         distance: 100000,
                         found: Math.round(Math.random() * 0.75),

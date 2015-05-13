@@ -4,9 +4,9 @@ app.controller('LocationDetail', function($scope, DataService, $stateParams, Geo
         $scope.locationIndicator = "*";
         
         $scope.checkinIcons = {
-                "Checkin" : "ion-location",
-                "QR Code" : "ion-qr-scanner",
-                "Selfie" : "ion-person",
+                "GPS" : "ion-location",
+                "QR" : "ion-qr-scanner",
+                "SELF" : "ion-person",
         }
 
         GeoLocator.go({
