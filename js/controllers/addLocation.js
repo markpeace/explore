@@ -14,7 +14,7 @@ app.controller('AddLocation', function($scope, DataService, GeoLocator) {
         GeoLocator.go({
                 scope:$scope,
                 success: function(e) {
-                        $scope.location.geolocation = e
+                        $scope.location.geolocation = e.coords
                         if (e.coords.accuracy>30) {
                                 $scope.geolocationColor = 'red'
                         } else if (e.coords.accuracy>15) {
