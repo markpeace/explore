@@ -1,33 +1,33 @@
 <ion-header-bar class="bar-positive">
         <button class="button button-icon icon ion-ios-close-empty" ui-sref="ui.clues"></button>
         <h1 class="title">Add Location</h1>
-        <button class="button button-icon icon ion-ios-checkmark-empty" ui-sref="ui.clues"></button>
+        <button class="button button-icon icon ion-ios-checkmark-empty" ng-click="save();"></button>
 </ion-header-bar>
 <ion-content>       
         <ul class="list list-inset">
                 <li class="item">Category</li>
                 <label class="item item-input item-stacked-label">
                         <span class="input-label">Descriptive Title</span>
-                        <input type="text" placeholder="Only displayed after a location is found">
+                        <input type="text" placeholder="Only displayed after a location is found" ng-model="location.descriptiveTitle">
                 </label>                
                 <label class="item item-input item-stacked-label">
                         <span class="input-label">Descriptive Information</span>
-                        <input type="text" placeholder="Only displayed after a location is found">
+                        <input type="text" placeholder="Only displayed after a location is found" ng-model="location.descriptiveInformation">
                 </label>                
                 <label class="item item-input item-stacked-label">
                         <span class="input-label">Enigmatic Title</span>
-                        <input type="text" placeholder="Clue-type title before the location has been found">
+                        <input type="text" placeholder="Clue-type title before the location has been found" ng-model="location.enigmaticTitle">
                 </label>  
                 <label class="item item-input item-stacked-label">
                         <span class="input-label">Enigmatic Information</span>
-                        <input type="text" placeholder="Displayed before a location has been found">
+                        <input type="text" placeholder="Displayed before a location has been found" ng-model="location.enigmaticInformation">
                 </label>  
                 <li class="item item-button-right">
                         Image
-                        <button class="button button-positive" ng-hide="location.photo">
+                        <button class="button button-positive" ng-hide="location.photo" ng-click="location.photo='yes'">
                                 <i class="icon ion-ios-camera-outline"></i>
                         </button>
-                        <button class="button button-assertive" ng-show="location.photo">
+                        <button class="button button-assertive" ng-show="location.photo" ng-click="location.photo=''">
                                 <i class="icon ion-ios-close-empty"></i>
                         </button>
                 </li>
@@ -38,7 +38,7 @@
 
 
                 <li class="item item-icon-right">
-                        Geolocation {{ location.geolocation.accuracy }}
+                        Geolocation <span style="color:gray; font-size:50%;">{{ location.geolocation.accuracy }}</span>
                         <i class="icon ion-ios-circle-filled" ng-style="{'color': geolocationColor }"></i>                        
                 </li>
         </ul>

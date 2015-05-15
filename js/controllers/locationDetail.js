@@ -1,6 +1,6 @@
 app.controller('LocationDetail', function($scope, DataService, $stateParams, GeoLocator) { 
-        console.info("Navigated to Clue Details for " + $stateParams.id)
-        $scope.location = DataService.locations[$stateParams.id];
+        console.info("Navigated to Clue Details for " + $stateParams.id)        
+        $scope.location = DataService.location.filterBy({id: $stateParams.id})[0];
         $scope.locationIndicator = "*";
         
         $scope.checkinIcons = {
@@ -9,7 +9,7 @@ app.controller('LocationDetail', function($scope, DataService, $stateParams, Geo
                 "SELF" : "ion-person",
         }
 
-        GeoLocator.go({
+       GeoLocator.go({
                 scope:$scope,
                 success: function(e) {
                         $scope.locationIndicator = "";

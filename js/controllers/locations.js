@@ -1,12 +1,12 @@
 app.controller('Locations', function($scope, DataService, GeoLocator) { 
-        $scope.locations = DataService.locations;          
-        $scope.locationIndicator = "*";
-
+        $scope.locations = DataService.location;          
+        $scope.locationIndicator = "*";       
+        
         GeoLocator.go({
                 scope:$scope,
                 success: function(e) {
                         $scope.locationIndicator = "";
-                        $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})
+                        $scope.locations.all().forEach(function(l) {l.updateDistance(e.coords)})
                 }
         });
 });

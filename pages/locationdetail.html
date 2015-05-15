@@ -9,10 +9,10 @@
                 <div class="item item-divider item-icon-right">
                         <i ng-show="location.found" class="icon ion-ios-checkmark-outline"></i>
                         <i ng-hide="location.found" class="icon ion-ios-circle-outline"></i>
-                        <h2>{{ location.title }}</h2>
+                        <h2>{{location.found ? location.descriptiveTitle : location.enigmaticTitle }}</h2>
                         <p>
                                 {{ location.category.label }}
-                                 ({{ location.distance }}m)
+                                ({{ location.distance }}m)
                         </p>
                 </div>
                 <span ng-show="location.photo">
@@ -22,10 +22,10 @@
                 </span>
 
                 <div ng-show="!location.found" class="item item-text-wrap" style="text-align:center;">                       
-                        {{ location.clue }}
+                        {{ location.enigmaticInformation }}
                 </div>
                 <div ng-show="location.found" class="item item-text-wrap" style="text-align:center;">                       
-                        {{ location.information }}
+                        {{ location.descriptiveInformation }}
                 </div>
 
         </div>
