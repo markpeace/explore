@@ -1,5 +1,20 @@
 app.service('DataService', function($q, $state) {
 
+
+        var i = 0;
+        try {
+                // Test up to 30 MB
+                for (i = 250; i <= 100000; i += 250) {
+                        localStorage.setItem('test', new Array((i * 1024) + 1).join('a'));
+                }
+        } catch (e) {
+                localStorage.removeItem('test');
+                localStorage.setItem('size', i - 250);            
+        }
+        alert(i)
+
+
+
         var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
         var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
         Parse.initialize(app_id, js_key);
@@ -65,9 +80,9 @@ app.service('DataService', function($q, $state) {
                                         .get(this.id).then(function(e) {
                                         e.destroy().then(function() { deferred.resolve() })
                                 })
-                                
+
                                 data=data.filter(function(d) { return d.id!=record.id })
-                                
+
                                 return deferred.promise;                               
                         }
 
