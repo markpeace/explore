@@ -12,6 +12,7 @@ app.service('DataService', function($q, $state) {
                 var data = new Array();
                 root.table = options.table
                 root.attributes = options.attributes
+                for (a in root.attributes) { root.attributes[a] = root.attributes[a] || {} }        
                 root.methods = options.methods
 
                 root.new = function (presets) {
@@ -25,31 +26,43 @@ app.service('DataService', function($q, $state) {
 
                         newRecord.save = function() {
 
-                                record=this
+                                record=this                                                               
 
                                 var deferred = $q.defer();
-                                if (this.id) {
 
-                                        (new Parse.Query(Parse.Object.extend(root.table)))
-                                                .get(this.id).then(function(e) {
-                                                for (attribute in root.attributes) { 
-                                                        e.set(attribute, record[attribute] || null) 
+                                _getObject = function() {
+
+                                        if (record.id) {
+
+                                                (new Parse.Query(Parse.Object.extend(root.table)))
+                                                        .get(record.id).then(function(e) { _performSave(e); })
+
+                                        } else {
+
+                                                _performSave( new (Parse.Object.extend(root.table)) );
+
+                                        }
+
+                                }
+
+                                _performSave = function(r) {
+
+                                        for (attribute in root.attributes) {
+                                                if(root.attributes[attribute].type=='image' && record[attribute]) {
+                                                        var base64=record[attribute]
+                                                        record[attribute] = new Parse.File("myfile.jpg", { base64: base64 });                                                              
                                                 }
-                                                e.save().then(function() {
-                                                        deferred.resolve();
-                                                })
+                                                r.set(attribute, record[attribute] || null); 
+
+                                        }
+
+                                        r.save().then(function() {
+                                                deferred.resolve();
                                         })
 
-                                } else {
-                                        var newData = {}
-                                        for (attribute in root.attributes) { newData[attribute]=this[attribute] || null }
-                                        var newObj = new (Parse.Object.extend(root.table))
-
-                                        newObj.save(newData).then(function(e) {                                                
-                                                record.id = e.id
-                                                deferred.resolve()
-                                        });                                        
                                 }
+
+                                _getObject();
 
                                 return deferred.promise;
                         }
@@ -83,7 +96,11 @@ app.service('DataService', function($q, $state) {
                                 ret.forEach(function(record){                                        
                                         newRecord = root.new();
                                         for (attribute in root.attributes) {
-                                                newRecord[attribute]=record.get(attribute)
+                                                if(root.attributes[attribute].type=='image' && record.get(attribute)) {
+                                                        //newRecord[attribute]=record.get(attribute).url();
+                                                } else {
+                                                        newRecord[attribute]=record.get(attribute)       
+                                                }
                                         }
                                         newRecord.id = record.id                                                                                
                                 })
@@ -127,7 +144,7 @@ app.service('DataService', function($q, $state) {
                         descriptiveInformation: null,
                         enigmaticTitle:null,
                         enigmaticInformation:null,
-                        image: { type: 'photo' } ,
+                        image: { type: 'image' } ,
                         type: null,
                         geolocation: null,
                         category: { link_to:"category" }
