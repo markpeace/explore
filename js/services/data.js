@@ -48,11 +48,16 @@ app.service('DataService', function($q, $state) {
                                 _performSave = function(r) {
 
                                         for (attribute in root.attributes) {
-                                                if(root.attributes[attribute].type=='image' && record[attribute]) {
-                                                        var base64=record[attribute]
-                                                        record[attribute] = new Parse.File("myfile.jpg", { base64: base64 });                                                              
+                                                if(root.attributes[attribute].type=='image' && record[attribute] ) {
+                                                        if(record[attribute].substr(0,4)!="http") {
+                                                                var base64=record[attribute]
+                                                                record[attribute] = new Parse.File("myfile.jpg", { base64: base64 });      
+                                                                r.set(attribute, record[attribute] || null);
+                                                        }
+                                                } else {
+                                                        r.set(attribute, record[attribute] || null);
                                                 }
-                                                r.set(attribute, record[attribute] || null); 
+
 
                                         }
 
@@ -97,7 +102,7 @@ app.service('DataService', function($q, $state) {
                                         newRecord = root.new();
                                         for (attribute in root.attributes) {
                                                 if(root.attributes[attribute].type=='image' && record.get(attribute)) {
-                                                        //newRecord[attribute]=record.get(attribute).url();
+                                                        newRecord[attribute]=record.get(attribute).url();
                                                 } else {
                                                         newRecord[attribute]=record.get(attribute)       
                                                 }
