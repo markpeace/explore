@@ -1,4 +1,4 @@
-app.controller('AddLocation', function($scope, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
         if($stateParams.id) {
@@ -6,7 +6,7 @@ app.controller('AddLocation', function($scope, $state, $stateParams, DataService
         }else{
                 $scope.location = DataService.location.new({ type: 'GPS' });                        
         }
-        
+
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
 
         $scope.geolocationColor = 'red'
@@ -19,9 +19,19 @@ app.controller('AddLocation', function($scope, $state, $stateParams, DataService
 
 
         $scope.delete = function() {
-                confirm("Are You Really Sure?")
+                var confirmPopup = $ionicPopup.confirm({
+                        title: 'Delete Location',
+                        template: 'Are you sure you want to delete this location?'
+                });
+                confirmPopup.then(function(res) {
+                        if(res) {
+                                $scope.location.delete().then(function() {
+                                        $state.go("ui.clues");
+                                });
+                        }
+                });
         }
-        
+
         GeoLocator.go({
                 scope:$scope,
                 success: function(e) {

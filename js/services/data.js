@@ -24,14 +24,14 @@ app.service('DataService', function($q, $state) {
                         for (method in root.methods) { newRecord[method] = root.methods[method] }
 
                         newRecord.save = function() {
-                                
+
                                 record=this
-                                
+
                                 var deferred = $q.defer();
                                 if (this.id) {
-                                        
+
                                         (new Parse.Query(Parse.Object.extend(root.table)))
-                                        .get(this.id).then(function(e) {
+                                                .get(this.id).then(function(e) {
                                                 for (attribute in root.attributes) { 
                                                         e.set(attribute, record[attribute] || null) 
                                                 }
@@ -39,12 +39,12 @@ app.service('DataService', function($q, $state) {
                                                         deferred.resolve();
                                                 })
                                         })
-                                        
+
                                 } else {
                                         var newData = {}
                                         for (attribute in root.attributes) { newData[attribute]=this[attribute] || null }
                                         var newObj = new (Parse.Object.extend(root.table))
-                                        
+
                                         newObj.save(newData).then(function(e) {                                                
                                                 record.id = e.id
                                                 deferred.resolve()
@@ -52,6 +52,23 @@ app.service('DataService', function($q, $state) {
                                 }
 
                                 return deferred.promise;
+                        }
+
+                        newRecord.delete = function() {
+
+                                if(!this.id) { return }
+
+                                record = this                                                                
+                                var deferred = $q.defer();                               
+
+                                (new Parse.Query(Parse.Object.extend(root.table)))
+                                        .get(this.id).then(function(e) {
+                                        e.destroy().then(function() { deferred.resolve() })
+                                })
+                                
+                                data=data.filter(function(d) { return d.id!=record.id })
+                                
+                                return deferred.promise;                               
                         }
 
                         data.push(newRecord)
