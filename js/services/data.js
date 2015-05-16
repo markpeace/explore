@@ -127,7 +127,7 @@ app.service('DataService', function($q, $state) {
                         descriptiveInformation: null,
                         enigmaticTitle:null,
                         enigmaticInformation:null,
-                        image: null,
+                        image: { type: 'photo' } ,
                         type: null,
                         geolocation: null,
                         category: { link_to:"category" }
