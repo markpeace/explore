@@ -13,7 +13,17 @@ app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams
 
 
         $scope.takePhoto = function() {
-                navigator.camera.getPicture(function() {}, function() {}, {} );
+                navigator.camera.getPicture(function() {}, function() {}, { 
+                        quality : 75,
+                        destinationType : Camera.DestinationType.DATA_URL,
+                        sourceType : Camera.PictureSourceType.CAMERA,
+                        allowEdit : true,
+                        encodingType: Camera.EncodingType.JPEG,
+                        targetWidth: 100,
+                        targetHeight: 100,
+                        //popoverOptions: CameraPopoverOptions,
+                        saveToPhotoAlbum: false 
+                }; );
         }
 
         $scope.save = function() {
