@@ -18,6 +18,10 @@ app.controller('AddLocation', function($scope, $state, $stateParams, DataService
         }
 
 
+        $scope.delete = function() {
+                confirm("Are You Really Sure?")
+        }
+        
         GeoLocator.go({
                 scope:$scope,
                 success: function(e) {
