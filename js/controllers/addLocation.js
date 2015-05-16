@@ -21,8 +21,8 @@ app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams
                         //sourceType : Camera.PictureSourceType.CAMERA,
                         allowEdit : true,
                         encodingType: Camera.EncodingType.JPEG,
-                        targetWidth: 100,
-                        targetHeight: 100,
+                        targetWidth: 400,
+                        targetHeight: 400,
                         //popoverOptions: CameraPopoverOptions,
                         saveToPhotoAlbum: false 
                 });
