@@ -1,10 +1,10 @@
-app.service('DataService', function($q) {
+app.service('DataService', function($q, $state) {
 
         var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
         var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
         Parse.initialize(app_id, js_key);
 
-        
+
         //DEFINE MODEL MAKER
         Model = function (options) {
                 //private attributes   
@@ -24,16 +24,27 @@ app.service('DataService', function($q) {
                         for (method in root.methods) { newRecord[method] = root.methods[method] }
 
                         newRecord.save = function() {
-
+                                
+                                record=this
+                                
                                 var deferred = $q.defer();
-
                                 if (this.id) {
-                                        console.log("need something to update existing records")
+                                        
+                                        (new Parse.Query(Parse.Object.extend(root.table)))
+                                        .get(this.id).then(function(e) {
+                                                for (attribute in root.attributes) { 
+                                                        e.set(attribute, record[attribute] || null) 
+                                                }
+                                                e.save().then(function() {
+                                                        deferred.resolve();
+                                                })
+                                        })
+                                        
                                 } else {
                                         var newData = {}
                                         for (attribute in root.attributes) { newData[attribute]=this[attribute] || null }
                                         var newObj = new (Parse.Object.extend(root.table))
-                                        record=this
+                                        
                                         newObj.save(newData).then(function(e) {                                                
                                                 record.id = e.id
                                                 deferred.resolve()
@@ -70,21 +81,21 @@ app.service('DataService', function($q) {
 
                 root.filterBy = function(query) {                         
                         return data.filter(function(record) {
-                                
+
                                 for(field in query) {
-                                                               
+
                                         if (query[field]!=record[field]) { return false }
                                 }
-                                
+
                                 return true
                         })
                 }
-                
+
         }
 
 
         //DEFINITION MODELS
-        
+
         models = {}
         models.category = new Model({
                 table: "Category", 
@@ -106,12 +117,12 @@ app.service('DataService', function($q) {
                 },
                 methods: {
                         updateDistance: function(currentGeolocation) {
-                                
+
                                 lat1=this.geolocation.latitude
                                 lon1=this.geolocation.longitude
                                 lat2=currentGeolocation.latitude
                                 lon2=currentGeolocation.longitude
-                                
+
                                 function deg2rad(deg) {
                                         return deg * (Math.PI/180)
                                 }
@@ -131,12 +142,13 @@ app.service('DataService', function($q) {
                 }
         })
 
-        
+
         //RECACHE MODELS
         models.category.recache().then(function() { 
                 models.location.recache().then(function() {
                         //console.log(models.category.all()) 
-                        //console.log(models.location.all())                                                 
+                        //console.log(models.location.all())    
+                        $state.reload();                                             
                 })
         })
 

@@ -31,6 +31,12 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 controller: "LocationDetail"
         })
 
+        $stateProvider.state('editLocation', {
+                url: "/location/:id/edit",
+                templateUrl: "pages/addLocation.html",
+                controller:"AddLocation"
+
+        })        
 
         $stateProvider.state('ui.badges', {
                 url: "/badges",

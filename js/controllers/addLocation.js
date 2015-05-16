@@ -1,20 +1,23 @@
-app.controller('AddLocation', function($scope, $state, DataService, GeoLocator) { 
-        console.info("adding a location");
-                           
-        $scope.location = DataService.location.new({ type: 'GPS' });               
+app.controller('AddLocation', function($scope, $state, $stateParams, DataService, GeoLocator) { 
+        console.info("adding/editing a location");
+
+        if($stateParams.id) {
+                $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
+        }else{
+                $scope.location = DataService.location.new({ type: 'GPS' });                        
+        }
         
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
-        
+
         $scope.geolocationColor = 'red'
-        
+
         $scope.save = function() {
-                console.log($scope.location)
                 $scope.location.save().then(function() {
                         $state.go("ui.clues");
                 });
         }
-        
-        
+
+
         GeoLocator.go({
                 scope:$scope,
                 success: function(e) {
@@ -28,5 +31,5 @@ app.controller('AddLocation', function($scope, $state, DataService, GeoLocator) 
                         }                        
                 }
         })
-        
+
 });
