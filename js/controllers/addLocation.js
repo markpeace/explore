@@ -25,7 +25,7 @@ app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams
                         targetHeight: 100,
                         //popoverOptions: CameraPopoverOptions,
                         saveToPhotoAlbum: false 
-                }; );
+                });
         }
 
         $scope.save = function() {
