@@ -11,6 +11,11 @@ app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams
 
         $scope.geolocationColor = 'red'
 
+
+        $scope.takePhoto = function() {
+                navigator.camera.getPicture(function() {}, function() {}, {} );
+        }
+
         $scope.save = function() {
                 $scope.location.save().then(function() {
                         $state.go("ui.clues");
