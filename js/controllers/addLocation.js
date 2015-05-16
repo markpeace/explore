@@ -14,7 +14,7 @@ app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams
 
         $scope.takePhoto = function() {
                 navigator.camera.getPicture(function(e) {
-                        alert(e)
+                        $scope.location.image=e
                 }, function() {}, { 
                         quality : 75,
                         destinationType : Camera.DestinationType.DATA_URL,
