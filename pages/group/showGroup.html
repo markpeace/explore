@@ -1,0 +1,20 @@
+<ion-header-bar class="bar-positive">
+        <button class="button button-icon icon ion-ios-arrow-left" ui-sref="ui.Groups"></button>
+        <h1 class="title">Group Details</h1>
+</ion-header-bar>
+<ion-content>        
+
+        <div class="card">
+                <div class="item item-divider item-icon-right">
+                        <h2>{{ group.label }}</h2>
+                </div>
+                <span ng-show="location.image">
+                        QR Code Here
+                </span>
+
+                <div class="item item-footer button-bar">
+                        <a class="button button-positive" ui-sref="editGroup({id:group.id})">Edit</a>
+                </div>
+        </div>
+
+</ion-content>

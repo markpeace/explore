@@ -4,7 +4,7 @@
         </ion-nav-buttons>               
         <ion-content>     
                 <ion-list>
-                        <ion-item ng-repeat="group in groups">
+                        <ion-item ng-repeat="group in groups" ui-sref="showGroup({id:group.id})">
                                 {{ group.label }}
                         </ion-item>
                 </ion-list>
