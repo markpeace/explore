@@ -112,7 +112,8 @@ app.service('DataService', function($q, $state, $ionicLoading) {
 
                                         }
 
-                                        r.save().then(function() {
+                                        r.save().then(function(e) {
+                                                record.id=e.id
                                                 record.recache().then(function() {
                                                         deferred.resolve();       
                                                 })                                                
