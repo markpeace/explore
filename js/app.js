@@ -9,7 +9,7 @@ if (typeof cordova === 'object') {
                         alert(ex.message)
                 }
 
-        });
+        },false);
 
 } else {        
         angular.element(document).ready(function() {
