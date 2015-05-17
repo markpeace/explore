@@ -10,8 +10,12 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                 var user = new Parse.User();
                 user.set("username", "my name");
                 user.set("password", "my pass");
-                alert(device.uuid)
-/*
+                try {
+                        alert(device.uuid)
+                } catch (ex) {
+                        alert(ex.message)
+                }
+                /*
                 user.signUp(null, {
                         success: function(user) {
                                 // Hooray! Let them use the app now.
