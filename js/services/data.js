@@ -11,7 +11,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                 user.set("username", "my name");
                 user.set("password", "my pass");
                 try {
-                        alert(device.uuid)
+                        alert(device)
                 } catch (ex) {
                         alert(ex.message)
                 }
