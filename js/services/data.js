@@ -195,6 +195,12 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                         label:{ required: true } 
                 }
         })
+        models.group = new Model({
+                table: "Group",
+                attributes: {
+                        label: { required: true }
+                }
+        })
         models.location = new Model({ 
                 table: "Location", 
                 attributes: {
@@ -240,12 +246,15 @@ app.service('DataService', function($q, $state, $ionicLoading) {
 
         //RECACHE MODELS
         models.category.recache().then(function() { 
-                models.location.recache().then(function() {
-                        //console.log(models.category.all()) 
-                        //console.log(models.location.all())  
-                        $ionicLoading.hide();  
+                models.group.recache().then(function() {
+                        models.location.recache().then(function() {
+                                //console.log(models.category.all()) 
+                                //console.log(models.location.all())  
+                                $ionicLoading.hide();  
+                        })
                 })
         })
+
 
 
         return models;

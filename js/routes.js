@@ -38,11 +38,12 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         })        
 
-        $stateProvider.state('ui.badges', {
-                url: "/badges",
+        $stateProvider.state('ui.groups', {
+                url: "/groups",
                 views: {
                         'mainContent' :{
-                                templateUrl: "pages/badges.html",
+                                templateUrl: "pages/groups.html",
+                                controller: 'Groups'
                         }
                 }
         })
