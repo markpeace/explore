@@ -25,13 +25,13 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 
                 $stateProvider.state('add'+resource, {
                         url: "/"+resource.toLowerCase()+"/add",
-                        templateUrl: "pages/"+resource.toLowerCase()+"/add"+ resource +".html",
+                        templateUrl: "pages/"+resource.toLowerCase()+"/edit"+ resource +".html",
                         controller: 'Edit'+ resource
                 })
                 
                 $stateProvider.state('edit'+resource, {
                         url: "/"+resource.toLowerCase()+"/:id/edit",
-                        templateUrl: "pages/"+resource.toLowerCase()+"/add"+ resource +".html",
+                        templateUrl: "pages/"+resource.toLowerCase()+"/edit"+ resource +".html",
                         controller: 'Edit'+ resource
                 })
                                                 

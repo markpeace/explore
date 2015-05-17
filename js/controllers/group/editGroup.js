@@ -1,6 +1,6 @@
-app.controller('AddGroup', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
-        console.info("adding/editing a location");
-
+app.controller('EditGroup', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
+        console.info("adding/editing a group");
+/*
 
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
 
@@ -84,6 +84,6 @@ app.controller('AddGroup', function($scope, $ionicModal, $ionicPopover, $state, 
                 $scope.location = DataService.location.new({ type: 'GPS' });   
                 $scope.triggerGeolocation();
         }
-
+*/
 
 });
