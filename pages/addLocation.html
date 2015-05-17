@@ -5,7 +5,12 @@
 </ion-header-bar>
 <ion-content>       
         <ul class="list list-inset">
-                <li class="item">Category</li>
+                <li class="item" ng-click="openCategoryChooser()">
+                        Category
+                        <span class="item-note">
+                                {{ location.category.label }}
+                        </span>
+                </li>
                 <label class="item item-input item-stacked-label">
                         <span class="input-label">Descriptive Title</span>
                         <input type="text" placeholder="Only displayed after a location is found" ng-model="location.descriptiveTitle">
@@ -48,3 +53,21 @@
 
         </ul>
 </ion-content>
+
+<script id="category-popover.html" type="text/ng-template">
+ <ion-modal-view>
+        <ion-header-bar class="bar-positive">
+                <button class="button button-icon icon ion-ios-close-empty" ng-click="closeCategoryChooser()"></button>
+                <h1 class="title">Choose a Category</h1>
+        </ion-header-bar>
+
+        <ion-content>
+                <ion-list>
+                        <ion-item class="item-icon-right" ng-repeat="category in categories" ng-click="location.category=category; closeCategoryChooser()">
+                                {{category.label}}
+                                <i class="icon ion-ios-checkmark-empty" ng-show="location.category.id==category.id"></i>
+        </ion-item>
+        </ion-list>
+        </ion-content>
+        </ion-modal-view>
+</script>

@@ -1,4 +1,4 @@
-app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
         if($stateParams.id) {
@@ -27,6 +27,21 @@ app.controller('AddLocation', function($scope, $ionicPopup, $state, $stateParams
                         saveToPhotoAlbum: false 
                 });
         }
+
+        $scope.categories = DataService.category.all();
+        
+        $ionicModal.fromTemplateUrl('category-popover.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+        }).then(function(popover) {
+                $scope.categoryChooser = popover;
+        });
+
+        $scope.openCategoryChooser = function() { $scope.categoryChooser.show(); }
+        $scope.closeCategoryChooser = function() { $scope.categoryChooser.hide(); }
+
+
+
 
         $scope.save = function() {
                 $scope.location.save().then(function() {
