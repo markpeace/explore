@@ -1,4 +1,4 @@
-app.controller('EditLocation', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
 
@@ -54,7 +54,7 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopover, $sta
                 confirmPopup.then(function(res) {
                         if(res) {
                                 $scope.location.delete().then(function() {
-                                        $state.go("ui.clues");
+                                        $state.go("ui.Locations");
                                 });
                         }
                 });

@@ -1,4 +1,4 @@
-app.controller('EditGroup', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('EditGroup', function($scope, $ionicPopup, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a group");
 
         if($stateParams.id) {
