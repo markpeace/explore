@@ -3,8 +3,9 @@ app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $stat
 
         if($stateParams.id) {
                 $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
-        }else{
-                $scope.location = DataService.location.new({ type: 'GPS' });                        
+        } else {
+                $scope.location = DataService.location.new({ type: 'GPS' });   
+                $scope.triggerGeolocation();
         }
 
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
@@ -29,7 +30,7 @@ app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $stat
         }
 
         $scope.categories = DataService.category.all();
-        
+
         $ionicModal.fromTemplateUrl('category-popover.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
@@ -64,18 +65,21 @@ app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $stat
                 });
         }
 
-        GeoLocator.go({
-                scope:$scope,
-                success: function(e) {
-                        $scope.location.geolocation = e.coords
-                        if (e.coords.accuracy>30) {
-                                $scope.geolocationColor = 'red'
-                        } else if (e.coords.accuracy>15) {
-                                $scope.geolocationColor = 'orange'
-                        } else {
-                                $scope.geolocationColor = 'green'
-                        }                        
-                }
-        })
+        $scope.triggerGeolocation = function() {
+                console.log("looking for geolocation"); 
+                GeoLocator.go({
+                        scope:$scope,
+                        success: function(e) {
+                                $scope.location.geolocation = e.coords
+                                if (e.coords.accuracy>30) {
+                                        $scope.geolocationColor = 'red'
+                                } else if (e.coords.accuracy>15) {
+                                        $scope.geolocationColor = 'orange'
+                                } else {
+                                        $scope.geolocationColor = 'green'
+                                }                        
+                        }
+                })
+        }
 
 });
