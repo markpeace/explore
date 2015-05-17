@@ -244,7 +244,6 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                         //console.log(models.category.all()) 
                         //console.log(models.location.all())  
                         $ionicLoading.hide();  
-                        $state.reload();                                             
                 })
         })
 
