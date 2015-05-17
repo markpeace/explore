@@ -4,7 +4,7 @@
         </ion-nav-buttons>               
         <ion-content>     
                 <ul class="list">                             
-                        <a class="item item-icon-right" ng-repeat="location in locations.all() | orderBy:'distance'" ui-sref="locationDetail({id:location.id})">
+                        <a class="item item-icon-right" ng-repeat="location in locations.all() | orderBy:'distance'" ui-sref="showLocation({id:location.id})">
                                 {{location.found || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }}
                                 <p>{{location.category.label}} [{{location.distance}}m]</p>
                                 <i class="icon ion-ios-arrow-right" ng-hide="location.found"></i>

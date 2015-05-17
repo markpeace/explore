@@ -1,4 +1,4 @@
-app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('AddGroup', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
 
