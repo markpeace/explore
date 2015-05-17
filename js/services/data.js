@@ -29,7 +29,24 @@ app.service('DataService', function($q, $state) {
                                 record=this                                                               
 
                                 var deferred = $q.defer();
+                                                                                                
+                                _doValidations = function() {
+                                        errorString = "";
 
+                                        for (attribute in root.attributes) {
+                                                if (root.attributes[attribute].required && !record[attribute]) {
+                                                        errorString+="- " + attribute + " is a required field"
+                                                }
+                                        }       
+                                        
+                                        if (errorString) {
+                                                deferred.reject(errorString);
+                                                return;
+                                        } else {
+                                                _getObject()
+                                        }
+                                }
+                                
                                 _getObject = function() {
 
                                         if (record.id) {
@@ -74,7 +91,7 @@ app.service('DataService', function($q, $state) {
 
                                 }
 
-                                _getObject();
+                                _doValidations();
 
                                 return deferred.promise;
                         }
@@ -148,19 +165,19 @@ app.service('DataService', function($q, $state) {
         models.category = new Model({
                 table: "Category", 
                 attributes: { 
-                        label:null 
+                        label:{ required: true } 
                 }
         })
         models.location = new Model({ 
                 table: "Location", 
                 attributes: {
-                        descriptiveTitle:null,
-                        descriptiveInformation: null,
+                        descriptiveTitle: { required: true },
+                        descriptiveInformation: { required: true },
                         enigmaticTitle:null,
                         enigmaticInformation:null,
                         image: { type: 'image' } ,
-                        type: null,
-                        geolocation: null,
+                        type: { required: true },
+                        geolocation: { required: true },
                         category: { link_to:models.category }
                 },
                 methods: {

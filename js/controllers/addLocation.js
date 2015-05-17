@@ -12,7 +12,6 @@ app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $stat
 
         $scope.geolocationColor = 'red'
 
-
         $scope.takePhoto = function() {
                 navigator.camera.getPicture(function(e) {
                         $scope.location.image=e
@@ -47,6 +46,8 @@ app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $stat
         $scope.save = function() {
                 $scope.location.save().then(function() {
                         $state.go("ui.clues");
+                }, function (e) {
+                        alert(e)
                 });
         }
 
