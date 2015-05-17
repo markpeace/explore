@@ -11,4 +11,4 @@ if (typeof cordova === 'object') {
         });
 }
 
-app = angular.module('explore', ['ionic']);
+app = angular.module('explore', ['ionic', 'monospaced.qrcode']);
