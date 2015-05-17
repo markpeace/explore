@@ -54,6 +54,13 @@ app.service('DataService', function($q, $state) {
                                                                 record[attribute] = new Parse.File("myfile.jpg", { base64: base64 });      
                                                                 r.set(attribute, record[attribute] || null);
                                                         }
+                                                } else if (root.attributes[attribute].link_to) {
+
+                                                        var id = record[attribute].id
+                                                        record[attribute] = new (Parse.Object.extend(root.attributes[attribute].link_to.table))
+                                                        record[attribute].id = id
+                                                        r.set(attribute, record[attribute] || null);
+
                                                 } else {
                                                         r.set(attribute, record[attribute] || null);
                                                 }
@@ -103,6 +110,8 @@ app.service('DataService', function($q, $state) {
                                         for (attribute in root.attributes) {
                                                 if(root.attributes[attribute].type=='image' && record.get(attribute)) {
                                                         newRecord[attribute]=record.get(attribute).url();
+                                                } else if (root.attributes[attribute].link_to && record.get(attribute)) {
+                                                        newRecord[attribute]=root.attributes[attribute].link_to.filterBy({id:record.get(attribute).id})[0]
                                                 } else {
                                                         newRecord[attribute]=record.get(attribute)       
                                                 }
@@ -152,7 +161,7 @@ app.service('DataService', function($q, $state) {
                         image: { type: 'image' } ,
                         type: null,
                         geolocation: null,
-                        category: { link_to:"category" }
+                        category: { link_to:models.category }
                 },
                 methods: {
                         updateDistance: function(currentGeolocation) {
