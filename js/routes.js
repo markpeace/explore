@@ -10,7 +10,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         $stateProvider.state('addLocation', {
                 url: "/location/add",
-                templateUrl: "pages/addLocation.html",
+                templateUrl: "pages/location/addLocation.html",
                 controller:"AddLocation"
 
         })
@@ -19,21 +19,21 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 url: "/locations",
                 views: {
                         'mainContent' :{
-                                templateUrl: "pages/locations.html",
-                                controller: "Locations"
+                                templateUrl: "pages/location/listLocations.html",
+                                controller: "ListLocations"
                         }
                 }
         })
 
         $stateProvider.state('locationDetail', {
                 url: "/location/:id",                   
-                templateUrl: "pages/locationdetail.html",
-                controller: "LocationDetail"
+                templateUrl: "pages/location/showLocation.html",
+                controller: "ShowLocation"
         })
 
         $stateProvider.state('editLocation', {
                 url: "/location/:id/edit",
-                templateUrl: "pages/addLocation.html",
+                templateUrl: "pages/location/addLocation.html",
                 controller:"AddLocation"
 
         })        
@@ -42,8 +42,8 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 url: "/groups",
                 views: {
                         'mainContent' :{
-                                templateUrl: "pages/groups.html",
-                                controller: 'Groups'
+                                templateUrl: "pages/groups/listGroups.html",
+                                controller: 'ListGroups'
                         }
                 }
         })

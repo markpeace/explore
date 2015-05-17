@@ -1,4 +1,4 @@
-app.controller('LocationDetail', function($scope, DataService, $stateParams, GeoLocator) { 
+app.controller('ShowLocation', function($scope, DataService, $stateParams, GeoLocator) { 
         console.info("Navigated to Clue Details for " + $stateParams.id)        
         $scope.location = DataService.location.filterBy({id: $stateParams.id})[0];
         $scope.locationIndicator = "*";

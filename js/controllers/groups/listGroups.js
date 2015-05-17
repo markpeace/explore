@@ -1,4 +1,4 @@
-app.controller('Groups', function($scope, DataService, GeoLocator) { 
+app.controller('ListGroups', function($scope, DataService, GeoLocator) { 
        
         console.info("groups view")
         

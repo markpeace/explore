@@ -1,4 +1,4 @@
-app.controller('Locations', function($scope, DataService, GeoLocator) { 
+app.controller('ListLocations', function($scope, DataService, GeoLocator) { 
         $scope.locations = DataService.location;          
         $scope.locationIndicator = "*";       
         
