@@ -1,12 +1,6 @@
 app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
-        if($stateParams.id) {
-                $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
-        } else {
-                $scope.location = DataService.location.new({ type: 'GPS' });   
-                $scope.triggerGeolocation();
-        }
 
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
 
@@ -82,5 +76,14 @@ app.controller('AddLocation', function($scope, $ionicModal, $ionicPopover, $stat
                         }
                 })
         }
+
+
+        if($stateParams.id) {
+                $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
+        } else {
+                $scope.location = DataService.location.new({ type: 'GPS' });   
+                $scope.triggerGeolocation();
+        }
+
 
 });

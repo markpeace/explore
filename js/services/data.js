@@ -1,4 +1,4 @@
-app.service('DataService', function($q, $state) {
+app.service('DataService', function($q, $state, $ionicLoading) {
 
         var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
         var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
@@ -24,12 +24,39 @@ app.service('DataService', function($q, $state) {
 
                         for (method in root.methods) { newRecord[method] = root.methods[method] }
 
+                        newRecord.recache = function() {
+
+                                var record = this;
+                                var deferred = $q.defer();
+
+                                (new Parse.Query(Parse.Object.extend(root.table)))
+                                        .get(record.id).then(function(remoteRecord) { 
+
+                                        for (attribute in root.attributes) {
+
+                                                if(root.attributes[attribute].type=='image' && remoteRecord.get(attribute)) {
+                                                        record[attribute]=remoteRecord.get(attribute).url();
+                                                } else if (root.attributes[attribute].link_to && remoteRecord.get(attribute)) {
+                                                        record[attribute]=root.attributes[attribute].link_to.filterBy({id:remoteRecord.get(attribute).id})[0]
+                                                } else {
+                                                        record[attribute]=remoteRecord.get(attribute)       
+                                                }
+
+                                                deferred.resolve()
+                                        }
+
+                                })
+
+                                return deferred.promise
+
+                        }
+
                         newRecord.save = function() {
 
                                 record=this                                                               
 
                                 var deferred = $q.defer();
-                                                                                                
+
                                 _doValidations = function() {
                                         errorString = "";
 
@@ -38,7 +65,7 @@ app.service('DataService', function($q, $state) {
                                                         errorString+="- " + attribute + " is a required field"
                                                 }
                                         }       
-                                        
+
                                         if (errorString) {
                                                 deferred.reject(errorString);
                                                 return;
@@ -46,7 +73,7 @@ app.service('DataService', function($q, $state) {
                                                 _getObject()
                                         }
                                 }
-                                
+
                                 _getObject = function() {
 
                                         if (record.id) {
@@ -118,24 +145,22 @@ app.service('DataService', function($q, $state) {
                 }                                
 
                 root.recache = function()  {
-                        deferred = $q.defer();
+                        var deferred = $q.defer();
+
+                        var promises = []
 
                         data = [];
                         (new Parse.Query(root.table)).limit(99999).find().then(function(ret) {                                
-                                ret.forEach(function(record){                                        
+                                ret.forEach(function(r){                                        
                                         newRecord = root.new();
-                                        for (attribute in root.attributes) {
-                                                if(root.attributes[attribute].type=='image' && record.get(attribute)) {
-                                                        newRecord[attribute]=record.get(attribute).url();
-                                                } else if (root.attributes[attribute].link_to && record.get(attribute)) {
-                                                        newRecord[attribute]=root.attributes[attribute].link_to.filterBy({id:record.get(attribute).id})[0]
-                                                } else {
-                                                        newRecord[attribute]=record.get(attribute)       
-                                                }
-                                        }
-                                        newRecord.id = record.id                                                                                
+                                        newRecord.id = r.id;
+                                        promises.push(newRecord.recache()); 
                                 })
-                                deferred.resolve();
+
+                                $q.all(promises).then(function() {
+                                        deferred.resolve();
+                                })
+
                         })
 
                         return deferred.promise
@@ -207,12 +232,16 @@ app.service('DataService', function($q, $state) {
                 }
         })
 
+        $ionicLoading.show({
+                template: 'Updating Data...'
+        });
 
         //RECACHE MODELS
         models.category.recache().then(function() { 
                 models.location.recache().then(function() {
                         //console.log(models.category.all()) 
-                        //console.log(models.location.all())    
+                        //console.log(models.location.all())  
+                        $ionicLoading.hide();  
                         $state.reload();                                             
                 })
         })
