@@ -9,8 +9,11 @@
                 <label class="item item-input item-stacked-label">
                         <span class="input-label">Group Label</span>
                         <input type="text" placeholder="Enter a meaningful label for this group" ng-model="group.label">
-                </label>                
-               
-
+                </label>  
+                
+                <li class="item item-footer button-bar" ng-show="group.id">
+                        <a class="button button-assertive" ng-click="delete()">Delete</a>
+                </li>
+                
         </ul>
 </ion-content>

@@ -23,7 +23,7 @@ app.controller('EditGroup', function($scope, $ionicModal, $ionicPopover, $state,
                 });
                 confirmPopup.then(function(res) {
                         if(res) {
-                                $scope.location.group.delete().then(function() {
+                                $scope.group.delete().then(function() {
                                         $state.go("ui.Groups");
                                 });
                         }
