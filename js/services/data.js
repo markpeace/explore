@@ -113,7 +113,9 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                                         }
 
                                         r.save().then(function() {
-                                                deferred.resolve();
+                                                record.recache().then(function() {
+                                                        deferred.resolve();       
+                                                })                                                
                                         })
 
                                 }
@@ -203,7 +205,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                         image: { type: 'image' } ,
                         type: { required: true },
                         geolocation: { required: true },
-                        category: { link_to:models.category }
+                        category: { link_to:models.category, required:true }
                 },
                 methods: {
                         updateDistance: function(currentGeolocation) {
