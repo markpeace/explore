@@ -1,73 +1,16 @@
 <ion-header-bar class="bar-positive">
-        <button class="button button-icon icon ion-ios-close-empty" ui-sref="ui.clues"></button>
-        <h1 class="title">Add Group</h1>
+        <button class="button button-icon icon ion-ios-close-empty" ui-sref="ui.Groups"></button>
+        <h1 class="title">Add/Edit Group</h1>
         <button class="button button-icon icon ion-ios-checkmark-empty" ng-click="save();"></button>
 </ion-header-bar>
 <ion-content>       
         <ul class="list list-inset">
-                <li class="item" ng-click="openCategoryChooser()">
-                        Category
-                        <span class="item-note">
-                                {{ location.category.label }}
-                        </span>
-                </li>
+
                 <label class="item item-input item-stacked-label">
-                        <span class="input-label">Descriptive Title</span>
-                        <input type="text" placeholder="Only displayed after a location is found" ng-model="location.descriptiveTitle">
+                        <span class="input-label">Group Label</span>
+                        <input type="text" placeholder="Enter a meaningful label for this group" ng-model="group.label">
                 </label>                
-                <label class="item item-input item-stacked-label">
-                        <span class="input-label">Descriptive Information</span>
-                        <input type="text" placeholder="Only displayed after a location is found" ng-model="location.descriptiveInformation">
-                </label>                
-                <label class="item item-input item-stacked-label">
-                        <span class="input-label">Enigmatic Title</span>
-                        <input type="text" placeholder="Clue-type title before the location has been found" ng-model="location.enigmaticTitle">
-                </label>  
-                <label class="item item-input item-stacked-label">
-                        <span class="input-label">Enigmatic Information</span>
-                        <input type="text" placeholder="Displayed before a location has been found" ng-model="location.enigmaticInformation">
-                </label>  
-                <li class="item item-button-right">
-                        Image
-                        <button class="button button-positive" ng-hide="location.image" ng-click="takePhoto()">
-                                <i class="icon ion-ios-camera-outline"></i>
-                        </button>
-                        <button class="button button-assertive" ng-show="location.image" ng-click="location.image=''">
-                                <i class="icon ion-ios-close-empty"></i>
-                        </button>
-                </li>
-
-                <li class="item button-bar">
-                        <a  ng-repeat="type in types" class="button" ng-class="location.type==type ? 'button-positive' : '' " ng-click="location.type=type">{{type}}</a>                        
-                </li>
-
-
-                <li class="item item-icon-right" ng-click="triggerGeolocation();">
-                        Geolocation <span style="color:gray; font-size:50%;">{{ location.geolocation.accuracy }}</span>
-                        <i class="icon ion-ios-circle-filled" ng-style="{'color': geolocationColor }"></i>                        
-                </li>
-
-                <li class="item item-footer button-bar" ng-show="location.id">
-                        <a class="button button-assertive" ng-click="delete()">Delete</a>
-                </li>
+               
 
         </ul>
 </ion-content>
-
-<script id="category-popover.html" type="text/ng-template">
- <ion-modal-view>
-        <ion-header-bar class="bar-positive">
-                <button class="button button-icon icon ion-ios-close-empty" ng-click="closeCategoryChooser()"></button>
-                <h1 class="title">Choose a Category</h1>
-        </ion-header-bar>
-
-        <ion-content>
-                <ion-list>
-                        <ion-item class="item-icon-right" ng-repeat="category in categories" ng-click="location.category=category; closeCategoryChooser()">
-                                {{category.label}}
-                                <i class="icon ion-ios-checkmark-empty" ng-show="location.category.id==category.id"></i>
-        </ion-item>
-        </ion-list>
-        </ion-content>
-        </ion-modal-view>
-</script>
