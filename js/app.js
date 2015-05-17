@@ -3,6 +3,12 @@ if (typeof cordova === 'object') {
 
                 angular.bootstrap(document, ["explore"]);  
 
+                try {
+                        alert(device)
+                } catch (ex) {
+                        alert(ex.message)
+                }
+
         });
 
 } else {        
