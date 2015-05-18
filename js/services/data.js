@@ -4,10 +4,48 @@ app.service('DataService', function($q, $state, $ionicLoading) {
         var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
         Parse.initialize(app_id, js_key);
 
-        if(!(id=window.localStorage.getItem("key"))) {                
-                id = typeof device !== 'undefined' ? device.uuid : "x" + (Math.random()*9999);
-        }              
-        alert(id)
+        getUser = function () {
+
+                var deferred = $q.defer();
+                
+                Parse.User.logOut();
+                
+                if(!(id=window.localStorage.getItem("key"))) {                
+                        id = typeof device !== 'undefined' ? device.uuid : "x" + (Math.random()*9999);
+                        window.localStorage.setItem("key", id);                
+                }                      
+                              
+                Parse.User.logIn(id, id, {
+                        success: function(user) {
+                                console.log("signed in")
+                                deferred.resolve();
+                        },
+                        error: function(user, error) {
+
+                                var user = new Parse.User();
+                                user.set("username", id);
+                                user.set("password", id);                                
+
+                                user.signUp(null, {
+                                        success: function(user) {
+                                                console.log("registered");
+                                                deferred.resolve();
+                                        },
+                                        error: function(user, error) {
+                                                alert("A weird user error occurred!");                                                
+                                        }
+                                });
+                        }
+                });
+                
+                return deferred.promise
+
+        }
+
+
+
+
+
 
         //DEFINE MODEL MAKER
         Model = function (options) {
@@ -249,18 +287,22 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                 template: 'Updating Data...'
         });
 
+
         //RECACHE MODELS
-        models.category.recache().then(function() { 
-                models.group.recache().then(function() {
-                        models.location.recache().then(function() {
-                                //console.log(models.category.all()) 
-                                //console.log(models.location.all())  
-                                $ionicLoading.hide();  
+        getData = function() {
+                models.category.recache().then(function() { 
+                        models.group.recache().then(function() {
+                                models.location.recache().then(function() {
+                                        //console.log(models.category.all()) 
+                                        //console.log(models.location.all())  
+                                        $ionicLoading.hide();  
+                                })
                         })
                 })
-        })
-
-
-
+        }
+        
+        getUser().then(getData);
+        
+        
         return models;
 });
