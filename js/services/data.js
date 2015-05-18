@@ -7,7 +7,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
         if(!(id=window.localStorage.getItem("key"))) {                
                 id = typeof device !== 'undefined' ? device.uuid : "x" + (Math.random()*9999);
         }              
-        console.log(id)
+        alert(id)
 
         //DEFINE MODEL MAKER
         Model = function (options) {
