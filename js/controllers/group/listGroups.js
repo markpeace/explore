@@ -10,7 +10,7 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
                         scanner.scan(function (result) {
-                                alert(result)
+                                alert(result.text)
                         })
 
                 } catch (ex) {

@@ -74,6 +74,8 @@ app.service('DataService', function($q, $state, $ionicLoading) {
 
                                                 if(root.attributes[attribute].type=='image' && remoteRecord.get(attribute)) {
                                                         record[attribute]=remoteRecord.get(attribute).url();
+                                                } else if(root.attributes[attribute].has_many && remoteRecord.get(attribute)) {
+                                                        console.log("has many!")
                                                 } else if (root.attributes[attribute].link_to && remoteRecord.get(attribute)) {
                                                         record[attribute]=root.attributes[attribute].link_to.filterBy({id:remoteRecord.get(attribute).id})[0]
                                                 } else {
@@ -249,15 +251,15 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                         label: { required: true }
                 }
         })
-        
+
         models.user = new Model({
                 table: "User", 
                 attributes: {
-                        temp: {}
-                        groups: { hasMany: model.group }
+                        temp: {},
+                        groups: { has_many: models.group }
                 }                
         })
-        
+
         models.location = new Model({ 
                 table: "Location", 
                 attributes: {
@@ -309,7 +311,6 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
-                                                console.log(models.user.all())
                                                 $ionicLoading.hide();  
                                         })
                                 })
