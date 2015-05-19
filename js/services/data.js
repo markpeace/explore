@@ -18,7 +18,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                 Parse.User.logIn(id, id, {
                         success: function(user) {
                                 console.log("signed in")
-                                deferred.resolve();
+                                deferred.resolve(user)
                         },
                         error: function(user, error) {
 
@@ -29,7 +29,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                                 user.signUp(null, {
                                         success: function(user) {
                                                 console.log("registered");
-                                                deferred.resolve();
+                                                deferred.resolve(user)
                                         },
                                         error: function(user, error) {
                                                 alert("A weird user error occurred!");                                                
@@ -41,12 +41,8 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                 return deferred.promise
 
         }
-
-
-
-
-
-
+       
+        
         //DEFINE MODEL MAKER
         Model = function (options) {
                 //private attributes   
@@ -293,15 +289,22 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                 models.category.recache().then(function() { 
                         models.group.recache().then(function() {
                                 models.location.recache().then(function() {
-                                        //console.log(models.category.all()) 
-                                        //console.log(models.location.all())  
+                                        models.user = user
                                         $ionicLoading.hide();  
                                 })
                         })
                 })
         }
         
-        getUser().then(getData);
+        
+        // BUILD EVERYTHING
+        var user = Parse.User.current();
+        if(!user) {
+                getUser().then(getData);        
+        } else {
+                getData();
+        }
+        
         
         
         return models;
