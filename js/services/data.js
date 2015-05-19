@@ -67,17 +67,38 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                                 var record = this;
                                 var deferred = $q.defer();
 
-                                (new Parse.Query(Parse.Object.extend(root.table)))
-                                        .get(record.id).then(function(remoteRecord) { 
+                                var query = new Parse.Query(Parse.Object.extend(root.table))                                                                                               
+
+                                query.get(record.id).then(function(remoteRecord) { 
 
                                         for (attribute in root.attributes) {
 
                                                 if(root.attributes[attribute].type=='image' && remoteRecord.get(attribute)) {
-                                                        record[attribute]=remoteRecord.get(attribute).url();
-                                                } else if(root.attributes[attribute].has_many && remoteRecord.get(attribute)) {
-                                                        console.log("has many!")
+                                                        record[attribute]=remoteRecord.get(attribute).url();            
                                                 } else if (root.attributes[attribute].link_to && remoteRecord.get(attribute)) {
-                                                        record[attribute]=root.attributes[attribute].link_to.filterBy({id:remoteRecord.get(attribute).id})[0]
+                                                        
+                                                        var connector = root.attributes[attribute].link_to
+                                                        
+                                                        if(typeof root.attributes[attribute].link_to==="string") {                                                                
+                                                                record[attribute]=eval(connector).filterBy({id:remoteRecord.get(attribute).id})[0]
+                                                        } else {
+
+                                                                connector=connector[0]
+                                                                console.log()
+
+                                                                record[attribute]=new Model(eval(root.attributes[attribute].link_to[0]))
+                                                                var field = record[attribute]
+                                                                
+                                                                remoteRecord.relation(attribute).query().find().then(function(subrecords){
+                                                                        subrecords.forEach(function(subrecord) {
+                                                                                f=field.new(
+                                                                                        eval(connector).filterBy({id:subrecord.id})[0]
+                                                                                )                                                                                       
+                                                                        })
+                                                                })      
+                                                        }
+
+
                                                 } else {
                                                         record[attribute]=remoteRecord.get(attribute)       
                                                 }
@@ -238,66 +259,70 @@ app.service('DataService', function($q, $state, $ionicLoading) {
 
         //DEFINITION MODELS
 
-        models = {}        
-        models.category = new Model({
-                table: "Category", 
-                attributes: { 
-                        label:{ required: true } 
-                }
-        })
-        models.group = new Model({
-                table: "Group",
-                attributes: {
-                        label: { required: true }
-                }
-        })
 
-        models.user = new Model({
-                table: "User", 
-                attributes: {
-                        temp: {},
-                        groups: { has_many: models.group }
-                }                
-        })
-
-        models.location = new Model({ 
-                table: "Location", 
-                attributes: {
-                        descriptiveTitle: { required: true },
-                        descriptiveInformation: { required: true },
-                        enigmaticTitle:null,
-                        enigmaticInformation:null,
-                        image: { type: 'image' } ,
-                        type: { required: true },
-                        geolocation: { required: true },
-                        category: { link_to:models.category, required:true }
+        definitions = {
+                category: {
+                        table: "Category", 
+                        attributes: { 
+                                label:{ required: true } 
+                        }
                 },
-                methods: {
-                        updateDistance: function(currentGeolocation) {
+                group: {
+                        table: "Group",
+                        attributes: {
+                                label: { required: true },
+                                users: { link_to: ["models.user"] }
+                        }
+                },
+                user: {
+                        table: "User",
+                        attributes: {
+                                groups: { link_to: ["models.group"] }
+                        }
+                },
+                location: { 
+                        table: "Location", 
+                        attributes: {
+                                descriptiveTitle: { required: true },
+                                descriptiveInformation: { required: true },
+                                enigmaticTitle:null,
+                                enigmaticInformation:null,
+                                image: { type: 'image' } ,
+                                type: { required: true },
+                                geolocation: { required: true },
+                                category: { link_to:"models.category", required:true }
+                        },
+                        methods: {
+                                updateDistance: function(currentGeolocation) {
 
-                                lat1=this.geolocation.latitude
-                                lon1=this.geolocation.longitude
-                                lat2=currentGeolocation.latitude
-                                lon2=currentGeolocation.longitude
+                                        lat1=this.geolocation.latitude
+                                        lon1=this.geolocation.longitude
+                                        lat2=currentGeolocation.latitude
+                                        lon2=currentGeolocation.longitude
 
-                                function deg2rad(deg) {
-                                        return deg * (Math.PI/180)
+                                        function deg2rad(deg) {
+                                                return deg * (Math.PI/180)
+                                        }
+                                        var R = 6371; // Radius of the earth in km
+                                        var dLat = deg2rad(lat2-lat1);  // deg2rad below
+                                        var dLon = deg2rad(lon2-lon1); 
+                                        var a = 
+                                            Math.sin(dLat/2) * Math.sin(dLat/2) +
+                                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                                            Math.sin(dLon/2) * Math.sin(dLon/2)
+                                        ; 
+                                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                                        var d = R * c; // Distance in km
+                                        this.distance = Math.round(d*1000)
+                                        return this.distance
                                 }
-                                var R = 6371; // Radius of the earth in km
-                                var dLat = deg2rad(lat2-lat1);  // deg2rad below
-                                var dLon = deg2rad(lon2-lon1); 
-                                var a = 
-                                    Math.sin(dLat/2) * Math.sin(dLat/2) +
-                                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-                                    Math.sin(dLon/2) * Math.sin(dLon/2)
-                                ; 
-                                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-                                var d = R * c; // Distance in km
-                                this.distance = Math.round(d*1000)
-                                return this.distance
                         }
                 }
-        })
+        }
+
+
+        models = {}        
+        for (d in definitions) { models[d] = new Model(definitions[d])}
 
         $ionicLoading.show({
                 template: 'Updating Data...'
@@ -305,12 +330,13 @@ app.service('DataService', function($q, $state, $ionicLoading) {
 
 
         //RECACHE MODELS
-        getData = function() {
+        getData = function() {               
                 models.category.recache().then(function() { 
                         models.group.recache().then(function() {
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
+                                                //console.log(models.user.all())
                                                 $ionicLoading.hide();  
                                         })
                                 })
