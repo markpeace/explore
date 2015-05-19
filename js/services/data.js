@@ -7,14 +7,14 @@ app.service('DataService', function($q, $state, $ionicLoading) {
         getUser = function () {
 
                 var deferred = $q.defer();
-                
+
                 Parse.User.logOut();
-                
+
                 if(!(id=window.localStorage.getItem("key"))) {                
                         id = typeof device !== 'undefined' ? device.uuid : "x" + (Math.random()*9999);
                         window.localStorage.setItem("key", id);                
                 }                      
-                              
+
                 Parse.User.logIn(id, id, {
                         success: function(user) {
                                 console.log("signed in")
@@ -37,12 +37,12 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                                 });
                         }
                 });
-                
+
                 return deferred.promise
 
         }
-       
-        
+
+
         //DEFINE MODEL MAKER
         Model = function (options) {
                 //private attributes   
@@ -191,7 +191,16 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                         var promises = []
 
                         data = [];
-                        (new Parse.Query(root.table)).limit(99999).find().then(function(ret) {                                
+
+                        var query = new Parse.Query(root.table)
+
+                        if (root.constraints) {
+                                root.constraints.forEach(function(constraint) {
+                                        query=eval("query" + constraint)   
+                                }) 
+                        }
+
+                        query.limit(99999).find().then(function(ret) {                                
                                 ret.forEach(function(r){                                        
                                         newRecord = root.new();
                                         newRecord.id = r.id;
@@ -227,7 +236,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
 
         //DEFINITION MODELS
 
-        models = {}
+        models = {}        
         models.category = new Model({
                 table: "Category", 
                 attributes: { 
@@ -240,6 +249,15 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                         label: { required: true }
                 }
         })
+        
+        models.user = new Model({
+                table: "User", 
+                attributes: {
+                        temp: {}
+                        groups: { hasMany: model.group }
+                }                
+        })
+        
         models.location = new Model({ 
                 table: "Location", 
                 attributes: {
@@ -289,23 +307,26 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                 models.category.recache().then(function() { 
                         models.group.recache().then(function() {
                                 models.location.recache().then(function() {
-                                        models.user = user
-                                        $ionicLoading.hide();  
+                                        models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
+                                        models.user.recache().then(function() {
+                                                console.log(models.user.all())
+                                                $ionicLoading.hide();  
+                                        })
                                 })
                         })
                 })
         }
-        
-        
+
+
         // BUILD EVERYTHING
         var user = Parse.User.current();
         if(!user) {
                 getUser().then(getData);        
         } else {
                 getData();
-        }
-        
-        
-        
+        };                
+
+
+
         return models;
 });
