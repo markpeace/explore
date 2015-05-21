@@ -1,8 +1,6 @@
-app.service('DataService', function($q, $state, $ionicLoading) {
+app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
 
-        var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
-        var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
-        Parse.initialize(app_id, js_key);
+        models=ParseConnector.connect("uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz", "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N")        
 
         getUser = function () {
 
@@ -42,223 +40,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
 
         }
 
-
-        //DEFINE MODEL MAKER
-        Model = function (options) {
-                //private attributes   
-                var root=this             
-                var data = new Array();
-                root.table = options.table
-                root.attributes = options.attributes
-                for (a in root.attributes) { root.attributes[a] = root.attributes[a] || {} }        
-                root.methods = options.methods
-
-                root.new = function (presets) {
-                        var presets = presets || {}
-
-                        var newRecord = {}
-
-                        for (attribute in root.attributes) { newRecord[attribute]=presets[attribute] || null }
-
-                        for (method in root.methods) { newRecord[method] = root.methods[method] }
-
-                        newRecord.recache = function() {
-
-                                var record = this;
-                                var deferred = $q.defer();
-
-                                var query = new Parse.Query(Parse.Object.extend(root.table))                                                                                               
-
-                                query.get(record.id).then(function(remoteRecord) { 
-
-                                        for (attribute in root.attributes) {
-
-                                                if(root.attributes[attribute].type=='image' && remoteRecord.get(attribute)) {
-                                                        record[attribute]=remoteRecord.get(attribute).url();            
-                                                } else if (root.attributes[attribute].link_to && remoteRecord.get(attribute)) {
-                                                        
-                                                        var connector = root.attributes[attribute].link_to
-                                                        
-                                                        if(typeof root.attributes[attribute].link_to==="string") {                                                                
-                                                                record[attribute]=eval(connector).filterBy({id:remoteRecord.get(attribute).id})[0]
-                                                        } else {
-
-                                                                connector=connector[0]
-                                                                console.log()
-
-                                                                record[attribute]=new Model(eval(root.attributes[attribute].link_to[0]))
-                                                                var field = record[attribute]
-                                                                
-                                                                remoteRecord.relation(attribute).query().find().then(function(subrecords){
-                                                                        subrecords.forEach(function(subrecord) {
-                                                                                f=field.new(
-                                                                                        eval(connector).filterBy({id:subrecord.id})[0]
-                                                                                )                                                                                       
-                                                                        })
-                                                                })      
-                                                        }
-
-
-                                                } else {
-                                                        record[attribute]=remoteRecord.get(attribute)       
-                                                }
-
-                                                deferred.resolve()
-                                        }
-
-                                })
-
-                                return deferred.promise
-
-                        }
-
-                        newRecord.save = function() {
-
-                                record=this                                                               
-
-                                var deferred = $q.defer();
-
-                                _doValidations = function() {
-                                        errorString = "";
-
-                                        for (attribute in root.attributes) {
-                                                if (root.attributes[attribute].required && !record[attribute]) {
-                                                        errorString+="- " + attribute + " is a required field"
-                                                }
-                                        }       
-
-                                        if (errorString) {
-                                                deferred.reject(errorString);
-                                                return;
-                                        } else {
-                                                _getObject()
-                                        }
-                                }
-
-                                _getObject = function() {
-
-                                        if (record.id) {
-
-                                                (new Parse.Query(Parse.Object.extend(root.table)))
-                                                        .get(record.id).then(function(e) { _performSave(e); })
-
-                                        } else {
-
-                                                _performSave( new (Parse.Object.extend(root.table)) );
-
-                                        }
-
-                                }
-
-                                _performSave = function(r) {
-
-                                        for (attribute in root.attributes) {
-                                                if(root.attributes[attribute].type=='image' && record[attribute] ) {
-                                                        if(record[attribute].substr(0,4)!="http") {
-                                                                var base64=record[attribute]
-                                                                record[attribute] = new Parse.File("myfile.jpg", { base64: base64 });      
-                                                                r.set(attribute, record[attribute] || null);
-                                                        }
-                                                } else if (root.attributes[attribute].link_to) {
-
-                                                        var id = record[attribute].id
-                                                        record[attribute] = new (Parse.Object.extend(root.attributes[attribute].link_to.table))
-                                                        record[attribute].id = id
-                                                        r.set(attribute, record[attribute] || null);
-
-                                                } else {
-                                                        r.set(attribute, record[attribute] || null);
-                                                }
-
-
-                                        }
-
-                                        r.save().then(function(e) {
-                                                record.id=e.id
-                                                record.recache().then(function() {
-                                                        deferred.resolve();       
-                                                })                                                
-                                        })
-
-                                }
-
-                                _doValidations();
-
-                                return deferred.promise;
-                        }
-
-                        newRecord.delete = function() {
-
-                                if(!this.id) { return }
-
-                                record = this                                                                
-                                var deferred = $q.defer();                               
-
-                                (new Parse.Query(Parse.Object.extend(root.table)))
-                                        .get(this.id).then(function(e) {
-                                        e.destroy().then(function() { deferred.resolve() })
-                                })
-
-                                data=data.filter(function(d) { return d.id!=record.id })
-
-                                return deferred.promise;                               
-                        }
-
-                        data.push(newRecord)
-                        return newRecord
-                }                                
-
-                root.recache = function()  {
-                        var deferred = $q.defer();
-
-                        var promises = []
-
-                        data = [];
-
-                        var query = new Parse.Query(root.table)
-
-                        if (root.constraints) {
-                                root.constraints.forEach(function(constraint) {
-                                        query=eval("query" + constraint)   
-                                }) 
-                        }
-
-                        query.limit(99999).find().then(function(ret) {                                
-                                ret.forEach(function(r){                                        
-                                        newRecord = root.new();
-                                        newRecord.id = r.id;
-                                        promises.push(newRecord.recache()); 
-                                })
-
-                                $q.all(promises).then(function() {
-                                        deferred.resolve();
-                                })
-
-                        })
-
-                        return deferred.promise
-
-                }
-
-                root.all = function () { return data }
-
-                root.filterBy = function(query) {                         
-                        return data.filter(function(record) {
-
-                                for(field in query) {
-
-                                        if (query[field]!=record[field]) { return false }
-                                }
-
-                                return true
-                        })
-                }
-
-        }
-
-
         //DEFINITION MODELS
-
 
         definitions = {
                 category: {
@@ -321,8 +103,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
         }
 
 
-        models = {}        
-        for (d in definitions) { models[d] = new Model(definitions[d])}
+        for (d in definitions) { models[d] = new ParseConnector.Model(definitions[d])}
 
         $ionicLoading.show({
                 template: 'Updating Data...'
@@ -336,7 +117,7 @@ app.service('DataService', function($q, $state, $ionicLoading) {
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
-                                                //console.log(models.user.all())
+                                                //console.log(models.user.all()[0].groups.all())
                                                 $ionicLoading.hide();  
                                         })
                                 })
