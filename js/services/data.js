@@ -117,7 +117,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
-                                                //console.log(models.user.all()[0].groups.all())
+                                                console.log(models)
                                                 $ionicLoading.hide();  
                                         })
                                 })

@@ -8,6 +8,7 @@ app.service('ParseConnector', function($q, $state) {
                 var _model=this             
 
                 _model.table = options.table
+
                 _model.attributes = options.attributes
                 for (a in _model.attributes) { _model.attributes[a] = _model.attributes[a] || {} }            
                 _model.methods = options.methods
@@ -33,6 +34,7 @@ app.service('ParseConnector', function($q, $state) {
                                 ret.forEach(function(r){                                        
                                         newRecord = _model.new();
                                         newRecord.id = r.id;
+                                        newRecord.parseObject = r
                                         promises.push(newRecord.recache()); 
                                 })
 
@@ -64,7 +66,8 @@ app.service('ParseConnector', function($q, $state) {
                         var presets = presets || {}
 
                         var _newRecord = {}
-                        
+                        _newRecord.model = _model
+
                         for (attribute in _model.attributes) { _newRecord[attribute]=presets[attribute] || null }
 
                         for (method in _model.methods) { _newRecord[method] = _model.methods[method] }
@@ -78,42 +81,69 @@ app.service('ParseConnector', function($q, $state) {
 
                                 query.get(record.id).then(function(remoteRecord) { 
 
+
                                         for (var attribute in _model.attributes) {
 
                                                 if(_model.attributes[attribute].type=='image' && remoteRecord.get(attribute)) {
                                                         record[attribute]=remoteRecord.get(attribute).url();            
-                                                } else if (_model.attributes[attribute].link_to && remoteRecord.get(attribute)) {
-
+                                                } else if (_model.attributes[attribute].link_to ) {
+                                                        
                                                         var connector = _model.attributes[attribute].link_to
 
                                                         if(typeof _model.attributes[attribute].link_to==="string") {                                                                
                                                                 record[attribute]=eval(connector).filterBy({id:remoteRecord.get(attribute).id})[0]
                                                         } else {
 
-                                                                var connector=eval(connector[0])
+                                                                
 
+                                                                var connector=eval(connector[0])
+                                                                
                                                                 record[attribute] = new Model(connector);                                                               
                                                                 var _localRecord = record[attribute]
+                                                                _localRecord.parent=record
+                                                                _localRecord.columnName = attribute
                                                                 
                                                                 remoteRecord.relation(attribute).query().find().then(function(subrecords){                                                                        
                                                                         subrecords.forEach(function(subrecord) {
-                                                                                var newSubRecord =_localRecord.new(connector.filterBy({id:subrecord.id})[0]);
+                                                                                var s = subrecord
+                                                                                var subrecord = connector.filterBy({id:subrecord.id})[0]
+                                                                                var newSubRecord =_localRecord.new(subrecord);
                                                                                 newSubRecord.id = subrecord.id
+                                                                                newSubRecord.parseObject = subrecord.parseObject
                                                                                 newSubRecord.remove = function() {
                                                                                         console.warn("Need to write a function which removes a subrecord from a parent")
                                                                                 }
                                                                         })                                                                        
-                                                                })                                                                
+                                                                })   
+
+                                                                _localRecord.add = function(remoteRecord) {
+
+                                                                        var deferred = $q.defer()
+
+                                                                        var newSubrecord = _localRecord.new(remoteRecord)
+                                                                        newSubrecord.id=remoteRecord.id;
+                                                                        
+                                                                        _localRecord.parent.parseObject.relation(_localRecord.columnName)
+                                                                                .add(remoteRecord.parseObject)
+                                                                        _localRecord.parent.parseObject.save().then(function() {
+                                                                                deferred.resolve();
+                                                                        })
+
+                                                                        return deferred.promise;
+                                                                }
+
                                                         }
-                                                                console.log(_model.all()[0].groups)
 
 
                                                 } else {
-                                                        record[attribute]=remoteRecord.get(attribute)       
+                                                        record[attribute]=remoteRecord.get(attribute)    
                                                 }
+
+                                                record.parseObject=remoteRecord
 
                                                 deferred.resolve()
                                         }
+
 
                                 })
 
