@@ -31,7 +31,8 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                                 alert(result.text)
                                 
                                 user = DataService.user.all()[0];
-                                group = DataService.group.filterBy({id:result.text})
+                                group = DataService.group.filterBy({id:result.text})[0]
+                                
                                 user.groups.add(group).then(function() {
                                          group.users.add(user).then(function () {
                                                  alert("dunnit")
