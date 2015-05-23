@@ -1,7 +1,6 @@
 <ion-view view-title="Groups">
         <ion-nav-buttons side="right">
-                <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addGroup"></button>
-                <button class="button button-icon button-clear ion-ios-plus-empty" ng-click="joinGroup()"></button>
+                <button class="button button-icon button-clear ion-qr-scanner" ng-click="joinGroup()"></button>
         </ion-nav-buttons>               
         <ion-content>     
                 <ion-button-bar class="button-bar" ng-show="securityLevel<3">
@@ -23,6 +22,11 @@
                                 </ion-item>
                         </span>
 
+                        <ion-item ui-sref="addGroup" class="item-icon-left" ng-show="securityLevel<3">
+                                <i class="icon ion-plus-circled"></i>
+                                Create a New Group                               
+                        </ion-item>
+                        
                 </ion-list>
         </ion-content>
 </ion-view>

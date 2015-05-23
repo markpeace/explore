@@ -18,27 +18,27 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
 
         $scope.joinGroup = function() {
 
-                group = DataService.group.all()[4];                
-                user = DataService.user.all()[0];
 
-                user.groups.add(group).then()
-                group.users.add(user).then();             
+                   
 
 
-                /*
                 try {
 
                         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
                         scanner.scan(function (result) {
-
-                                (new Parse.Query(""))
-
+                                user = DataService.user.all()[0];
+                                group = DataService.group.filterBy({id:result.text})
+                                user.groups.add(group).then(function() {
+                                         group.users.add(user).then(function () {
+                                                 alert("dunnit")
+                                         });                          
+                                })                              
                         })
 
                 } catch (ex) {
-                        console.log(ex)
-                }*/
+                        alert(ex)
+                }
         };
 
 
