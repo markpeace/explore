@@ -13,7 +13,7 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                 } else {
                         $scope.groups=DataService.group.all()
                 }
-                
+
         }               
 
         $scope.joinGroup = function() {
@@ -23,16 +23,22 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
                         scanner.scan(function (result) {
-                                                                
+
                                 user = DataService.user.all()[0];
                                 group = DataService.group.filterBy({id:result.text})[0]
-                                
+
                                 user.groups.add(group).then(function() {
-                                         group.users.add(user).then(function () {
+                                        group.users.add(user).then(function () {
+
+                                                alert(group.securityLevel)
+                                                alert(DataService.user.all()[0]._securityLevel)
+                                                
+                                                alert(group.securityLevel<DataService.user.all()[0]._securityLevel)
+                                                
                                                 if(group.securityLevel<DataService.user.all()[0]._securityLevel) {
                                                         DataService.user.all()[0]._securityLevel==group.securityLevel
                                                 }
-                                         });                          
+                                        });                          
                                 })                              
                         })
 
