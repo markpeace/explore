@@ -12,7 +12,7 @@
                         <qrcode data="{{group.id}}" size="{{width}}"></qrcode>
                 </span>
 
-                <div class="item item-footer button-bar">
+                <div class="item item-footer button-bar" ng-show="securityLevel<3">
                         <a class="button button-positive" ui-sref="editGroup({id:group.id})">Edit</a>
                 </div>
         </div>
