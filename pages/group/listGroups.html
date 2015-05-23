@@ -4,10 +4,25 @@
                 <button class="button button-icon button-clear ion-ios-plus-empty" ng-click="joinGroup()"></button>
         </ion-nav-buttons>               
         <ion-content>     
+                <ion-button-bar class="button-bar" ng-show="securityLevel<3">
+                        <button ng-repeat="label in ['Joined','All']" class="button"
+                                ng-class="selectedFilter==label ? 'button-positive' : 'button-calm' " 
+                                ng-click="selectFilter(label)">
+                                {{ label }}
+                        </button>
+                </ion-button-bar>
                 <ion-list>
-                        <ion-item ng-repeat="group in groups" ui-sref="showGroup({id:group.id})">
-                                {{ group.label }}
-                        </ion-item>                        
+
+                        <span ng-repeat="group in groups | orderBy:'securityLevel'" >
+                                <ion-item class="item-icon-right" ui-sref="showGroup({id:group.id})"  ng-show="securityLevel < group.securityLevel">
+                                        {{ group.label }} 
+                                        <i class="icon ion-grid"></i>
+                                </ion-item>
+                                <ion-item class="item-icon-right" ng-hide="securityLevel < group.securityLevel">
+                                        {{ group.label }} 
+                                </ion-item>
+                        </span>
+
                 </ion-list>
         </ion-content>
 </ion-view>

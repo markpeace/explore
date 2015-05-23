@@ -53,6 +53,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                         table: "Group",
                         attributes: {
                                 label: { required: true },
+                                securityLevel: {},
                                 users: { link_to: ["models.user"] }
                         }
                 },
@@ -60,6 +61,24 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                         table: "User",
                         attributes: {
                                 groups: { link_to: ["models.group"] }
+                        },
+                        methods: {
+                                securityLevel: function() {
+                                        
+                                        record=this
+                                        
+                                        if(!record._securityLevel) {
+                                                record._securityLevel=9999
+                                                
+                                                record.groups.all().forEach(function(g) {
+                                                        record._securityLevel = g.securityLevel < record._securityLevel ? g.securityLevel : record._securityLevel
+                                                })
+                                                
+                                                console.info("calculated security level")
+                                        }
+                                        
+                                        return record._securityLevel;
+                                }
                         }
                 },
                 location: { 
@@ -117,7 +136,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
-                                                console.log(models)
+                                                
                                                 $ionicLoading.hide();  
                                         })
                                 })
