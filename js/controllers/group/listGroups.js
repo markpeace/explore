@@ -29,14 +29,9 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
 
                                 user.groups.add(group).then(function() {
                                         group.users.add(user).then(function () {
-
-                                                alert(group.securityLevel)
-                                                alert(DataService.user.all()[0]._securityLevel)
-                                                
-                                                alert(group.securityLevel<DataService.user.all()[0]._securityLevel)
                                                 
                                                 if(group.securityLevel<DataService.user.all()[0]._securityLevel) {
-                                                        DataService.user.all()[0]._securityLevel==group.securityLevel
+                                                        DataService.user.all()[0].securityLevel(group.securityLevel)
                                                 }
                                         });                          
                                 })                              

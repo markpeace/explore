@@ -63,9 +63,11 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 groups: { link_to: ["models.group"] }
                         },
                         methods: {
-                                securityLevel: function() {
+                                securityLevel: function(override) {
                                         
                                         record=this
+                                        
+                                        if(override) record._securityLevel = override
                                         
                                         if(!record._securityLevel) {
                                                 record._securityLevel=9999
