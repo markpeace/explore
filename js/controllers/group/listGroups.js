@@ -27,6 +27,9 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
                         scanner.scan(function (result) {
+                                
+                                alert(result.text)
+                                
                                 user = DataService.user.all()[0];
                                 group = DataService.group.filterBy({id:result.text})
                                 user.groups.add(group).then(function() {
