@@ -103,32 +103,44 @@ app.service('ParseConnector', function($q, $state) {
                                                                 _localRecord.parent=record
                                                                 _localRecord.columnName = attribute
 
-                                                                remoteRecord.relation(attribute).query().find().then(function(subrecords){                                                                        
-                                                                        subrecords.forEach(function(subrecord) {
+                                                                remoteRecord.relation(attribute).query().find().then(function(subrecords){          
 
-                                                                                var newSubRecord;
+                                                                        subrecords.forEach(function(subrecord) {
 
                                                                                 var existingForeignRecord = connector.filterBy({id:subrecord.id})[0]
                                                                                 if (existingForeignRecord) {
                                                                                         var newSubRecord =_localRecord.new(existingForeignRecord);
                                                                                         newSubRecord.id = existingForeignRecord.id
                                                                                         newSubRecord.parseObject = existingForeignRecord.parseObject
-                                                                                        newSubRecord.remove = addRemover(newSubRecord)
+                                                                                        newSubRecord.parent = _localRecord
+                                                                                        newSubRecord.remove = function() { return _remove(newSubRecord) }
                                                                                 } else {
                                                                                         var newForeignRecord = connector.new()
                                                                                         newForeignRecord.id = subrecord.id
                                                                                         newForeignRecord.recache().then(function(newForeignRecord){
-                                                                                                newSubRecord =_localRecord.new(newForeignRecord);
+                                                                                                var newSubRecord =_localRecord.new(newForeignRecord);
                                                                                                 newSubRecord.id = newForeignRecord.id
                                                                                                 newSubRecord.parseObject = newForeignRecord.parseObject
-                                                                                                newSubRecord.remove = addRemover(newSubRecord)
+                                                                                                newSubRecord.parent = _localRecord
+                                                                                                newSubRecord.remove = function() { return _remove(newSubRecord) }
                                                                                         })
                                                                                 }
 
-                                                                                addRemover = function (record) {
-                                                                                        return function() {
-                                                                                                console.warn("Need to write a function which removes a subrecord from a parent")
-                                                                                        }      
+                                                                                _remove = function (record) {
+
+                                                                                        var deferred = $q.defer()
+                                                                                                                 
+                                                                                        record.parent.parent.parseObject.relation(record.parent.columnName).remove(record.parseObject)
+                                                                                        record.parent.parent.parseObject.save().then(function() {
+                                                                                                record.parent.data=record.parent.all().filter(function(child) {
+                                                                                                        if(child.id!=record.id) return true
+                                                                                                        return false
+                                                                                                })                                                                                    
+                                                                                                deferred.resolve();
+                                                                                        })
+                                                                                        
+                                                                                        return deferred.promise
+
                                                                                 }
 
 

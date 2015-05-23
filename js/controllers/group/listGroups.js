@@ -9,14 +9,15 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                 group = DataService.group.all()[0];                
                 user = DataService.user.all()[0];
 
-                user.groups.add(group).then(function() {
-                        console.log("doneuser ");
+                user.groups.all()[0].remove().then(function() {
+                        console.log("done")
+                        console.log(user.groups.all())
+
                 })
-                group.users.add(user).then(function() {
-                        console.log("done groups");
-                });
 
 
+                //user.groups.add(group).then()
+                //group.users.add(user).then();             
 
 
                 /*
