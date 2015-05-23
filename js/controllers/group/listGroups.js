@@ -13,14 +13,10 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                 } else {
                         $scope.groups=DataService.group.all()
                 }
-
-        }
+                
+        }               
 
         $scope.joinGroup = function() {
-
-
-                   
-
 
                 try {
 
@@ -33,7 +29,9 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
                                 
                                 user.groups.add(group).then(function() {
                                          group.users.add(user).then(function () {
-
+                                                if(group.securityLevel<DataService.user.all()[0]._securityLevel) {
+                                                        DataService.user.all()[0]._securityLevel==group.securityLevel
+                                                }
                                          });                          
                                 })                              
                         })

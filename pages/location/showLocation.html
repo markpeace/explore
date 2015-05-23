@@ -27,7 +27,7 @@
                 <div ng-show="location.found || !location.enigmaticInformation" class="item item-text-wrap" style="text-align:center;">                       
                         {{ location.descriptiveInformation }}
                 </div>
-                <div class="item item-footer button-bar">
+                <div class="item item-footer button-bar" ng-show="securityLevel<5">
                         <a class="button button-positive" ui-sref="editLocation({id:location.id})">Edit</a>
                 </div>
         </div>

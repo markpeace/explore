@@ -1,6 +1,6 @@
 <ion-view view-title="Locations{{ locationIndicator }}">
         <ion-nav-buttons side="right">
-                <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addLocation"></button>
+                <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addLocation" ng-show="securityLevel<5"></button>
         </ion-nav-buttons>               
         <ion-content>     
                 <ul class="list">                             
