@@ -83,40 +83,41 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 },
                                 joinGroup: function() {
 
+                                        var deferred = $q.defer
+                                        
                                         user = this
 
                                         if(typeof cordova=="undefined") {
                                                 alert("Sorry, you can only do this using the QR Reader of a mobile device");
-                                                return;
+                                                deferred.resolve()
+                                                return deferred.promise;
                                         }
 
 
                                         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
-                                        try {
+                                        scanner.scan(function (result) {
 
-                                                return scanner.scan(function (result) {
+                                                var deferred = $q.promise()
 
-                                                        var deferred = $q.promise()
+                                                group = models.group.filterBy({id:result.text})[0]
 
-                                                        group = models.group.filterBy({id:result.text})[0]
+                                                user.groups.add(group).then(function() {
+                                                        group.users.add(user).then(function () {
 
-                                                        user.groups.add(group).then(function() {
-                                                                group.users.add(user).then(function () {
+                                                                if(group.securityLevel<user._securityLevel) {
+                                                                        user.securityLevel(group.securityLevel)
+                                                                }
 
-                                                                        if(group.securityLevel<user._securityLevel) {
-                                                                                user.securityLevel(group.securityLevel)
-                                                                        }
+                                                                deferred.resolve();
+                                                                
+                                                        });                          
+                                                })       
 
-                                                                        deferred.resolve()
-                                                                });                          
-                                                        })       
+                                        })
+                                        
+                                        return deferred.promise
 
-                                                        return deferred.promise
-                                                })
-                                        } catch(ex) {
-                                                alert(ex.message) 
-                                        }
 
                                 }
 
