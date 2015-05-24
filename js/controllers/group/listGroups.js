@@ -17,29 +17,7 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
         }               
 
         $scope.joinGroup = function() {
-
-                try {
-
-                        var scanner = cordova.require("cordova/plugin/BarcodeScanner");
-
-                        scanner.scan(function (result) {
-
-                                user = DataService.user.all()[0];
-                                group = DataService.group.filterBy({id:result.text})[0]
-
-                                user.groups.add(group).then(function() {
-                                        group.users.add(user).then(function () {
-                                                
-                                                if(group.securityLevel<DataService.user.all()[0]._securityLevel) {
-                                                        DataService.user.all()[0].securityLevel(group.securityLevel)
-                                                }
-                                        });                          
-                                })                              
-                        })
-
-                } catch (ex) {
-                        alert(ex)
-                }
+                DataService.user.all()[0].joinGroup()             
         };
 
 

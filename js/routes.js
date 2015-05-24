@@ -22,27 +22,33 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                                 }
                         }
                 })
-                
+
                 $stateProvider.state('add'+resource, {
                         url: "/"+resource.toLowerCase()+"/add",
                         templateUrl: "pages/"+resource.toLowerCase()+"/edit"+ resource +".html",
                         controller: 'Edit'+ resource
                 })
-                
+
                 $stateProvider.state('edit'+resource, {
                         url: "/"+resource.toLowerCase()+"/:id/edit",
                         templateUrl: "pages/"+resource.toLowerCase()+"/edit"+ resource +".html",
                         controller: 'Edit'+ resource
                 })
-                                                
+
                 $stateProvider.state('show'+resource, {
                         url: "/"+resource.toLowerCase()+"/:id",
                         templateUrl: "pages/"+resource.toLowerCase()+"/show"+ resource +".html",
                         controller: 'Show'+ resource
                 })
-                
+
 
         })   
 
-        $urlRouterProvider.otherwise("/ui/locations");
+        $stateProvider.state('splash', {
+                url: "/splash",
+                templateUrl: "pages/splash.html",
+                controller: "Splash"
+        })
+
+        $urlRouterProvider.otherwise("/splash");
 })

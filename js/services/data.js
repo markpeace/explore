@@ -64,23 +64,52 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                         },
                         methods: {
                                 securityLevel: function(override) {
-                                        
+
                                         record=this
-                                        
+
                                         if(override) record._securityLevel = override
-                                        
+
                                         if(!record._securityLevel) {
                                                 record._securityLevel=9999
-                                                
+
                                                 record.groups.all().forEach(function(g) {
                                                         record._securityLevel = g.securityLevel < record._securityLevel ? g.securityLevel : record._securityLevel
                                                 })
-                                                
+
                                                 console.info("calculated security level")
                                         }
-                                        
+
                                         return record._securityLevel;
+                                },
+                                joinGroup: function() {
+
+                                        user = this
+
+                                        if(typeof cordova=="undefined") {
+                                                alert("Sorry, you can only do this using the QR Reader of a mobile device");
+                                                return;
+                                        }
+
+
+                                        var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+                                        scanner.scan(function (result) {
+
+                                                group = models.group.filterBy({id:result.text})[0]
+
+                                                user.groups.add(group).then(function() {
+                                                        group.users.add(user).then(function () {
+
+                                                                if(group.securityLevel<user._securityLevel) {
+                                                                        user.securityLevel(group.securityLevel)
+                                                                }
+                                                        });                          
+                                                })                              
+                                        })
+
                                 }
+
+
                         }
                 },
                 location: { 
@@ -132,13 +161,14 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
 
 
         //RECACHE MODELS
+        models.isComplete=false;
         getData = function() {               
                 models.category.recache().then(function() { 
                         models.group.recache().then(function() {
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
-                                                
+                                                models.isComplete=true;
                                                 $ionicLoading.hide();  
                                         })
                                 })

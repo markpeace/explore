@@ -1,10 +1,11 @@
-<        ion-view>
-        <ion-header-bar title="Connect Your Device" class="bar-dark">
-                <button class="button button-clear button-positive">Edit</button>
+<ion-view>
+        <ion-header-bar title="" class="bar-positive">
+                <h1 class="title">Connect Your Device</h1>
         </ion-header-bar>
 
         <ion-content class="has-header padding">
-                <div style="text-align:center; padding-top:30%; padding-bottom:50%;">
+                <div style="text-align:center; padding-top:20%;">
+                        <i class="icon ion-location" style="font-size:2.5em; padding-left:40%; line-height:0.5em;"></i>
                         <div style="font-size:3.5em; line-height: 1.2em; letter-spacing:5px;">
                                 EXPLORE
                         </div>
@@ -17,14 +18,18 @@
                 </div>
 
 
-                <button class="button button-block button-dark">
+
+        </ion-content>
+
+        <div id="splash_footer" style="position: absolute; bottom:0%; left:10%; right:10%; background-color: none;">
+
+                <button class="button button-block button-positive" ng-click="DataService.user.all()[0].joinGroup()">
                         Scan a QR Code
                 </button>
 
-                <button class="button button-block button-clear" style="color: black;" ui-sref="menu.clues">
+                <button class="button button-block button-clear" style="font-size: 0.8em; color: black;" ui-sref="ui.Locations">
                         [Or continue without joining a group]
                 </button>
+        </div>
 
-
-        </ion-content>
 </ion-view>
