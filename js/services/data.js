@@ -84,7 +84,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 joinGroup: function() {
 
                                         var deferred = $q.defer
-                                        
+
                                         user = this
 
                                         if(typeof cordova=="undefined") {
@@ -93,12 +93,12 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                                 return deferred.promise;
                                         }
 
+                                        var deferred = $q.promise()
 
                                         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
                                         scanner.scan(function (result) {
 
-                                                var deferred = $q.promise()
 
                                                 group = models.group.filterBy({id:result.text})[0]
 
@@ -110,12 +110,12 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                                                 }
 
                                                                 deferred.resolve();
-                                                                
+
                                                         });                          
                                                 })       
 
                                         })
-                                        
+
                                         return deferred.promise
 
 
