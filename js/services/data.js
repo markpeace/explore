@@ -95,6 +95,8 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
 
                                         scanner.scan(function (result) {
 
+                                                var deferred = $q.promise()
+
                                                 group = models.group.filterBy({id:result.text})[0]
 
                                                 user.groups.add(group).then(function() {
@@ -103,8 +105,12 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                                                 if(group.securityLevel<user._securityLevel) {
                                                                         user.securityLevel(group.securityLevel)
                                                                 }
+                                                                
+                                                                deferred.resolve()
                                                         });                          
-                                                })                              
+                                                })       
+
+                                                return deferred.promise
                                         })
 
                                 }
