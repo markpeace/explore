@@ -93,7 +93,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
 
                                         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
-                                        scanner.scan(function (result) {
+                                        return scanner.scan(function (result) {
 
                                                 var deferred = $q.promise()
 
