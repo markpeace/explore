@@ -13,9 +13,14 @@ app.controller('Splash', function($scope, $state, $ionicSideMenuDelegate, DataSe
                 }
         })
 
-        $scope.joinGroup = function() {
+        $scope.joinGroup = function() { 
+                
+                try {
                 DataService.user.all()[0].joinGroup().then(function() {
                         $state.go('ui.Locations');
                 })
+                } catch(ex) {
+                        alert(ex.message)
+                }
         }
 });
