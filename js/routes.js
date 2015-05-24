@@ -44,11 +44,21 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         })   
 
+        
+        //NON GENERIC STUBBS
         $stateProvider.state('splash', {
                 url: "/splash",
                 templateUrl: "pages/splash.html",
                 controller: "Splash"
         })
+        
+        $stateProvider.state('migrateroles', {
+                url: "/admin/migrateroles",
+                templateUrl: "pages/admin/migrateroles.html",
+                controller: "MigrateRoles"
+        })
+        
+        
 
         $urlRouterProvider.otherwise("/splash");
 })
