@@ -249,9 +249,10 @@ app.service('ParseConnector', function($q, $state) {
 
                                         }
 
-                                        //var acl = new Parse.ACL();
-                                        //acl.setWriteAccess(Parse.User.current(), true);
-                                        //r.setACL(acl);
+                                        var acl = new Parse.ACL();
+                                        acl.setWriteAccess(Parse.User.current(), true);
+                                        acl.setPublicReadAccess(true); 
+                                        r.setACL(acl);
 
                                         r.save().then(function(e) {
 
