@@ -237,7 +237,7 @@ app.service('ParseConnector', function($q, $state) {
                                                                 r.set(attribute, record[attribute] || null);
                                                         }
                                                 } else if (_model.attributes[attribute].link_to && record[attribute]) {
-                                                                                                                
+
                                                         var id = record[attribute].id
                                                         record[attribute] = new (Parse.Object.extend(eval(_model.attributes[attribute].link_to).table))
                                                         record[attribute].id = id
@@ -247,12 +247,15 @@ app.service('ParseConnector', function($q, $state) {
                                                         r.set(attribute, record[attribute] || null);
                                                 }
 
-
                                         }
+
+                                        //var acl = new Parse.ACL();
+                                        //acl.setWriteAccess(Parse.User.current(), true);
+                                        //r.setACL(acl);
 
                                         r.save().then(function(e) {
 
-                                                console.info("final save")
+                                                console.info("final save")                                                
 
                                                 record.id=e.id
                                                 record.recache().then(function() {
