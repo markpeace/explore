@@ -129,7 +129,7 @@ app.service('ParseConnector', function($q, $state) {
                                                                                 _remove = function (record) {
 
                                                                                         var deferred = $q.defer()
-                                                                                                                 
+
                                                                                         record.parent.parent.parseObject.relation(record.parent.columnName).remove(record.parseObject)
                                                                                         record.parent.parent.parseObject.save().then(function() {
                                                                                                 record.parent.data=record.parent.all().filter(function(child) {
@@ -138,7 +138,7 @@ app.service('ParseConnector', function($q, $state) {
                                                                                                 })                                                                                    
                                                                                                 deferred.resolve();
                                                                                         })
-                                                                                        
+
                                                                                         return deferred.promise
 
                                                                                 }
@@ -189,6 +189,9 @@ app.service('ParseConnector', function($q, $state) {
                                 var deferred = $q.defer();
 
                                 _doValidations = function() {
+
+                                        console.info("_doValidations")
+
                                         errorString = "";
 
                                         for (attribute in _model.attributes) {
@@ -207,6 +210,8 @@ app.service('ParseConnector', function($q, $state) {
 
                                 _getObject = function() {
 
+                                        console.info("_getObject")
+
                                         if (record.id) {
 
                                                 (new Parse.Query(Parse.Object.extend(_model.table)))
@@ -222,6 +227,8 @@ app.service('ParseConnector', function($q, $state) {
 
                                 _performSave = function(r) {
 
+                                        console.info("_performSave")
+
                                         for (attribute in _model.attributes) {
                                                 if(_model.attributes[attribute].type=='image' && record[attribute] ) {
                                                         if(record[attribute].substr(0,4)!="http") {
@@ -229,10 +236,10 @@ app.service('ParseConnector', function($q, $state) {
                                                                 record[attribute] = new Parse.File("myfile.jpg", { base64: base64 });      
                                                                 r.set(attribute, record[attribute] || null);
                                                         }
-                                                } else if (_model.attributes[attribute].link_to) {
-
+                                                } else if (_model.attributes[attribute].link_to && record[attribute]) {
+                                                                                                                
                                                         var id = record[attribute].id
-                                                        record[attribute] = new (Parse.Object.extend(_model.attributes[attribute].link_to.table))
+                                                        record[attribute] = new (Parse.Object.extend(eval(_model.attributes[attribute].link_to).table))
                                                         record[attribute].id = id
                                                         r.set(attribute, record[attribute] || null);
 
@@ -244,6 +251,9 @@ app.service('ParseConnector', function($q, $state) {
                                         }
 
                                         r.save().then(function(e) {
+
+                                                console.info("final save")
+
                                                 record.id=e.id
                                                 record.recache().then(function() {
                                                         deferred.resolve();       

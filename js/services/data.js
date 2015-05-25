@@ -56,7 +56,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 securityLevel: {},
                                 users: { link_to: ["models.user"] }
                         }
-                },
+                }, 
                 user: {
                         table: "User",
                         attributes: {
@@ -177,6 +177,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
         getData = function() {               
                 models.category.recache().then(function() { 
                         models.group.recache().then(function() {
+
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
