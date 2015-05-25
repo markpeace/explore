@@ -262,6 +262,9 @@ app.service('ParseConnector', function($q, $state) {
                                                 record.recache().then(function() {
                                                         deferred.resolve();       
                                                 })                                                
+                                        }, function(e) {
+                                                alert(e)
+                                                alert(e.message)
                                         })
 
                                 }
