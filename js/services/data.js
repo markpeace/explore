@@ -2,6 +2,8 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
 
         models=ParseConnector.connect("uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz", "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N")        
 
+        Parse.User.logOut();
+
         getUser = function () {
 
                 var deferred = $q.defer();
@@ -23,6 +25,8 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 var user = new Parse.User();
                                 user.set("username", id);
                                 user.set("password", id);                                
+                         
+                                user.setACL(new Parse.ACL());                                
 
                                 user.signUp(null, {
                                         success: function(user) {
@@ -30,7 +34,8 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                                 deferred.resolve(user)
                                         },
                                         error: function(user, error) {
-                                                alert("A weird user error occurred!");                                                
+                                                alert("A weird user error occurred!");  
+                                                alert(error.message)
                                         }
                                 });
                         }
@@ -76,7 +81,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                                         record._securityLevel = g.securityLevel < record._securityLevel ? g.securityLevel : record._securityLevel
                                                 })
 
-                                                console.info("calculated security level")
+                                                console.info("calculated security level: "+record._securityLevel)
                                         }
 
                                         return record._securityLevel;
@@ -177,7 +182,6 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
         getData = function() {               
                 models.category.recache().then(function() { 
                         models.group.recache().then(function() {
-
                                 models.location.recache().then(function() {
                                         models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
                                         models.user.recache().then(function() {
