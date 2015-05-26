@@ -2,7 +2,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
 
         models=ParseConnector.connect("uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz", "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N")        
 
-        Parse.User.logOut();
+        //Parse.User.logOut();
 
         getUser = function () {
 
