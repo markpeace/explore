@@ -9,6 +9,8 @@ app.service('ParseConnector', function($q, $state) {
 
                 _model.table = options.table
 
+                _model.writeRoles = _model.writeRoles || ["Superadministrator", "Administrator"] 
+                
                 _model.attributes = options.attributes
                 for (a in _model.attributes) { _model.attributes[a] = _model.attributes[a] || {} }            
                 _model.methods = options.methods
@@ -251,6 +253,11 @@ app.service('ParseConnector', function($q, $state) {
 
                                         var acl = new Parse.ACL();
                                         acl.setWriteAccess(Parse.User.current(), true);
+                                        
+                                        _model.writeRoles.forEach(function(role) {
+                                                acl.setRoleWriteAccess(role, true);
+                                        })
+                                        
                                         acl.setPublicReadAccess(true); 
                                         r.setACL(acl);
 
