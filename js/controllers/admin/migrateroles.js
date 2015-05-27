@@ -32,17 +32,24 @@ app.controller('MigrateRoles', function($scope, $q, DataService) {
 
                 var _role = role
                 var _group = group
-
+                
+                console.log("processing role:" + role.get('name'))
+                
                 group.relation("users").query().find().then(function(users){       
                         
-                        if(users.length>0) {                               
+                        if(users.length>0) {                      
+                                
+                                console.log("found users:" + users.length)
                                 
                                 users.forEach(function(user) {
+                                        console.log(user)
                                         _role.getUsers().add(user)
                                 })
 
                                 _role.save().then(function(){
                                         console.log("done")
+                                }, function(e) {
+                                        console.log(e.message)
                                 })
 
                         }
