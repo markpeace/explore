@@ -17,7 +17,15 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
         }               
 
         $scope.joinGroup = function() {
-                DataService.user.all()[0].joinGroup()             
+
+                user=DataService.user.all()[0]
+                group=DataService.group.all()[1]                                                               
+
+                group.users.add(user)
+                user.groups.add(group)
+
+
+                //DataService.user.all()[0].joinGroup()             
         };
 
 

@@ -1,8 +1,104 @@
-app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
+app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ionicLoading) {
 
-        models=ParseConnector.connect("uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz", "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N")        
+        var model = {}
+
+        ParseConnector.initialise({
+                app_id: "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz",
+                javascript_key: "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N"
+        }).then(function(returned_model) {
+
+                returned_model.user.securityLevel = 1;
+
+                createModels(returned_model)
+        })
+
+
+        var definitions = {
+                user: {
+                        table: 'User',
+                        parse_update_delay:0,
+                        attributes: {
+                                groups: { link_to: ['Group'] }
+                        },
+                        methods: {
+                                securityLevel: function(override) {
+
+                                        record=this
+
+                                        if(override) record._securityLevel = override
+
+                                        if(!record._securityLevel) {
+                                                record._securityLevel=9999
+
+                                                record.groups.data.forEach(function(g) {
+                                                        record._securityLevel = g.securityLevel < record._securityLevel ? g.securityLevel : record._securityLevel
+                                                })
+
+                                                console.info("calculated security level: "+record._securityLevel)
+                                        }
+
+                                        return record._securityLevel;
+                                },
+                        }
+                },
+                group: {
+                        table: 'Group',
+                        parse_update_delay:0,
+                        attributes: {
+                                label: {},
+                                securityLevel: {},
+                                users: { link_to: ['User'] }
+                        },
+                        acl: {
+                                public: {read:true, write:true},
+                                read_roles: ['superadministrator', 'administrator'],
+                                write_roles: ['superadministrator', 'administrator']
+                        }
+                },
+                location: {
+                        table: 'Location',
+                        parse_update_delay:0,
+                        attributes: {
+                                descriptiveTitle: {},
+                                descriptiveInformation: {},
+                                enigmaticTitle: {},
+                                enigmaticInformation: {},
+                                geolocation: {},
+                                type: {},
+                                image: { type: 'image' },
+                                category: { link_to: 'Category'}
+                        }
+                }
+        }
+
+        var createModels = function(returned_model) {
+                console.log("create");
+
+                var promises = []
+
+                for(m in definitions) { 
+                        window.localStorage.removeItem(definitions[m].table)
+                        model[m] = new ParseConnector.Model(definitions[m]); 
+                        promises.push(model[m].relationship_update_promise) 
+                }
+
+                $q.all(promises).then(function() {
+                        model.user=model.user.data[0]
+                        console.log(model)                        
+                        $rootScope.$broadcast('DataService:DataLoaded');
+                })
+
+        }
+
+
+        return model;   
+
+
+
+        /*        models=ParseConnector.connect("uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz", "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N")        
 
         Parse.User.logOut();
+        window.localStorage.removeItem("key")
 
         getUser = function () {
 
@@ -25,8 +121,10 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 var user = new Parse.User();
                                 user.set("username", id);
                                 user.set("password", id);                                
-                         
-                                user.setACL(new Parse.ACL());                                
+
+                                acl = new Parse.ACL()
+                                //acl.setPublicReadAccess(true);
+                                user.setACL(acl);                                
 
                                 user.signUp(null, {
                                         success: function(user) {
@@ -68,24 +166,7 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
                                 groups: { link_to: ["models.group"] }
                         },
                         methods: {
-                                securityLevel: function(override) {
 
-                                        record=this
-
-                                        if(override) record._securityLevel = override
-
-                                        if(!record._securityLevel) {
-                                                record._securityLevel=9999
-
-                                                record.groups.all().forEach(function(g) {
-                                                        record._securityLevel = g.securityLevel < record._securityLevel ? g.securityLevel : record._securityLevel
-                                                })
-
-                                                console.info("calculated security level: "+record._securityLevel)
-                                        }
-
-                                        return record._securityLevel;
-                                },
                                 joinGroup: function() {
 
                                         var deferred = $q.defer
@@ -205,4 +286,5 @@ app.service('DataService', function(ParseConnector, $q, $state, $ionicLoading) {
 
 
         return models;
+        */
 });
