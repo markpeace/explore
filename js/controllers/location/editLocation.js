@@ -1,10 +1,24 @@
 app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
-
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
-
         $scope.geolocationColor = 'red'
+
+        var fetchData = function() {
+                $scope.categories = DataService.category.all();
+
+                if($stateParams.id) {
+                        $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
+                } else {
+                        $scope.location = DataService.location.new({ type: 'GPS' });   
+                        $scope.triggerGeolocation();
+                }
+
+        }
+
+
+        $scope.$on('DataService:DataLoaded', fetchData)        
+        if(DataService._loadcomplete) fetchData();
 
         $scope.takePhoto = function() {
                 navigator.camera.getPicture(function(e) {
@@ -22,7 +36,10 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                 });
         }
 
-        $scope.categories = DataService.category.all();
+
+        $scope.$on('DataService:DataLoaded', fetchData)        
+        if(DataService._loadcomplete) fetchData();
+
 
         $ionicModal.fromTemplateUrl('category-popover.html', {
                 scope: $scope,
@@ -75,14 +92,6 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                                 }                        
                         }
                 })
-        }
-
-
-        if($stateParams.id) {
-                $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
-        } else {
-                $scope.location = DataService.location.new({ type: 'GPS' });   
-                $scope.triggerGeolocation();
         }
 
 

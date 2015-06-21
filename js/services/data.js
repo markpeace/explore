@@ -43,7 +43,6 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                 },
                 group: {
                         table: 'Group',
-                        parse_update_delay:0,
                         attributes: {
                                 label: {},
                                 securityLevel: {},
@@ -55,18 +54,48 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 write_roles: ['superadministrator', 'administrator']
                         }
                 },
-                location: {
-                        table: 'Location',
-                        parse_update_delay:0,
+                category: {
+                        table: "Category", 
+                        attributes: { 
+                                label:{ required: true } 
+                        }
+                },
+                location: { 
+                        table: "Location", 
                         attributes: {
-                                descriptiveTitle: {},
-                                descriptiveInformation: {},
+                                descriptiveTitle: { required: true },
+                                descriptiveInformation: { required: true },
                                 enigmaticTitle: {},
                                 enigmaticInformation: {},
-                                geolocation: {},
-                                type: {},
-                                image: { type: 'image' },
-                                category: { link_to: 'Category'}
+                                image: { type: 'image' } ,
+                                type: { required: true },
+                                geolocation: { required: true },
+                                category: { link_to:"Category", required:true }
+                        },
+                        methods: {
+                                updateDistance: function(currentGeolocation) {
+
+                                        lat1=this.geolocation.latitude
+                                        lon1=this.geolocation.longitude
+                                        lat2=currentGeolocation.latitude
+                                        lon2=currentGeolocation.longitude
+
+                                        function deg2rad(deg) {
+                                                return deg * (Math.PI/180)
+                                        }
+                                        var R = 6371; // Radius of the earth in km
+                                        var dLat = deg2rad(lat2-lat1);  // deg2rad below
+                                        var dLon = deg2rad(lon2-lon1); 
+                                        var a = 
+                                            Math.sin(dLat/2) * Math.sin(dLat/2) +
+                                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+                                            Math.sin(dLon/2) * Math.sin(dLon/2)
+                                        ; 
+                                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+                                        var d = R * c; // Distance in km
+                                        this.distance = Math.round(d*1000)
+                                        return this.distance
+                                }
                         }
                 }
         }
@@ -77,6 +106,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                 var promises = []
 
                 for(m in definitions) { 
+                        definitions[m].parse_update_delay=0;
                         window.localStorage.removeItem(definitions[m].table)
                         model[m] = new ParseConnector.Model(definitions[m]); 
                         promises.push(model[m].relationship_update_promise) 
@@ -84,6 +114,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
                 $q.all(promises).then(function() {
                         model.user=model.user.data[0]
+                        model._loadcomplete=true;
                         console.log(model)                        
                         $rootScope.$broadcast('DataService:DataLoaded');
                 })
@@ -146,12 +177,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
         //DEFINITION MODELS
 
         definitions = {
-                category: {
-                        table: "Category", 
-                        attributes: { 
-                                label:{ required: true } 
-                        }
-                },
+
                 group: {
                         table: "Group",
                         attributes: {
@@ -210,44 +236,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
                         }
                 },
-                location: { 
-                        table: "Location", 
-                        attributes: {
-                                descriptiveTitle: { required: true },
-                                descriptiveInformation: { required: true },
-                                enigmaticTitle:null,
-                                enigmaticInformation:null,
-                                image: { type: 'image' } ,
-                                type: { required: true },
-                                geolocation: { required: true },
-                                category: { link_to:"models.category", required:true }
-                        },
-                        methods: {
-                                updateDistance: function(currentGeolocation) {
 
-                                        lat1=this.geolocation.latitude
-                                        lon1=this.geolocation.longitude
-                                        lat2=currentGeolocation.latitude
-                                        lon2=currentGeolocation.longitude
-
-                                        function deg2rad(deg) {
-                                                return deg * (Math.PI/180)
-                                        }
-                                        var R = 6371; // Radius of the earth in km
-                                        var dLat = deg2rad(lat2-lat1);  // deg2rad below
-                                        var dLon = deg2rad(lon2-lon1); 
-                                        var a = 
-                                            Math.sin(dLat/2) * Math.sin(dLat/2) +
-                                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-                                            Math.sin(dLon/2) * Math.sin(dLon/2)
-                                        ; 
-                                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-                                        var d = R * c; // Distance in km
-                                        this.distance = Math.round(d*1000)
-                                        return this.distance
-                                }
-                        }
-                }
         }
 
 
