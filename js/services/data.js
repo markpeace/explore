@@ -69,7 +69,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 enigmaticInformation: {},
                                 image: { type: 'image' } ,
                                 type: { required: true },
-                                geolocation: { required: true },
+                                geolocation: {},
                                 category: { link_to:"Category", required:true }
                         },
                         methods: {

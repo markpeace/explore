@@ -1,10 +1,11 @@
 app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) { 
-        $scope.locations = DataService.location;          
+        $scope.locations = [];          
         $scope.locationIndicator = "*";    
         $scope.securityLevel = 9999
         
         var fetchData = function () {
                 $scope.securityLevel = DataService.user.securityLevel()
+                $scope.locations = DataService.location
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        

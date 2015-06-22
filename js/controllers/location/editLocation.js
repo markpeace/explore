@@ -4,22 +4,6 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
         $scope.geolocationColor = 'red'
 
-        var fetchData = function() {
-                $scope.categories = DataService.category.all();
-
-                if($stateParams.id) {
-                        $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
-                } else {
-                        $scope.location = DataService.location.new({ type: 'GPS' });   
-                        $scope.triggerGeolocation();
-                }
-
-        }
-
-
-        $scope.$on('DataService:DataLoaded', fetchData)        
-        if(DataService._loadcomplete) fetchData();
-
         $scope.takePhoto = function() {
                 navigator.camera.getPicture(function(e) {
                         $scope.location.image=e
@@ -35,10 +19,6 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                         saveToPhotoAlbum: false 
                 });
         }
-
-
-        $scope.$on('DataService:DataLoaded', fetchData)        
-        if(DataService._loadcomplete) fetchData();
 
 
         $ionicModal.fromTemplateUrl('category-popover.html', {
@@ -82,7 +62,13 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                 GeoLocator.go({
                         scope:$scope,
                         success: function(e) {
-                                $scope.location.geolocation = e.coords
+                                                                
+                                $scope.location.geolocation = {}
+                                
+                                for(v in e.coords) { $scope.location.geolocation[v]=e.coords[v] }
+                                
+                                console.log($scope.location)
+                                
                                 if (e.coords.accuracy>30) {
                                         $scope.geolocationColor = 'red'
                                 } else if (e.coords.accuracy>15) {
@@ -93,6 +79,24 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                         }
                 })
         }
+
+        var fetchData = function() {
+
+                $scope.categories = DataService.category.all();
+
+                if($stateParams.id) {
+                        $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
+                } else {
+                        $scope.location = DataService.location.new({ type: 'GPS' });   
+                        $scope.triggerGeolocation();
+                }
+
+        }
+
+
+        $scope.$on('DataService:DataLoaded', fetchData)        
+        if(DataService._loadcomplete) fetchData();
+
 
 
 });

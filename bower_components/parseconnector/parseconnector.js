@@ -139,11 +139,11 @@ angular.module("parseconnector", [])
 
                 for (key in options) { _model[key] = options[key] }
                 _model.data = new Array();
-                
+
                 for(key in _model.class_methods) {
                         _model[key]=_model.class_methods[key]
                 }
-                
+
                 console.info("Created model which wraps table: " + _model.table)
 
                 _model.recache = function () {
@@ -309,22 +309,22 @@ angular.module("parseconnector", [])
                         _model.data.push(_newRecord)
 
                         _newRecord.construct = function() {
-                                
+
                                 if (preset.cid) {                               //A PARSE OBJECT HAS BEEN PASSED
                                         _newRecord.parseObject = preset                                        
                                 }
-                                
+
                                 for(attribute in _model.attributes) {
 
                                         if(!preset.cid) _newRecord[attribute]=preset[attribute];
-                                        
+
                                         if(_model.attributes[attribute].link_to) _newRecord.populateAttribute(attribute);
                                 }
-                                
+
                                 for(key in _model.methods) {
                                         _newRecord[key]=_model.methods[key]
                                 }
-                                
+
 
                         }
 
@@ -500,7 +500,7 @@ angular.module("parseconnector", [])
                                                         }
 
 
-                                                } else {                                                                                        
+                                                } else {                                                                                                                                               
                                                         _newRecord.parseObject.set(attribute, _newRecord[attribute])
                                                 }
                                         }
