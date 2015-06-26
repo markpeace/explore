@@ -14,9 +14,11 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
 
         var definitions = {
+
                 user: {
                         table: 'User',
                         parse_update_delay:0,
+                        delay_relationship_load: true,
                         attributes: {
                                 groups: { link_to: ['Group'] }
                         },
@@ -29,6 +31,8 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
                                         if(!record._securityLevel) {
                                                 record._securityLevel=9999
+
+                                                console.log(record.groups)
 
                                                 record.groups.data.forEach(function(g) {
                                                         record._securityLevel = g.securityLevel < record._securityLevel ? g.securityLevel : record._securityLevel
@@ -109,11 +113,13 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         definitions[m].parse_update_delay=0;
                         window.localStorage.removeItem(definitions[m].table)
                         model[m] = new ParseConnector.Model(definitions[m]); 
+                        promises.push(model[m].cache_promise) 
                         promises.push(model[m].relationship_update_promise) 
                 }
 
                 $q.all(promises).then(function() {
-                        model.user=model.user.data[0]
+                                                
+                        //model.user=model.user.data[0]
                         model._loadcomplete=true;
                         console.log(model)                        
                         $rootScope.$broadcast('DataService:DataLoaded');

@@ -4,7 +4,8 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         $scope.securityLevel = 9999
         
         var fetchData = function () {
-                $scope.securityLevel = DataService.user.securityLevel()
+                console.log("M")
+                $scope.securityLevel = DataService.user.data[0].securityLevel()
                 $scope.locations = DataService.location
         }
 

@@ -114,6 +114,7 @@ angular.module("parseconnector", [])
                         constraints: [],                        // query constraints
                         parse_update_delay: 60,                 // how long to wait between each check for parse updates (mins) 
                         time_offset: 30,                        // used to accomodate time differences between local and parse (mainly just for unit testing)
+                        delay_relationship_load: false,        // set to true when a model is being created before its relationships 
                         acl: {
                                 public: {read:true, write:false},
                                 read_roles: ['superadministrator', 'administrator'],
@@ -331,7 +332,7 @@ angular.module("parseconnector", [])
                         _newRecord.populateAttribute = function(attribute) {            //FUNCTION WHICH PULLS IN RELATIONSHIP DATA
 
                                 var get_target_record = function() {
-
+                                        
                                         if(typeof _model.attributes[attribute].link_to=="string"  && _newRecord[attribute]) {
 
                                                 _newRecord[attribute] = _newRecord[attribute].id || _newRecord[attribute]
@@ -383,13 +384,21 @@ angular.module("parseconnector", [])
                                 var field_specific_promise = $q.defer()
                                 _model.relationship_promises.push(field_specific_promise.promise)
 
-                                var foreign_table = typeof _model.attributes[attribute].link_to == "object" ? _model.attributes[attribute].link_to[0] :  _model.attributes[attribute].link_to                                
-                                if(_model.parent[foreign_table]) {
-                                        $q.all([_model.parent[foreign_table].update_promise]).then(get_target_record)                                           
-                                } else {
-                                        console.warn("- "+_model.table+".attribute has a relationship with "+foreign_table+", but this model didn't exist")
-                                        field_specific_promise.resolve()                                        
-                                }
+                                var foreign_table = typeof _model.attributes[attribute].link_to == "object" ? _model.attributes[attribute].link_to[0] :  _model.attributes[attribute].link_to 
+
+                                var find_foreign_table = function(lastattempt) { 
+                                        if(_model.parent[foreign_table]) {
+                                                $q.all([_model.parent[foreign_table].update_promise]).then(get_target_record)           
+                                        } else {
+                                                if(lastattempt || !_model.delay_relationship_load) {
+                                                        console.warn("- "+_model.table+".attribute has a relationship with "+foreign_table+", but this model didn't exist. You may want to add an 'delay_relationship_load' attribute to your model")
+                                                        field_specific_promise.resolve()          
+                                                } else {
+                                                        window.setTimeout(function() { find_foreign_table(true) }, 500)           //JUST TO CATCH TABLES WHICH HAVEN'T BEEN CREATED YET.
+                                                }
+                                        }
+                                }        
+                                find_foreign_table()
 
                         }
 
