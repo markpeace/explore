@@ -99,7 +99,12 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                 $scope.categories = DataService.category;
 
                 if($stateParams.id) {
-                        $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]                        
+                        $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
+                        
+                        $scope.location.categories.data.forEach(function(category) {
+                                $scope.selectedCategories.push(category.id)
+                        })
+                        
                 } else {
                         $scope.location = DataService.location.new({ type: 'GPS' });   
                         $scope.triggerGeolocation();
