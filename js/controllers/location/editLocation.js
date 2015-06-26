@@ -1,4 +1,4 @@
-app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state, $stateParams, $q, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
@@ -30,13 +30,29 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
 
         $scope.openCategoryChooser = function() { $scope.categoryChooser.show(); }
         $scope.closeCategoryChooser = function() { $scope.categoryChooser.hide(); }
-
+        $scope.selectedCategories = []
+        $scope.chooseCategory = function(category) {
+               
+                if($scope.selectedCategories.indexOf(category.id)>-1) {
+                       $scope.selectedCategories.splice($scope.selectedCategories.indexOf(category.id),1) 
+                } else {
+                        
+                      $scope.selectedCategories.push(category.id)  
+                }               
+                
+                console.log($scope.selectedCategories)
+        }
 
 
 
         $scope.save = function() {
+                
+                $scope.selectedCategories.forEach(function(cat_id) {
+                        $scope.location.categories.add(DataService.category.filterBy({id:cat_id})[0]);
+                })
+
                 $scope.location.save().then(function() {
-                        $state.go("ui.Locations");
+                        $state.go("ui.Locations");        
                 }, function (e) {
                         alert(e)
                 });
@@ -62,11 +78,11 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                 GeoLocator.go({
                         scope:$scope,
                         success: function(e) {
-                                                                
+
                                 $scope.location.geolocation = {}
-                                
+
                                 for(v in e.coords) { $scope.location.geolocation[v]=e.coords[v] }
-                                                                
+
                                 if (e.coords.accuracy>30) {
                                         $scope.geolocationColor = 'red'
                                 } else if (e.coords.accuracy>15) {
@@ -80,10 +96,10 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
 
         var fetchData = function() {
 
-                $scope.categories = DataService.category.all();
+                $scope.categories = DataService.category;
 
                 if($stateParams.id) {
-                        $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
+                        $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]                        
                 } else {
                         $scope.location = DataService.location.new({ type: 'GPS' });   
                         $scope.triggerGeolocation();

@@ -72,7 +72,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 image: { type: 'image' } ,
                                 type: { required: true },
                                 geolocation: { required: true },
-                                category: { link_to:"Category", required:true }
+                                categories: { link_to:["Category"], required:true }
                         },
                         methods: {
                                 updateDistance: function(currentGeolocation) {
@@ -109,7 +109,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
                 for(m in definitions) { 
                         definitions[m].parse_update_delay=0;
-                        //window.localStorage.removeItem(definitions[m].table)
+                        window.localStorage.removeItem(definitions[m].table)
                         model[m] = new ParseConnector.Model(definitions[m]); 
                         promises.push(model[m].cache_promise) 
                         promises.push(model[m].relationship_update_promise) 
