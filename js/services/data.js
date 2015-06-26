@@ -32,8 +32,6 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                         if(!record._securityLevel) {
                                                 record._securityLevel=9999
 
-                                                console.log(record.groups)
-
                                                 record.groups.data.forEach(function(g) {
                                                         record._securityLevel = g.securityLevel < record._securityLevel ? g.securityLevel : record._securityLevel
                                                 })
@@ -73,12 +71,12 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 enigmaticInformation: {},
                                 image: { type: 'image' } ,
                                 type: { required: true },
-                                geolocation: {},
+                                geolocation: { required: true },
                                 category: { link_to:"Category", required:true }
                         },
                         methods: {
                                 updateDistance: function(currentGeolocation) {
-
+                                        
                                         lat1=this.geolocation.latitude
                                         lon1=this.geolocation.longitude
                                         lat2=currentGeolocation.latitude
@@ -111,15 +109,15 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
                 for(m in definitions) { 
                         definitions[m].parse_update_delay=0;
-                        window.localStorage.removeItem(definitions[m].table)
+                        //window.localStorage.removeItem(definitions[m].table)
                         model[m] = new ParseConnector.Model(definitions[m]); 
                         promises.push(model[m].cache_promise) 
                         promises.push(model[m].relationship_update_promise) 
                 }
 
                 $q.all(promises).then(function() {
-                                                
-                        //model.user=model.user.data[0]
+                                                                        
+                        model.user=model.user.data[0]
                         model._loadcomplete=true;
                         console.log(model)                        
                         $rootScope.$broadcast('DataService:DataLoaded');

@@ -66,9 +66,7 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                                 $scope.location.geolocation = {}
                                 
                                 for(v in e.coords) { $scope.location.geolocation[v]=e.coords[v] }
-                                
-                                console.log($scope.location)
-                                
+                                                                
                                 if (e.coords.accuracy>30) {
                                         $scope.geolocationColor = 'red'
                                 } else if (e.coords.accuracy>15) {
