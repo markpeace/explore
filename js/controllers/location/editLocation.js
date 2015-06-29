@@ -39,14 +39,18 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                         
                       $scope.selectedCategories.push(category.id)  
                 }               
-                
-                console.log($scope.selectedCategories)
         }
 
 
 
         $scope.save = function() {
                 
+                //Remove any categories already attached
+                $scope.location.categories.data.forEach(function(category) {
+                        $scope.location.categories.remove(category)
+                })
+                                
+                //Add categories
                 $scope.selectedCategories.forEach(function(cat_id) {
                         $scope.location.categories.add(DataService.category.filterBy({id:cat_id})[0]);
                 })

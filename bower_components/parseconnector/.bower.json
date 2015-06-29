@@ -19,11 +19,11 @@
     "test",
     "tests"
   ],
-  "_release": "f52d43fba2",
+  "_release": "d771eea301",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "f52d43fba2c40828845453e1dd955e23f9c888e8"
+    "commit": "d771eea3014e6e822b45182bc7a8b1464da169b6"
   },
   "_source": "git@github.com:markpeace/ParseConnector.git",
   "_target": "*",
