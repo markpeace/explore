@@ -34,8 +34,11 @@ app.controller('ListGroups', function($scope, $q, DataService, GeoLocator) {
 
                         group = DataService.group.filterBy({id:result.text})[0]
                         user = DataService.user
-
-                        user.groups.add(group).then(function() {
+                        
+                        user.groups.add(group)
+                        group.users.add(user)
+                        
+                        $q.all([user.save(), group.save()]).then(function() {
                                 group.users.add(user).then(function () {
 
                                         if(group.securityLevel<user._securityLevel) {
