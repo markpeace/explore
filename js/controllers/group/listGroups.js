@@ -19,44 +19,8 @@ app.controller('ListGroups', function($scope, $q, DataService, GeoLocator) {
 
         $scope.joinGroup = function() {
 
-                var deferred = $q.defer()
-
-                if(typeof cordova=="undefined") {
-                        alert("Sorry, you can only do this using the QR Reader of a mobile device");
-                        deferred.resolve()
-                        return deferred.promise;
-                }
-
-                var scanner = cordova.require("cordova/plugin/BarcodeScanner");
-
-                scanner.scan(function (result) {
-
-
-                        group = DataService.group.filterBy({id:result.text})[0]
-                        user = DataService.user
-                        
-                        user.groups.add(group)
-                        group.users.add(user)
-                        
-                        $q.all([user.save(), group.save()]).then(function() {
-                                group.users.add(user).then(function () {
-
-                                        if(group.securityLevel<user._securityLevel) {
-                                                user.securityLevel(group.securityLevel)
-                                        }
-
-                                        $scope.$apply()
-
-                                        deferred.resolve();
-
-                                });                          
-                        })       
-
-                })
-
-                return deferred.promise
-
-
+                DataService.user.joinGroup();
+                
         };
 
 

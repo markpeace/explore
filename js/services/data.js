@@ -23,7 +23,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         attributes: {
                                 groups: { link_to: ['Group'] }
                         },
-                        methods: {
+                        methods: {                                
                                 securityLevel: function(override) {
 
                                         record=this
@@ -42,6 +42,41 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
                                         return record._securityLevel;
                                 },
+                                joinGroup: function () {
+                                        var deferred = $q.defer()
+
+                                        if(typeof cordova=="undefined") {
+                                                alert("Sorry, you can only do this using the QR Reader of a mobile device");
+                                                deferred.resolve()
+                                                return deferred.promise;
+                                        }
+
+                                        var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+                                        scanner.scan(function (result) {
+
+
+                                                group = model.group.filterBy({id:result.text})[0]
+                                                user = model.user
+
+                                                user.groups.add(group)
+                                                group.users.add(user)
+
+                                                $q.all([user.save(), group.save()]).then(function() {
+                                                        group.users.add(user).then(function () {
+
+                                                                user.securityLevel();
+
+                                                                deferred.resolve();
+
+                                                        });                          
+                                                })       
+
+                                        })
+
+                                        return deferred.promise
+
+                                }
                         }
                 },
                 group: {
@@ -77,7 +112,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         },
                         methods: {
                                 updateDistance: function(currentGeolocation) {
-                                        
+
                                         lat1=this.geolocation.latitude
                                         lon1=this.geolocation.longitude
                                         lat2=currentGeolocation.latitude
@@ -117,7 +152,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                 }
 
                 $q.all(promises).then(function() {
-                                                                        
+
                         model.user=model.user.data[0]
                         model._loadcomplete=true;
                         console.log(model)                        
