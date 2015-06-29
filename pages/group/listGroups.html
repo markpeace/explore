@@ -11,7 +11,6 @@
                         </button>
                 </ion-button-bar>
                 <ion-list>
-                        {{ securityLevel }}
                         <span ng-repeat="group in groups | orderBy:'securityLevel'" >
                                 <ion-item class="item-icon-right" ui-sref="showGroup({id:group.id})"  ng-show="securityLevel < group.securityLevel">
                                         {{ group.label }} 
