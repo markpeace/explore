@@ -1,12 +1,6 @@
 app.controller('EditGroup', function($scope, $ionicPopup, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a group");
 
-        if($stateParams.id) {
-                $scope.group = DataService.group.filterBy({id:$stateParams.id})[0]
-        } else {
-                $scope.group = DataService.group.new();   
-        }
-        
         $scope.save = function() {
                 $scope.group.save().then(function() {
                         $state.go("ui.Groups");
@@ -29,5 +23,17 @@ app.controller('EditGroup', function($scope, $ionicPopup, $state, $stateParams, 
                         }
                 });
         }
-      
+
+        var fetchData = function () {
+                if($stateParams.id) {
+                        $scope.group = DataService.group.filterBy({id:$stateParams.id})[0]
+                } else {
+                        $scope.group = DataService.group.new();   
+                }
+        }
+
+        $scope.$on('DataService:DataLoaded', fetchData)        
+        if(DataService._loadcomplete) fetchData();
+
+
 });
