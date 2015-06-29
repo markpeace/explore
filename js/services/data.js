@@ -63,13 +63,12 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                                 group.users.add(user)
 
                                                 $q.all([user.save(), group.save()]).then(function() {
-                                                        group.users.add(user).then(function () {
 
-                                                                user.securityLevel();
+                                                        user._securityLevel = undefined
 
-                                                                deferred.resolve();
+                                                        user.securityLevel();
 
-                                                        });                          
+                                                        deferred.resolve();
                                                 })       
 
                                         })

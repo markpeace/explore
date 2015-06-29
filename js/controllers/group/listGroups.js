@@ -19,7 +19,9 @@ app.controller('ListGroups', function($scope, $q, DataService, GeoLocator) {
 
         $scope.joinGroup = function() {
 
-                DataService.user.joinGroup();
+                DataService.user.joinGroup().then(function() {
+                        $scope.securityLevel = DataService.user.securityLevel()    
+                });
                 
         };
 
