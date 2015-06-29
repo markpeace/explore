@@ -3,8 +3,14 @@ app.controller('ShowGroup', function($scope, DataService, $stateParams, GeoLocat
 
         $scope.width= $window.innerWidth<$window.innerHeight ? $window.innerWidth : $window.innerHeight * .9
         $scope.width = $scope.width *.9
-               
-        $scope.group = DataService.group.filterBy({id: $stateParams.id})[0];        
-        $scope.securityLevel = DataService.user.all()[0].securityLevel()
+
+        var fetchData = function () {
+                $scope.group = DataService.group.filterBy({id: $stateParams.id})[0];        
+                $scope.securityLevel = DataService.user.securityLevel()
+        }
+
+        $scope.$on('DataService:DataLoaded', fetchData)        
+        if(DataService._loadcomplete) fetchData();
+
 
 });
