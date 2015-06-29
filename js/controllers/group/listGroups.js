@@ -18,7 +18,42 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
         }               
 
         $scope.joinGroup = function() {
-                DataService.user.all()[0].joinGroup()             
+
+                if(typeof cordova=="undefined") {
+                        alert("Sorry, you can only do this using the QR Reader of a mobile device");
+                        deferred.resolve()
+                        return deferred.promise;
+                }
+
+                var deferred = $q.defer()
+
+                var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+                scanner.scan(function (result) {
+
+
+                        group = DataService.group.filterBy({id:result.text})[0]
+                        user = DataService.user
+                        
+                        user.groups.add(group).then(function() {
+                                group.users.add(user).then(function () {
+
+                                        if(group.securityLevel<user._securityLevel) {
+                                                user.securityLevel(group.securityLevel)
+                                        }
+                                        
+                                        alert(user._securityLevel)
+
+                                        deferred.resolve();
+
+                                });                          
+                        })       
+
+                })
+
+                return deferred.promise
+
+
         };
 
 

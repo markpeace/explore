@@ -197,45 +197,6 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         },
                         methods: {
 
-                                joinGroup: function() {
-
-                                        var deferred = $q.defer
-
-                                        user = this
-
-                                        if(typeof cordova=="undefined") {
-                                                alert("Sorry, you can only do this using the QR Reader of a mobile device");
-                                                deferred.resolve()
-                                                return deferred.promise;
-                                        }
-
-                                        var deferred = $q.defer()
-
-                                        var scanner = cordova.require("cordova/plugin/BarcodeScanner");
-
-                                        scanner.scan(function (result) {
-
-
-                                                group = models.group.filterBy({id:result.text})[0]
-
-                                                user.groups.add(group).then(function() {
-                                                        group.users.add(user).then(function () {
-
-                                                                if(group.securityLevel<user._securityLevel) {
-                                                                        user.securityLevel(group.securityLevel)
-                                                                }
-
-                                                                deferred.resolve();
-
-                                                        });                          
-                                                })       
-
-                                        })
-
-                                        return deferred.promise
-
-
-                                }
 
 
                         }
