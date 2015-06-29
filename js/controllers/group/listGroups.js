@@ -6,10 +6,11 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
         $scope.groups = []
 
         $scope.selectFilter = function(filter) {
+
                 $scope.selectedFilter=filter || "Joined";
 
                 if($scope.selectedFilter=="Joined") {
-                        $scope.groups = DataService.user.all()[0].groups.all()
+                        $scope.groups = DataService.user.groups.data
                 } else {
                         $scope.groups=DataService.group.all()
                 }
@@ -17,32 +18,18 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
         }               
 
         $scope.joinGroup = function() {
-
-                user=DataService.user.all()[0]
-                group=DataService.group.all()[1]                                                               
-
-                group.users.add(user)
-                user.groups.add(group)
-
-
-                //DataService.user.all()[0].joinGroup()             
+                DataService.user.all()[0].joinGroup()             
         };
 
 
-        if(DataService.user.all()[0]) {
-                $scope.selectFilter() 
-                $scope.securityLevel = models.user.all()[0].securityLevel()
-
-        } else {
-
-                window.setTimeout(function() {
-                        $scope.selectFilter()    
-                        $scope.securityLevel = DataService.user.all()[0].securityLevel()
-                        $scope.$apply();
-                },4000)
-
-
+        var fetchData = function () {
+                $scope.securityLevel = DataService.user.securityLevel()
+                $scope.locations = DataService.location
+                $scope.selectFilter()
         }
+
+        $scope.$on('DataService:DataLoaded', fetchData)        
+        if(DataService._loadcomplete) fetchData();
 
 
 
