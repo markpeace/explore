@@ -19,6 +19,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         table: 'User',
                         parse_update_delay:0,
                         delay_relationship_load: true,
+                        constraints: [".equalTo('objectId', Parse.User.current().id)"],
                         attributes: {
                                 groups: { link_to: ['Group'] }
                         },
