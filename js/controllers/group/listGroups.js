@@ -1,4 +1,4 @@
-app.controller('ListGroups', function($scope, DataService, GeoLocator) { 
+app.controller('ListGroups', function($scope, $q, DataService, GeoLocator) { 
 
         console.info("groups view")
 
@@ -19,13 +19,13 @@ app.controller('ListGroups', function($scope, DataService, GeoLocator) {
 
         $scope.joinGroup = function() {
 
+                var deferred = $q.defer()
+                
                 if(typeof cordova=="undefined") {
                         alert("Sorry, you can only do this using the QR Reader of a mobile device");
                         deferred.resolve()
                         return deferred.promise;
                 }
-
-                var deferred = $q.defer()
 
                 var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
