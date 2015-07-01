@@ -4,6 +4,9 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
         $scope.geolocationColor = 'red'
 
+        accuracy = { good: 15, poor: 25 }
+
+
         $scope.takePhoto = function() {
                 navigator.camera.getPicture(function(e) {
                         $scope.location.image=e
@@ -32,34 +35,65 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
         $scope.closeCategoryChooser = function() { $scope.categoryChooser.hide(); }
         $scope.selectedCategories = []
         $scope.chooseCategory = function(category) {
-               
+
                 if($scope.selectedCategories.indexOf(category.id)>-1) {
-                       $scope.selectedCategories.splice($scope.selectedCategories.indexOf(category.id),1) 
+                        $scope.selectedCategories.splice($scope.selectedCategories.indexOf(category.id),1) 
                 } else {
-                        
-                      $scope.selectedCategories.push(category.id)  
+
+                        $scope.selectedCategories.push(category.id)  
                 }               
         }
 
 
 
         $scope.save = function() {
-                
-                //Remove any categories already attached
-                $scope.location.categories.data.forEach(function(category) {
-                        $scope.location.categories.remove(category)
-                })
-                                
-                //Add categories
-                $scope.selectedCategories.forEach(function(cat_id) {
-                        $scope.location.categories.add(DataService.category.filterBy({id:cat_id})[0]);
-                })
 
-                $scope.location.save().then(function() {
-                        $state.go("ui.Locations");        
-                }, function (e) {
-                        alert(e)
-                });
+                var doSave = function() {
+                        //Remove any categories already attached
+                        $scope.location.categories.data.forEach(function(category) {
+                                $scope.location.categories.remove(category)
+                        })
+
+                        //Add categories
+                        $scope.selectedCategories.forEach(function(cat_id) {
+                                $scope.location.categories.add(DataService.category.filterBy({id:cat_id})[0]);
+                        })
+
+                        $scope.location.save().then(function() {
+                                $state.go("ui.Locations");        
+                        }, function (e) {
+                                alert(e)
+                        });
+
+                }
+
+                if(!$scope.location.geolocation) {
+                        $ionicPopup.alert({
+                                title: 'Poor Geolocation Accuracy',
+                                template: 'Geolocation accuracy must be less than ' + accuracy.poor + 'm. Please wait 30 seconds for a better lock, and then try again (and make sure GPS is turned on in your settings)'
+                        });
+                } else if($scope.location.geolocation.accuracy<accuracy.good) {
+                        doSave()
+                } else {
+                        if($scope.location.geolocation.accuracy>accuracy.poor) {
+                                $ionicPopup.alert({
+                                        title: 'Poor Geolocation Accuracy',
+                                        template: 'Geolocation accuracy must be less than ' + accuracy.poor + 'm, but it is currently '+ $scope.location.geolocation.accuracy +'m. Please wait 30 seconds for a better lock, and then try again (and make sure GPS is turned on in your settings)'
+                                });
+                        } else {
+                                $ionicPopup.confirm({
+                                        title: 'Poor Geolocation Accuracy',
+                                        template: 'It is recommended that geolocation accuracy is '+accuracy.good+'m or less, but it is currently ' + $scope.location.geolocation.accuracy + 'm. To improve, click cancel and wait another 30 seconds for your device to get a better lock (and ensure that GPS is turned on in your settings).',
+                                        buttons: [
+                                                { text: 'Wait for a Better Lock' },
+                                                { text: 'Save with Poor Location', onTap: doSave }
+                                        ]
+                                })
+                        }
+                }
+
+
+
         }
 
 
@@ -87,9 +121,9 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
 
                                 for(v in e.coords) { $scope.location.geolocation[v]=e.coords[v] }
 
-                                if (e.coords.accuracy>30) {
+                                if (e.coords.accuracy>accuracy.poor) {
                                         $scope.geolocationColor = 'red'
-                                } else if (e.coords.accuracy>15) {
+                                } else if (e.coords.accuracy>accuracy.good) {
                                         $scope.geolocationColor = 'orange'
                                 } else {
                                         $scope.geolocationColor = 'green'
@@ -104,11 +138,11 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
 
                 if($stateParams.id) {
                         $scope.location = DataService.location.filterBy({id:$stateParams.id})[0]
-                        
+
                         $scope.location.categories.data.forEach(function(category) {
                                 $scope.selectedCategories.push(category.id)
                         })
-                        
+
                 } else {
                         $scope.location = DataService.location.new({ type: 'GPS' });   
                         $scope.triggerGeolocation();
