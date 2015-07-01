@@ -6,22 +6,22 @@
         <ion-content class="has-header padding">
                 <div style="text-align:center; padding-top:20%;">
                         <!--<i class="icon ion-location" style="font-size:2.5em; padding-left:40%; line-height:0.5em;"></i>
-                        <div style="font-size:3.5em; line-height: 1.2em; letter-spacing:5px;">
-                                EXPLORE
-                        </div>
-                        <div style="font-size:0.93em; line-height: 2.5em; letter-spacing:1px;">
-                                A WELCOME WEEK ACTIVITY FROM  
-                        </div>
-                        <div  style="font-size:0.72em; line-height: 1.3em; letter-spacing:1px;">
-                                MANCHESTER METROPOLITAN UNIVERSITY
-                        </div>-->
+<div style="font-size:3.5em; line-height: 1.2em; letter-spacing:5px;">
+EXPLORE
+</div>
+<div style="font-size:0.93em; line-height: 2.5em; letter-spacing:1px;">
+A WELCOME WEEK ACTIVITY FROM  
+</div>
+<div  style="font-size:0.72em; line-height: 1.3em; letter-spacing:1px;">
+MANCHESTER METROPOLITAN UNIVERSITY
+</div>-->
                 </div>
 
 
 
         </ion-content>
 
-        <div id="splash_footer" style="position: absolute; bottom:0%; left:10%; right:10%; background-color: none;">
+        <div ng-show="data._loadcomplete" id="splash_footer" style="position: absolute; bottom:0%; left:10%; right:10%; background-color: none;">
 
                 <button class="button button-block button-positive" ng-click="joinGroup()">
                         Scan a QR Code
@@ -31,5 +31,11 @@
                         [Or continue without joining a group]
                 </button>
         </div>
+
+        <div ng-hide="data._loadcomplete" id="splash_footer" style="position: absolute; text-align:center;bottom:10%; left:10%; right:10%; background-color: none;">
+
+                LOADING
+        </div>
+
 
 </ion-view>
