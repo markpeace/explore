@@ -2,9 +2,27 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
 
         var model = {}
 
+        Parse.usingTestServer = true;
+        if(typeof cordova === 'object' && typeof window.WeinreServerId === "undefined") { Parse.usingTestServer = false; }        
+
+        Parse.usingTestServer=false
+
+        if(Parse.usingTestServer == false) {
+                var app_id = "KfqGRavMzc841BHvxAsyINMkJaVrsHHGwszMMA9r";
+                var js_key = "mkEtbCsmnhtB0sOSPyI93rH2e4flkWOk1TtWwmH3";                
+        } else {
+                var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
+                var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
+
+
+        }
+
+        Parse.initialize(app_id, js_key);
+
+
         ParseConnector.initialise({
-                app_id: "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz",
-                javascript_key: "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N"
+                app_id: app_id,
+                javascript_key: js_key
         }).then(function(returned_model) {
 
                 returned_model.user.securityLevel = 1;
