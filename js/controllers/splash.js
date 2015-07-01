@@ -1,6 +1,7 @@
 app.controller('Splash', function($scope, $state, $ionicSideMenuDelegate, DataService) { 
 
         var fetchData = function () {
+             
                 if(DataService.user.groups.data.length>0) {
                         $state.go('ui.Locations');
                 }   

@@ -87,8 +87,8 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         },
                         acl: {
                                 public: {read:true, write:true},
-                                read_roles: ['superadministrator', 'administrator'],
-                                write_roles: ['superadministrator', 'administrator']
+                                read_roles: ['Superadministrator', 'Administrator'],
+                                write_roles: ['Superadministrator', 'Administrator']
                         }
                 },
                 category: {
