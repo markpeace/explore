@@ -44,21 +44,46 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
         })   
 
-        
+
         //NON GENERIC STUBBS
         $stateProvider.state('splash', {
                 url: "/splash",
                 templateUrl: "pages/splash.html",
                 controller: "Splash"
         })
-        
+
         $stateProvider.state('migrateroles', {
                 url: "/admin/migrateroles",
                 templateUrl: "pages/admin/migrateroles.html",
                 controller: "MigrateRoles"
         })
-        
-        
+
+        $stateProvider.state('isOffline', {
+                url: "/isOffline",
+                templateUrl: "pages/isOffline.html"
+        })
+
+
 
         $urlRouterProvider.otherwise("/splash");
+})
+
+//HANDLE ONLINE OFFLINE
+app.run(function ($state) {
+
+        if(typeof cordova === 'object') {
+
+                document.addEventListener("offline", function () {
+                        console.log("gone offline")
+                        var previousState = $state.current.name
+                        $state.go("isOffline")
+
+                        document.addEventListener("online", function () {
+                                $state.go(previousState)
+                        },true)
+
+                }, false);
+        }
+
+
 })
