@@ -5,7 +5,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
         Parse.usingTestServer = true;
         if(typeof cordova === 'object' && typeof window.WeinreServerId === "undefined") { Parse.usingTestServer = false; }        
 
-        Parse.usingTestServer=false
+        //Parse.usingTestServer=false
 
         if(Parse.usingTestServer == false) {
                 var app_id = "KfqGRavMzc841BHvxAsyINMkJaVrsHHGwszMMA9r";
