@@ -5,8 +5,12 @@
         <ion-content>     
                 <ul class="list">                             
                         <a class="item item-icon-right" ng-repeat="location in locations.all() | orderBy:'distance'" ui-sref="showLocation({id:location.id})">
-                                {{location.found || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }}
-                                <p>{{location.category.label}} [{{location.distance}}m]</p>
+                                {{location.found || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} [{{location.distance}}m]
+                                <p>
+                                        <span ng-repeat="cat in location.categories.data">
+                                                {{ cat.label }};                   
+                                        </span>
+                                </p>
                                 <i class="icon ion-ios-arrow-right" ng-hide="location.found"></i>
                                 <i class="icon ion-ios-checkmark-empty" ng-show="location.found"></i>
                         </a>
