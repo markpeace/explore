@@ -20,10 +20,10 @@
         <preference name="android-minSdkVersion" value="16"/>
         <preference name="BackupWebStorage" value="none"/>
         <preference name="SplashScreen" value="screen"/>
-        <preference name="SplashScreenDelay" value="3000"/>
-        <!--<feature name="StatusBar">
+        <!--<preference name="SplashScreenDelay" value="3000"/>-->
+        <feature name="StatusBar">
                 <param name="ios-package" value="CDVStatusBar" onload="true"/>
-        </feature>-->
+        </feature>
         
         <gap:plugin name="org.apache.cordova.core.camera" />
         <gap:plugin name="org.apache.cordova.geolocation" />
