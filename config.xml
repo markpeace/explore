@@ -19,6 +19,10 @@
         <feature name="StatusBar">
                 <param name="ios-package" value="CDVStatusBar" onload="true"/>
         </feature>
+        
+        <gap:plugin name="com.phonegap.plugins.pushplugin" version="2.4.0" />
+        <gap:plugin name="com.phonegap.plugins.barcodescanner" version="2.2.0" />
+        
 
         <platform name="ios">
                 <icon src="resources/ios/icon/icon.png" width="57" height="57"/>
