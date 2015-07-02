@@ -29,7 +29,8 @@
         <gap:plugin name="org.apache.cordova.geolocation" />
         <gap:plugin name="org.apache.cordova.device" />
         <gap:plugin name="org.apache.cordova.network-information" />
-        <gap:plugin name="com.phonegap.plugins.barcodescanner" />        
+        <gap:plugin name="com.phonegap.plugins.barcodescanner" />    
+        <gap:plugin name="com.ionic.deploy" />        
 
         <platform name="ios">
                 <icon src="resources/ios/icon/icon.png" width="57" height="57"/>
