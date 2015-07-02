@@ -27,5 +27,6 @@
   },
   "_source": "git@github.com:markpeace/ParseConnector.git",
   "_target": "*",
-  "_originalSource": "git@github.com:markpeace/ParseConnector.git"
+  "_originalSource": "git@github.com:markpeace/ParseConnector.git",
+  "_direct": true
 }
