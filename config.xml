@@ -36,7 +36,9 @@
         <gap:plugin name="org.apache.cordova.network-information" />
         <gap:plugin name="com.phonegap.plugins.barcodescanner" />    
 
-     
+        <platform name="ios">
+               
+        </platform>
         <platform name="android">
                 <icon src="resources/android/icon/drawable-ldpi-icon.png" gap:platform="android" density="ldpi"/>
                 <icon src="resources/android/icon/drawable-mdpi-icon.png" gap:platform="android" density="mdpi"/>
