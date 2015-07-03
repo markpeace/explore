@@ -1,20 +1,6 @@
 app.service('GeoLocator', function($interval) {
 
-        /* 
-        geoWatch = navigator.geolocation.watchPosition(
-                function(e) { console.info("geolocation updated"); $scope.locationIndicator = ""; $scope.locations.forEach(function(l) {l.updateDistance(e.coords)}) }, 
-                function(e) {
-                        console.warn("geolocation error! " + e.message);
-                }, 
-                { maximumAge: 3000, timeout: 10000, enableHighAccuracy: true })         
-
-        $scope.$on('$stateChangeStart', function() {
-                navigator.geolocation.clearWatch(geoWatch)
-        }) 
-        */ 
-
         locationWatcher = {}
-
 
         return {
                 go: function (params) {

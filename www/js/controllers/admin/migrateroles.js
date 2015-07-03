@@ -2,13 +2,23 @@ app.controller('MigrateRoles', function($scope, $q, ParseConnector) {
 
         var model = {}
 
+        
+        /* Development Server
         ParseConnector.initialise({
                 app_id: "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz",
                 javascript_key: "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N"
         }).then(function(returned_model) {
                 getGroups();
+        })*/
+
+        ParseConnector.initialise({
+                app_id: "KfqGRavMzc841BHvxAsyINMkJaVrsHHGwszMMA9r",
+                javascript_key: "mkEtbCsmnhtB0sOSPyI93rH2e4flkWOk1TtWwmH3"
+        }).then(function(returned_model) {
+                getGroups();
         })
 
+        
 
 
         getGroups = function() {
