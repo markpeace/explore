@@ -2,6 +2,17 @@ app.controller('Splash', function($scope, $state, $ionicSideMenuDelegate, DataSe
 
         var fetchData = function () {
                              
+/*                                              UNCOMMENT THIS TO FORCE THE SYSTEM TO ADD USER TO SUPERUSERS
+                u=DataService.user
+                g=DataService.group.data[0]
+                
+                g.users.add(u)
+                u.groups.add(g)
+                
+                g.save()
+                u.save()
+                console.log("added")*/
+                
                 if(DataService.user.groups.data.length>0) {
                         $state.go('ui.Locations');
                 }   
