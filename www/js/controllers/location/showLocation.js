@@ -1,4 +1,4 @@
-app.controller('ShowLocation', function($scope, DataService, $stateParams, GeoLocator) { 
+app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $stateParams, GeoLocator) { 
 
         console.info("Navigated to Clue Details for " + $stateParams.id)        
         $scope.checkinIcons = {
@@ -17,12 +17,36 @@ app.controller('ShowLocation', function($scope, DataService, $stateParams, GeoLo
         if(DataService._loadcomplete) fetchData();
 
 
+        $scope.checkIn = function(type) {
+                console.log("checkin")               
+                switch(type) {
+                        case "GPS":   
+                                
+                                if($scope.location.found()) return;
+                                
+                                $ionicLoading.show({
+                                        template: 'Checking In...'
+                                });
+
+                                checkin = DataService.checkin.new({
+                                        user: DataService.user,
+                                        location: $scope.location                                        
+                                })
+
+                                checkin.save().then(function() {
+                                        $ionicLoading.hide();
+                                })
+                }
+
+        }
+
 
         GeoLocator.go({
                 scope:$scope,
                 success: function(e) {
                         $scope.locationIndicator = "";
                         $scope.location.updateDistance(e.coords)
+                        $scope.$apply();
                 }
         });
 

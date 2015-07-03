@@ -1,15 +1,15 @@
 <ion-header-bar class="bar-positive">
         <button class="button button-icon icon ion-ios-arrow-left" ui-sref="ui.Locations"></button>
         <h1 class="title">Location Details{{locationIndicator}}</h1>
-        <button ng-show="location.distance<15 && location.found==false" ng-class="'button button-icon icon '+checkinIcons[location.type]"></button>     
+        <button ng-show="location.distance<10 && !location.found()" ng-class="'button button-icon icon '+checkinIcons[location.type]" ng-click="checkIn(location.type)"></button>     
 </ion-header-bar>
 <ion-content>        
 
         <div class="card">
                 <div class="item item-divider item-icon-right">
-                        <i ng-show="location.found" class="icon ion-ios-checkmark-outline"></i>
-                        <i ng-hide="location.found" class="icon ion-ios-circle-outline"></i>
-                        <h2>{{location.found || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} ({{ location.distance }}m) </h2>
+                        <i ng-show="location.found()" class="icon ion-ios-checkmark-outline"></i>
+                        <i ng-hide="location.found()" class="icon ion-ios-circle-outline"></i>
+                        <h2>{{location.found() || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} ({{ location.distance }}m) </h2>
                         <p>
                                 <span ng-repeat="cat in location.categories.data">
                                         {{ cat.label }};                   

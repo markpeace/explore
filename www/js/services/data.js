@@ -41,7 +41,6 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         constraints: [".equalTo('objectId', Parse.User.current().id)"],
                         attributes: {
                                 groups: { link_to: ['Group'] },
-                                checkins: { link_to: ["Checkin"] }
                         },
                         methods: {                                
                                 securityLevel: function(override) {
@@ -128,7 +127,6 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 type: { required: true },
                                 geolocation: { required: true },
                                 categories: { link_to:["Category"], required:true },
-                                checkins: { link_to: ["Checkin"] }
                         },
                         methods: {
                                 updateDistance: function(currentGeolocation) {
@@ -153,6 +151,10 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                         var d = R * c; // Distance in km
                                         this.distance = Math.round(d*1000)
                                         return this.distance
+                                }, 
+                                found: function() {                                       
+                                        var root=this
+                                        return (model.checkin.filterBy({ location:root }).length>0)
                                 }
                         }
                 },
@@ -160,8 +162,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         table: "Checkin",
                         attributes: {
                                 user: { required: true, link_to: 'User' },
-                                location: { required: true, link_to: 'Location' },
-                                groups: { required: true, link_to: ['Group'] }
+                                location: { required: true, link_to: 'Location' }
                         }
                 }
         }
