@@ -6,7 +6,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
         //Parse.usingTestServer = true;
         //if(typeof cordova === 'object' && typeof window.WeinreServerId === "undefined") { Parse.usingTestServer = false; }        
 
-        Parse.usingTestServer=false
+        Parse.usingTestServer=true
 
         if(Parse.usingTestServer == false) {
                 var app_id = "KfqGRavMzc841BHvxAsyINMkJaVrsHHGwszMMA9r";
@@ -40,7 +40,8 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                         delay_relationship_load: true,
                         constraints: [".equalTo('objectId', Parse.User.current().id)"],
                         attributes: {
-                                groups: { link_to: ['Group'] }
+                                groups: { link_to: ['Group'] },
+                                checkins: { link_to: ["Checkin"] }
                         },
                         methods: {                                
                                 securityLevel: function(override) {
@@ -126,7 +127,8 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 image: { type: 'image' } ,
                                 type: { required: true },
                                 geolocation: { required: true },
-                                categories: { link_to:["Category"], required:true }
+                                categories: { link_to:["Category"], required:true },
+                                checkins: { link_to: ["Checkin"] }
                         },
                         methods: {
                                 updateDistance: function(currentGeolocation) {
@@ -152,6 +154,14 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                         this.distance = Math.round(d*1000)
                                         return this.distance
                                 }
+                        }
+                },
+                checkin: {
+                        table: "Checkin",
+                        attributes: {
+                                user: { required: true, link_to: 'User' },
+                                location: { required: true, link_to: 'Location' },
+                                groups: { required: true, link_to: ['Group'] }
                         }
                 }
         }
