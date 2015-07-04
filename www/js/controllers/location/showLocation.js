@@ -21,9 +21,9 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                 console.log("checkin")               
                 switch(type) {
                         case "GPS":   
-                                
+
                                 if($scope.location.found()) return;
-                                
+
                                 $ionicLoading.show({
                                         template: 'Checking In...'
                                 });
@@ -34,7 +34,12 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                                 })
 
                                 checkin.save().then(function() {
-                                        $ionicLoading.hide();
+                                        $ionicLoading.show({
+                                                template: 'Congratulations, you have <br/> checked into this location!'
+                                        });
+                                        
+                                        setInterval(function() { $ionicLoading.hide() }, 2000)
+                                        
                                 })
                 }
 
