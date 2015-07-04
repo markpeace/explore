@@ -160,6 +160,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                 },
                 checkin: {
                         table: "Checkin",
+                        constraints: [".equalTo('user', Parse.User.current())"],
                         attributes: {
                                 user: { required: true, link_to: 'User' },
                                 location: { required: true, link_to: 'Location' }
