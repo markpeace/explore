@@ -144,7 +144,7 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                         })
 
                 } else {
-                        $scope.location = DataService.location.new({ type: 'GPS' });   
+                        $scope.location = DataService.location.new({ type: 'GPS', range:25 });   
                         $scope.triggerGeolocation();
                 }
 

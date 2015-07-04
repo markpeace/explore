@@ -126,6 +126,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 image: { type: 'image' } ,
                                 type: { required: true },
                                 geolocation: { required: true },
+                                range: { required: true },
                                 categories: { link_to:["Category"], required:true },
                         },
                         methods: {

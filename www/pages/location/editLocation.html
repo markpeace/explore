@@ -41,6 +41,12 @@
                         <a  ng-repeat="type in types" class="button" ng-class="location.type==type ? 'button-positive' : '' " ng-click="location.type=type">{{type}}</a>                        
                 </li>
 
+                <div class="item range">
+                        <span class="input-label">Checkin Range: {{ location.range }} </span>
+                        &bull;
+                        <input type="range" name="distance" min="10" max="100" ng-model="location.range">
+                        <i class="icon ion-ios-circle-outline"></i>
+                </div>
 
                 <li class="item item-icon-right" ng-click="triggerGeolocation();">
                         Geolocation <span style="color:gray; font-size:50%;">{{ location.geolocation.accuracy }}</span>
