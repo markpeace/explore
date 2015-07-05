@@ -21,7 +21,7 @@ app
                         api_key: 'ebd1f1ccf6fb01eb76f8e404e05716573dc3b3eacfcb6a37',  
                 }
 
-                if(typeof cordova != 'object') dev_push = true;
+                if(typeof cordova != 'object') c.dev_push = true;
 
                 $ionicAppProvider.identify(c);
         }])

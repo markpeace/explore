@@ -40,6 +40,8 @@ app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseCon
                         delay_relationship_load: true,
                         constraints: [".equalTo('objectId', Parse.User.current().id)"],
                         attributes: {
+                                username: {},
+                                token: {},
                                 groups: { link_to: ['Group'] },
                         },
                         methods: {                                
@@ -200,9 +202,8 @@ app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseCon
                         model.user=model.user.data[0]
 
                         $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
-                                alert("Successfully registered token " + data.token);
-                                console.log('Ionic Push: Got token ', data.token, data.platform);
-                                $scope.token = data.token;
+                                model.user.token = data.token
+                                model.user.save();
                         });
 
                         $ionicPush.register({
@@ -214,7 +215,7 @@ app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseCon
                                         alert("Notification!")
                                 }
                         },{
-                                user_id: model.user.parseObject.get("username")
+                                user_id: model.user.username
                         }); 
 
 
