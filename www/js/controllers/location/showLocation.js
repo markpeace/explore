@@ -1,16 +1,11 @@
 app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $stateParams, GeoLocator) { 
 
         console.info("Navigated to Clue Details for " + $stateParams.id)        
-        $scope.checkinIcons = {
-                "GPS" : "ion-location",
-                "QR" : "ion-qr-scanner",
-                "SELF" : "ion-person",
-        }
 
         var fetchData = function () {
                 $scope.location = DataService.location.filterBy({id: $stateParams.id})[0];
                 $scope.locationIndicator = "*";
-                $scope.securityLevel = DataService.user.securityLevel()
+                $scope.securityLevel = DataService.user.securityLevel()                
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
@@ -37,9 +32,9 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                                         $ionicLoading.show({
                                                 template: 'Congratulations, you have <br/> checked into this location!'
                                         });
-                                        
+
                                         setInterval(function() { $ionicLoading.hide() }, 2000)
-                                        
+
                                 })
                 }
 

@@ -156,6 +156,13 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                 found: function() {                                       
                                         var root=this
                                         return (model.checkin.filterBy({ location:root }).length>0)
+                                },
+                                checkin_icon: function () {
+                                        return {
+                                                "GPS" : "ion-location",
+                                                "QR" : "ion-qr-scanner",
+                                                "SELF" : "ion-person",
+                                        }[this.type]
                                 }
                         }
                 },
