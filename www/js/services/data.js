@@ -154,8 +154,9 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                         return this.distance
                                 },
                                 _distance: function() { return this.distance },
-                                inRange: function() {                                        
-                                        return this._distance()<10
+                                inRange: function() {                                                  
+                                        range = this.range > this.geolocation.accuracy ? this.range : this.geolocation.accuracy+this.range                                       
+                                        return this._distance()<range
                                 },
                                 found: function() {                                       
                                         var root=this
