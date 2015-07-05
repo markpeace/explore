@@ -11,7 +11,10 @@
                                                 {{ cat.label }};                   
                                         </span>
                                 </p>
-                                <i class="icon ion-ios-arrow-right" ng-hide="location.found()"></i>
+                                <span ng-hide="location.found()">
+                                        <i class="icon ion-ios-arrow-right" ng-hide="location.inRange()"></i>
+                                        <i class="icon" ng-class="location.checkin_icon()" ng-show="location.inRange()"></i>
+                                </span>                                
                                 <i class="icon ion-ios-checkmark-empty" ng-show="location.found()"></i>
                         </a>
                 </ul>     

@@ -152,7 +152,11 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                         var d = R * c; // Distance in km
                                         this.distance = Math.round(d*1000)
                                         return this.distance
-                                }, 
+                                },
+                                _distance: function() { return this.distance },
+                                inRange: function() {                                        
+                                        return this._distance()<10
+                                },
                                 found: function() {                                       
                                         var root=this
                                         return (model.checkin.filterBy({ location:root }).length>0)
@@ -163,7 +167,7 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                                                 "QR" : "ion-qr-scanner",
                                                 "SELF" : "ion-person",
                                         }[this.type]
-                                }
+                                }                              
                         }
                 },
                 checkin: {
