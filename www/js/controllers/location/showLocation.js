@@ -5,7 +5,8 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
         var fetchData = function () {
                 $scope.location = DataService.location.filterBy({id: $stateParams.id})[0];
                 $scope.locationIndicator = "*";
-                $scope.securityLevel = DataService.user.securityLevel()                
+                $scope.securityLevel = DataService.user.securityLevel()    
+                $scope.checkin_data = DataService.checkin.filterBy   ({ location: $scope.location })[0]
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        

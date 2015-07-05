@@ -16,11 +16,9 @@
                                 </span>
                         </p>
                 </div>
-                <span ng-show="location.image">
-                        <div class="item item-image">                                
-                                <img src="{{location.image}}">
-                        </div>
-                </span>
+
+                <img class="item item-image" ng-show="checkin_data.photo" src="{{checkin_data.photo}}">
+                <img  class="item item-image" ng-show="location.image && !checkin_data.photo" src="{{location.image}}">
 
                 <div ng-show="!location.found" class="item item-text-wrap" style="text-align:center;">                       
                         {{ location.enigmaticInformation }}
