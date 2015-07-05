@@ -199,6 +199,12 @@ app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseCon
 
                         model.user=model.user.data[0]
 
+                        $rootScope.$on('$cordovaPush:tokenReceived', function(event, data) {
+                                alert("Successfully registered token " + data.token);
+                                console.log('Ionic Push: Got token ', data.token, data.platform);
+                                $scope.token = data.token;
+                        });
+
                         $ionicPush.register({
                                 canShowAlert: false, //Should new pushes show an alert on your screen?
                                 canSetBadge: true, //Should new pushes be allowed to update app icon badges?
