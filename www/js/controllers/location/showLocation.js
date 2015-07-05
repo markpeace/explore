@@ -47,6 +47,7 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                                 quality : 50,
                                 destinationType : Camera.DestinationType.DATA_URL,
                                 //sourceType : Camera.PictureSourceType.CAMERA,
+                                cameraDirection: Camera.Direction.FRONT,
                                 allowEdit : true,
                                 encodingType: Camera.EncodingType.JPEG,
                                 targetWidth: 400,
