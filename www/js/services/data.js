@@ -26,19 +26,6 @@ app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseCon
                 javascript_key: js_key
         }).then(function(returned_model) {
 
-                $ionicPush.register({
-                        canShowAlert: false, //Should new pushes show an alert on your screen?
-                        canSetBadge: true, //Should new pushes be allowed to update app icon badges?
-                        canPlaySound: false, //Should notifications be allowed to play a sound?
-                        canRunActionsOnWake: true, // Whether to run auto actions outside the app,
-                        onNotification: function(notification) {
-                                alert("Notification!")
-                        }
-                },{
-                        user_id: returned_model.user.get("username")
-                }); 
-
-
                 returned_model.user.securityLevel = 1;
 
                 createModels(returned_model)
@@ -211,6 +198,20 @@ app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseCon
                 $q.all(promises).then(function() {
 
                         model.user=model.user.data[0]
+
+                        $ionicPush.register({
+                                canShowAlert: false, //Should new pushes show an alert on your screen?
+                                canSetBadge: true, //Should new pushes be allowed to update app icon badges?
+                                canPlaySound: false, //Should notifications be allowed to play a sound?
+                                canRunActionsOnWake: true, // Whether to run auto actions outside the app,
+                                onNotification: function(notification) {
+                                        alert("Notification!")
+                                }
+                        },{
+                                user_id: model.user.parseObject.get("username")
+                        }); 
+
+
                         model._loadcomplete=true;
                         console.log(model)                        
                         $rootScope.$broadcast('DataService:DataLoaded');

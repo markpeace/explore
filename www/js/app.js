@@ -18,6 +18,7 @@ app
                 $ionicAppProvider.identify({
                         app_id: '592f2161',
                         api_key: 'ebd1f1ccf6fb01eb76f8e404e05716573dc3b3eacfcb6a37',
+                        dev_push: true
                 });
         }])
         .run(['$ionicAnalytics', '$ionicPush', function($ionicAnalytics, $ionicPush) {
