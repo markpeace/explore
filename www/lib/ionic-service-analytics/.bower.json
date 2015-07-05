@@ -18,5 +18,15 @@
   "dependencies": {
     "ionic-service-core": ">=0.1.7"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "_release": "0.1.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.2",
+    "commit": "6e956c93230cb6506537c021ebb583da2980fc58"
+  },
+  "_source": "git://github.com/driftyco/ionic-service-analytics.git",
+  "_target": "~0.1.2",
+  "_originalSource": "ionic-service-analytics",
+  "_direct": true
 }
