@@ -1,4 +1,4 @@
-app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $stateParams, GeoLocator) { 
+app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $stateParams, $window, GeoLocator) { 
 
         console.info("Navigated to Clue Details for " + $stateParams.id)        
 
@@ -7,11 +7,15 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                 $scope.locationIndicator = "*";
                 $scope.securityLevel = DataService.user.securityLevel()    
                 $scope.checkin_data = DataService.checkin.filterBy   ({ location: $scope.location })[0]
+
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
         if(DataService._loadcomplete) fetchData();
 
+
+        $scope.width= $window.innerWidth<$window.innerHeight ? $window.innerWidth : $window.innerHeight * .9
+        $scope.width = $scope.width *.9
 
         $scope.checkIn = function(type) {
 
@@ -58,11 +62,24 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                         });
                 }
 
+                var scanQRCode = function () {
+                        var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+                        scanner.scan(function (result) {
+
+                                if (result==$scope.location.id) doCheckin();
+
+                        })
+
+                }
+
                 switch(type) {
                         case "GPS":   
                                 doCheckin();
                         case "SELF":
                                 takePhoto();
+                        case "QR":
+                                scanQRCode();
                 }
 
         }

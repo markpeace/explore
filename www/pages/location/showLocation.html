@@ -16,6 +16,10 @@
                                 </span>
                         </p>
                 </div>
+                
+                <span class="padding" style="text-align:center;" ng-show="securityLevel<32 && location.type=='QR'">
+                        <qrcode data="{{ location.id }}" size="{{width}}"></qrcode>
+                </span>
 
                 <img class="item item-image" ng-show="checkin_data.photo" src="{{checkin_data.photo}}">
                 <img  class="item item-image" ng-show="location.image && !checkin_data.photo" src="{{location.image}}">
