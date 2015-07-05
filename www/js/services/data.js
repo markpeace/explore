@@ -1,4 +1,4 @@
-app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ionicLoading) {
+app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseConnector, $q, $state, $ionicLoading) {
 
         var model = {}
 
@@ -25,6 +25,19 @@ app.service('DataService', function($rootScope, ParseConnector, $q, $state, $ion
                 app_id: app_id,
                 javascript_key: js_key
         }).then(function(returned_model) {
+
+                $ionicPush.register({
+                        canShowAlert: false, //Should new pushes show an alert on your screen?
+                        canSetBadge: true, //Should new pushes be allowed to update app icon badges?
+                        canPlaySound: false, //Should notifications be allowed to play a sound?
+                        canRunActionsOnWake: true, // Whether to run auto actions outside the app,
+                        onNotification: function(notification) {
+                                alert("Notification!")
+                        }
+                },{
+                        user_id: returned_model.user.get("username")
+                }); 
+
 
                 returned_model.user.securityLevel = 1;
 

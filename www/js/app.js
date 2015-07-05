@@ -11,7 +11,7 @@ if (typeof cordova === 'object') {
         });
 }
 
-app = angular.module('explore', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'monospaced.qrcode', 'parseconnector']);
+app = angular.module('explore', ['ionic', 'ionic.service.core', 'ionic.service.analytics', 'ionic.service.push', 'monospaced.qrcode', 'parseconnector']);
 
 app
         .config(['$ionicAppProvider', function($ionicAppProvider) {
@@ -20,6 +20,6 @@ app
                         api_key: 'ebd1f1ccf6fb01eb76f8e404e05716573dc3b3eacfcb6a37',
                 });
         }])
-        .run(['$ionicAnalytics', function($ionicAnalytics) {
+        .run(['$ionicAnalytics', '$ionicPush', function($ionicAnalytics, $ionicPush) {
                 $ionicAnalytics.register();
         }])
