@@ -79,10 +79,13 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                 switch(type) {
                         case "GPS":   
                                 doCheckin();
+                                return;
                         case "SELF":
                                 takePhoto();
+                                return;
                         case "QR":
                                 scanQRCode();
+                                return;
                 }
 
         }
