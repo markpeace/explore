@@ -13,29 +13,54 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
 
 
         $scope.checkIn = function(type) {
-                console.log("checkin")               
-                switch(type) {
-                        case "GPS":   
 
-                                if($scope.location.found()) return;
+                var photo = null;
 
+                var doCheckin = function() {
+                        if($scope.location.found()) return;
+
+                        $ionicLoading.show({
+                                template: 'Checking In...'
+                        });
+
+                        checkin = DataService.checkin.new({
+                                user: DataService.user,
+                                location: $scope.location,
+                                photo: photo
+                        })
+
+                        checkin.save().then(function() {
                                 $ionicLoading.show({
-                                        template: 'Checking In...'
+                                        template: 'Congratulations, you have <br/> checked into this location!'
                                 });
 
-                                checkin = DataService.checkin.new({
-                                        user: DataService.user,
-                                        location: $scope.location                                        
-                                })
+                                setInterval(function() { $ionicLoading.hide() }, 2000)
 
-                                checkin.save().then(function() {
-                                        $ionicLoading.show({
-                                                template: 'Congratulations, you have <br/> checked into this location!'
-                                        });
+                        })
+                }
 
-                                        setInterval(function() { $ionicLoading.hide() }, 2000)
+                var takePhoto = function() {
+                        navigator.camera.getPicture(function(e) {
+                                photo=e;
+                                doCheckin();
+                        }, function() {}, { 
+                                quality : 50,
+                                destinationType : Camera.DestinationType.DATA_URL,
+                                //sourceType : Camera.PictureSourceType.CAMERA,
+                                allowEdit : true,
+                                encodingType: Camera.EncodingType.JPEG,
+                                targetWidth: 400,
+                                targetHeight: 400,
+                                //popoverOptions: CameraPopoverOptions,
+                                saveToPhotoAlbum: false 
+                        });
+                }
 
-                                })
+                switch(type) {
+                        case "GPS":   
+                                doCheckin();
+                        case "SELF":
+                                takePhoto();
                 }
 
         }
