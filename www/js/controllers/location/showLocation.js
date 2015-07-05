@@ -63,13 +63,22 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                 }
 
                 var scanQRCode = function () {
-                        var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
-                        scanner.scan(function (result) {
+                        try { 
 
-                                if (result==$scope.location.id) doCheckin();
+                                var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
-                        })
+                                scanner.scan(function (result) {                               
+
+                                        alert(result)
+                                        alert(result==$scope.location.id) 
+                                        if (result==$scope.location.id) doCheckin();
+                                        
+                                })
+                                
+                        } catch (ex) {
+                                alert(ex)
+                        }
 
                 }
 
