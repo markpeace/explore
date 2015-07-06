@@ -1,4 +1,8 @@
-app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseConnector, $q, $state, $ionicLoading) {
+app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ionicPush, ParseConnector, $q, $state, $ionicLoading) {
+
+        $ionicLoading.show({
+                template: 'Updating...'
+        });
 
         var model = {}
 
@@ -220,7 +224,10 @@ app.service('DataService', function($rootScope, $ionicUser, $ionicPush, ParseCon
 
 
                         model._loadcomplete=true;
-                        console.log(model)                        
+                        console.log(model)   
+                        
+                        $ionicLoading.hide();
+                        
                         $rootScope.$broadcast('DataService:DataLoaded');
                 })
 
