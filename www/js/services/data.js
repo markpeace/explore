@@ -40,7 +40,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
 
                 user: {
                         table: 'User',
-                        parse_update_delay:0,
+                        parse_update_delay:30,
                         delay_relationship_load: true,
                         constraints: [".equalTo('objectId', Parse.User.current().id)"],
                         attributes: {
@@ -105,6 +105,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                 },
                 group: {
                         table: 'Group',
+                        parse_update_delay:30,
                         attributes: {
                                 label: {},
                                 securityLevel: {},
@@ -118,12 +119,14 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                 },
                 category: {
                         table: "Category", 
+                        parse_update_delay:30,
                         attributes: { 
                                 label:{ required: true } 
                         }
                 },
                 location: { 
                         table: "Location", 
+                        parse_update_delay:30,
                         attributes: {
                                 descriptiveTitle: { required: true },
                                 descriptiveInformation: { required: true },
@@ -179,6 +182,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                 },
                 checkin: {
                         table: "Checkin",
+                        parse_update_delay:30,
                         constraints: [".equalTo('user', Parse.User.current())"],
                         attributes: {
                                 user: { required: true, link_to: 'User' },
@@ -194,8 +198,8 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                 var promises = []
 
                 for(m in definitions) { 
-                        definitions[m].parse_update_delay=0;
-                        window.localStorage.removeItem(definitions[m].table)
+                        definitions[m].parse_update_delay=30;
+                        //window.localStorage.removeItem(definitions[m].table)
                         model[m] = new ParseConnector.Model(definitions[m]); 
                         promises.push(model[m].cache_promise) 
                         promises.push(model[m].relationship_update_promise) 
