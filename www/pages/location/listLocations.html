@@ -3,6 +3,13 @@
                 <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addLocation" ng-show="securityLevel<5"></button>
         </ion-nav-buttons>               
         <ion-content>     
+
+                <div class="card" ng-show="locationIndicator=='*'">
+                        <div class="item" style="text-align: center; background-color: yellow;"> 
+                                Finding Geolocation...
+                        </div>
+                </div>
+
                 <ul class="list">                             
                         <a class="item item-icon-right" ng-repeat="location in locations.all() | orderBy:'distance'" ui-sref="showLocation({id:location.id})">
                                 {{location.found() || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} [{{location.distance}}m]
