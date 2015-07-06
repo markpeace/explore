@@ -58,6 +58,16 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 controller: "MigrateRoles"
         })
 
+        $stateProvider.state("ui.Settings", {
+                url: "/admin/settings",
+                views: {
+                        'mainContent' :{
+                                templateUrl: "pages/admin/settings.html",
+                                controller: "Settings"
+                        }
+                }
+        })
+
         $stateProvider.state('isOffline', {
                 url: "/isOffline",
                 templateUrl: "pages/isOffline.html"

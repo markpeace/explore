@@ -193,7 +193,10 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
         }
 
         var createModels = function(returned_model) {
-                console.log("create");
+
+                $ionicLoading.show({
+                        template: 'Updating...'
+                });
 
                 var promises = []
 
@@ -229,128 +232,23 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
 
                         model._loadcomplete=true;
                         console.log(model)   
-                        
+
                         $ionicLoading.hide();
-                        
+
                         $rootScope.$broadcast('DataService:DataLoaded');
                 })
 
         }
 
+        model.rebuildAll=function() {
+
+                for(m in definitions) { 
+                        window.localStorage.removeItem(definitions[m].table)
+                }
+
+                createModels()
+        }
 
         return model;   
 
-
-
-        /*        models=ParseConnector.connect("uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz", "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N")        
-
-        Parse.User.logOut();
-        window.localStorage.removeItem("key")
-
-        getUser = function () {
-
-                var deferred = $q.defer();
-
-                Parse.User.logOut();
-
-                if(!(id=window.localStorage.getItem("key"))) {                
-                        id = typeof device !== 'undefined' ? device.uuid : "x" + (Math.random()*9999);
-                        window.localStorage.setItem("key", id);                
-                }                      
-
-                Parse.User.logIn(id, id, {
-                        success: function(user) {
-                                console.log("signed in")
-                                deferred.resolve(user)
-                        },
-                        error: function(user, error) {
-
-                                var user = new Parse.User();
-                                user.set("username", id);
-                                user.set("password", id);                                
-
-                                acl = new Parse.ACL()
-                                //acl.setPublicReadAccess(true);
-                                user.setACL(acl);                                
-
-                                user.signUp(null, {
-                                        success: function(user) {
-                                                console.log("registered");
-                                                deferred.resolve(user)
-                                        },
-                                        error: function(user, error) {
-                                                alert("A weird user error occurred!");  
-                                                alert(error.message)
-                                        }
-                                });
-                        }
-                });
-
-                return deferred.promise
-
-        }
-
-        //DEFINITION MODELS
-
-        definitions = {
-
-                group: {
-                        table: "Group",
-                        attributes: {
-                                label: { required: true },
-                                securityLevel: {},
-                                users: { link_to: ["models.user"] }
-                        }
-                }, 
-                user: {
-                        table: "User",
-                        attributes: {
-                                groups: { link_to: ["models.group"] }
-                        },
-                        methods: {
-
-
-
-                        }
-                },
-
-        }
-
-
-        for (d in definitions) { models[d] = new ParseConnector.Model(definitions[d])}
-
-        $ionicLoading.show({
-                template: 'Updating Data...'
-        });
-
-
-        //RECACHE MODELS
-        models.isComplete=false;
-        getData = function() {               
-                models.category.recache().then(function() { 
-                        models.group.recache().then(function() {
-                                models.location.recache().then(function() {
-                                        models.user.constraints = [".equalTo('objectId', '"+ Parse.User.current().id +"')"]
-                                        models.user.recache().then(function() {
-                                                models.isComplete=true;
-                                                $ionicLoading.hide();  
-                                        })
-                                })
-                        })
-                })
-        }
-
-
-        // BUILD EVERYTHING
-        var user = Parse.User.current();
-        if(!user) {
-                getUser().then(getData);        
-        } else {
-                getData();
-        };                
-
-
-
-        return models;
-        */
 });
