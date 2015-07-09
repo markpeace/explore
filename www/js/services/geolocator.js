@@ -4,7 +4,7 @@ app.service('GeoLocator', function($interval) {
 
         return {
                 go: function (params) {
-                        
+
                         defaults = {
                                 maximumAge:3000,
                                 timeout: 5000,
@@ -19,13 +19,24 @@ app.service('GeoLocator', function($interval) {
                                 console.error("you must pass a scope variable to the geolocation watcher");    
                                 return;
                         }
-                        
-                        locationWatcher = $interval(function() {
+                        /*
+                        var locationWatcher = $interval(function() {
                                 navigator.geolocation.getCurrentPosition(params.success, params.error, {maximumAge: params.maximumAge, timeout: params.timeout, enableHighAccuracy: params.enableHighAccuracy})
-                        }, 3000)
+                        }, 3000)*/
+
+                        var locationWatcher = navigator.geolocation.watchPosition(
+                                params.success,                                                                                  
+                                params.error,
+                                {
+                                        maximumAge: 3000, 
+                                        timeout: 5000, 
+                                        enableHighAccuracy: true
+                                }
+                        )
 
                         params.scope.$on('$stateChangeStart', function() {                                
-                                $interval.cancel(locationWatcher);
+                                //$interval.cancel(locationWatcher);
+                                navigator.geolocation.clearWatch(locationWatcher);
                         })      
 
                 }}
