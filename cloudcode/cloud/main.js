@@ -6,6 +6,9 @@ Parse.Cloud.afterSave("Group", function(request) {
                         .equalTo("name", group.get("label"))
                         .find().then(function(role) {
                         if (role.length>0) {
+                                
+                                console.log("not creating");
+                                
                                 addUsers(role[0], group)                                
                         } else {
 
