@@ -1,14 +1,14 @@
 Parse.Cloud.afterSave("Group", function(request) {
 
+        Parse.Cloud.useMasterKey();
+        
         addRole = function(group) {
 
                 console.log("called addrole");
 
-                var query=new Parse.Query(Parse.Role)
-                console.log(1);
-                query.equalTo("name", group.get("label"))
-                console.log(2)
-                query.find().then(function(role) {
+                (new Parse.Query(Parse.Role))
+                        .equalTo("name", group.get("label"))
+                        .find().then(function(role) {
                         console.log("done find")
                         if (role.length>0) {
 
@@ -35,7 +35,6 @@ Parse.Cloud.afterSave("Group", function(request) {
                                 })
                         }
                 })  
-                console.log(3)
         }
 
         addUsers = function (role, group) {
