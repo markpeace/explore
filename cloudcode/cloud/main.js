@@ -1,8 +1,6 @@
 Parse.Cloud.afterSave("Group", function(request) {
 
         addRole = function(group) {
-
-                console.log(group.get("label"));
                 
                 (new Parse.Query(Parse.Role))
                         .equalTo("name", group.get("label"))
@@ -11,6 +9,8 @@ Parse.Cloud.afterSave("Group", function(request) {
                                 addUsers(role[0], group)                                
                         } else {
 
+                                console.log("creating");
+                                
                                 var roleACL = new Parse.ACL();
                                 roleACL.setPublicReadAccess(true);
                                 ["Superadministrator"].forEach(function(role) {
