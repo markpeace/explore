@@ -7,6 +7,7 @@ Parse.Cloud.afterSave("Group", function(request) {
                 (new Parse.Query(Parse.Role))
                         .equalTo("name", group.get("label"))
                         .find().then(function(role) {
+                        console.log("done find")
                         if (role.length>0) {
 
                                 console.log("didn't need to create the role");
