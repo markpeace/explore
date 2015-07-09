@@ -1,6 +1,8 @@
 Parse.Cloud.afterSave("Group", function(request) {
 
         addRole = function(group) {
+
+                console.log(group.get("label"));
                 
                 (new Parse.Query(Parse.Role))
                         .equalTo("name", group.get("label"))
