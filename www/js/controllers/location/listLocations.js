@@ -6,6 +6,10 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         var fetchData = function () {
                 $scope.securityLevel = DataService.user.securityLevel()
                 $scope.locations = DataService.location
+                
+                g = DataService.group.data[1]
+                g.save();
+                
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        

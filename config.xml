@@ -16,7 +16,7 @@
         <author href="http://www.mmu.ac.uk/ioe" email="m.peace@mmu.ac.uk">
                 Mark Peace
         </author>
-        <content src="index.html"/>
+        <content src="www/index.html"/>
         <access origin="*"/>
 
         <preference name="webviewbounce" value="false"/>
