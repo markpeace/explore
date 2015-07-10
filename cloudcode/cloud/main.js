@@ -2,7 +2,7 @@ Parse.Cloud.afterSave("Checkin", function(request) {
         
         Parse.Cloud.useMasterKey();
         
-        request.object.get("User").fetch().then(function(user) {
+        request.object.get("user").fetch().then(function(user) {
                 console.log(user)
         })
         
