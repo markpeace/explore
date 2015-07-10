@@ -3,7 +3,11 @@ Parse.Cloud.afterSave("Checkin", function(request) {
         Parse.Cloud.useMasterKey();
         
         request.object.get("user").fetch().then(function(user) {
-                console.log("user")
+                user.relation("groups").query().find().then(function(groups) {
+                        groups.forEach(function(group) {
+                                console.log(group.get("label"))
+                        })
+                })
         })
         
 })
