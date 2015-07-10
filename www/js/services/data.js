@@ -103,13 +103,24 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                                 }
                         }
                 },
+                league: {
+                        table: 'League',
+                        delay_relationship_load: true,
+                        parse_update_delay:30,
+                        attributes: {
+                                label: {required:true},
+                                groups: { link_to: ['Group'] }
+                        }
+                },
                 group: {
                         table: 'Group',
                         parse_update_delay:30,
                         attributes: {
                                 label: {},
                                 securityLevel: {},
-                                users: { link_to: ['User'] }
+                                users: { link_to: ['User'] },
+                                leagues: { link_to: ['League'] },
+                                checkins: {}
                         },
                         acl: {
                                 public: {read:true, write:true},
