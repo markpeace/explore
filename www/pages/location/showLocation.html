@@ -30,10 +30,10 @@
                 <img class="item item-image" ng-show="checkin_data.photo" src="{{checkin_data.photo}}">
                 <img  class="item item-image" ng-show="location.image && !checkin_data.photo" src="{{location.image}}">
 
-                <div ng-show="!location.found" class="item item-text-wrap" style="text-align:center;">                       
+                <div ng-show="!location.found()" class="item item-text-wrap" style="text-align:center;">                       
                         {{ location.enigmaticInformation }}
                 </div>
-                <div ng-show="location.found || !location.enigmaticInformation" class="item item-text-wrap" style="text-align:center;">                       
+                <div ng-show="location.found() || !location.enigmaticInformation" class="item item-text-wrap" style="text-align:center;">                       
                         {{ location.descriptiveInformation }}
                 </div>
                 <div class="item item-footer button-bar" ng-show="securityLevel<5">
