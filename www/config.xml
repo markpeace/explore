@@ -3,10 +3,10 @@
         xmlns:gap = "http://phonegap.com/ns/1.0"
         xmlns:android   = "http://schemas.android.com/apk/res/android"
         id        = "com.mmu.explore"
-        version   = "1.0.0">
+        version   = "1.0.1">
 
         <gap:config-file platform="ios" parent="CFBundleShortVersionString"> 
-                <string>100</string> 
+                <string>101</string> 
         </gap:config-file>
 
         <name>Explore</name>
