@@ -4,10 +4,10 @@ Parse.Cloud.afterSave("Checkin", function(request) {
         
         request.object.get("user").fetch().then(function(user) {
                 user.relation("groups").query().find().then(function(groups) {
-                        groups.forEach(function(group) {
+                        /*groups.forEach(function(group) {
                                 group.set("checkins", group.get("checkins")+1)
                                 group.save()
-                        })
+                        })*/
                 })
         })
         
