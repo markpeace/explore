@@ -1,20 +1,28 @@
-app.controller('EditGroup', function($scope, $q, $ionicPopup, $ionicModal, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('EditGroup', function($scope, $q, $ionicPopup, $ionicLoading, $ionicModal, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a group");
 
         $scope.save = function() {
 
+                $ionicLoading.show({
+                        template: 'Saving Group...'
+                });
+
+                var promises = []
+
                 //Remove any leagues already attached
-                $scope.group.leagues.data.forEach(function(league) {
-
-                        console.log(league)
-
-                        $scope.group.leagues.remove(league)
+                
+                old_leagues = $scope.group.leagues.data.map(function(l) { return l.id} )
+                
+                old_leagues.forEach(function(league_id) {
+                        $scope.group.leagues.remove(DataService.league.filterBy({id:league_id})[0])
                 })
-
+                                
                 //Add leagues
                 $scope.selectedLeagues.forEach(function(league_id) {
                         $scope.group.leagues.add(DataService.league.filterBy({id:league_id})[0]);
                 })
+                
+                
 
                 var promises = [$scope.group.save()]
                 var leaguestosave=[]
@@ -34,8 +42,11 @@ app.controller('EditGroup', function($scope, $q, $ionicPopup, $ionicModal, $stat
                 })
 
                 $q.all(promises).then(function() {
+                        $ionicLoading.hide()
                         $state.go("ui.Groups");
                 })
+
+
         }
 
 
@@ -76,8 +87,13 @@ app.controller('EditGroup', function($scope, $q, $ionicPopup, $ionicModal, $stat
 
                 $scope.leagues = DataService.league
 
+                $scope.leagues.data.forEach(function(league) {
+                        league.fetch(true);                             //THIS IS OVERCOMING A CACHE BUG IN PARSE CONNECTOR                       
+                })
+
                 if($stateParams.id) {
                         $scope.group = DataService.group.filterBy({id:$stateParams.id})[0]
+                        $scope.group.fetch(true)                        //THIS IS OVERCOMING A CACHE BUG IN PARSE CONNECTOR  
 
                         $scope.group.leagues.data.forEach(function(league) {
                                 $scope.selectedLeagues.push(league.id)
