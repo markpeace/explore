@@ -10,10 +10,36 @@
                         <span class="input-label">Group Label</span>
                         <input type="text" placeholder="Enter a meaningful label for this group" ng-model="group.label">
                 </label>  
-                
+
+                <li class="item" ng-click="leagueChooser.show()">
+                        Leagues
+                        <span class="item-note" ng-repeat="league_id in selectedLeagues">
+                                {{ leagues.filterBy({id:league_id})[0].label }};
+                        </span>
+                </li>
+
                 <li class="item item-footer button-bar" ng-show="group.id">
                         <a class="button button-assertive" ng-click="delete()">Delete</a>
                 </li>
-                
+
         </ul>
 </ion-content>
+
+
+<script id="league-popover.html" type="text/ng-template">
+ <ion-modal-view>
+        <ion-header-bar class="bar-positive">   
+                <h1 class="title">Choose Leagues</h1>
+                <button class="button button-icon icon ion-ios-checkmark-empty" ng-click="leagueChooser.hide();"></button>
+        </ion-header-bar>
+
+        <ion-content>
+                <ion-list>
+                        <ion-item class="item-icon-right" ng-repeat="league in leagues.all()" ng-click="chooseLeague(league)">
+                                {{league.label}}
+                                <i class="icon ion-ios-checkmark-empty" ng-show="selectedLeagues.indexOf(league.id)>-1"></i>
+        </ion-item>
+        </ion-list>
+        </ion-content>
+        </ion-modal-view>
+</script>
