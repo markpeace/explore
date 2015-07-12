@@ -110,6 +110,11 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                         attributes: {
                                 label: {required:true},
                                 groups: { link_to: ['Group'] }
+                        },
+                        acl: {
+                                public: {read:true, write:false},
+                                read_roles: ['Superadministrator', 'Administrator', 'Curator'],
+                                write_roles: ['Superadministrator', 'Administrator', 'Curator']
                         }
                 },
                 group: {

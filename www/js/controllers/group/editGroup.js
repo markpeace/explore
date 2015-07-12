@@ -1,11 +1,13 @@
-app.controller('EditGroup', function($scope, $ionicPopup, $ionicModal, $state, $stateParams, DataService, GeoLocator) { 
+app.controller('EditGroup', function($scope, $q, $ionicPopup, $ionicModal, $state, $stateParams, DataService, GeoLocator) { 
         console.info("adding/editing a group");
 
         $scope.save = function() {
 
-
                 //Remove any leagues already attached
                 $scope.group.leagues.data.forEach(function(league) {
+
+                        console.log(league)
+
                         $scope.group.leagues.remove(league)
                 })
 
@@ -14,11 +16,26 @@ app.controller('EditGroup', function($scope, $ionicPopup, $ionicModal, $state, $
                         $scope.group.leagues.add(DataService.league.filterBy({id:league_id})[0]);
                 })
 
-                $scope.group.save().then(function() {
+                var promises = [$scope.group.save()]
+                var leaguestosave=[]
+
+                initialLeagues.forEach(function(league) {
+                        DataService.league.filterBy({id:league})[0].groups.remove($scope.group)
+                        leaguestosave.push(league)
+                })
+
+                $scope.selectedLeagues.forEach(function(league) {
+                        DataService.league.filterBy({id:league})[0].groups.add($scope.group)
+                        leaguestosave.push(league)
+                })                
+
+                leaguestosave.forEach(function(league) {
+                        promises.push(DataService.league.filterBy({id:league})[0].save())
+                })
+
+                $q.all(promises).then(function() {
                         $state.go("ui.Groups");
-                }, function (e) {
-                        alert(e)
-                });
+                })
         }
 
 
@@ -54,7 +71,7 @@ app.controller('EditGroup', function($scope, $ionicPopup, $ionicModal, $state, $
                 }               
         }
 
-
+        var initialLeagues=[]
         var fetchData = function () {
 
                 $scope.leagues = DataService.league
@@ -64,6 +81,7 @@ app.controller('EditGroup', function($scope, $ionicPopup, $ionicModal, $state, $
 
                         $scope.group.leagues.data.forEach(function(league) {
                                 $scope.selectedLeagues.push(league.id)
+                                initialLeagues.push(league.id)
                         })
 
 
