@@ -1,6 +1,13 @@
 app.controller('ListLeagues', function($scope, $state, $stateParams, DataService) { 
+        
+        $scope.leagues=[]
+        
         var fetchData = function () {
-                //STUFF HERE
+                DataService.user.groups.data.forEach(function(group) {
+                        group.leagues.data.forEach(function(league) {
+                                $scope.leagues.push(league)
+                        })
+                })
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        

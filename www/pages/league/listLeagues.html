@@ -1,12 +1,12 @@
-<!--
-To change this template use Tools | Templates.
--->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<ion-view view-title="Leagues">
+        <ion-nav-buttons side="right">
+                <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addLeague" ng-show="securityLevel<3"></button>
+        </ion-nav-buttons>      
+        <ion-content>     
+                <ion-list>
+                        
+                        <ion-item class="item-icon-right" ng-repeat="league in leagues" ui-sref="showLeague({ id:league.id })"> {{league.label}} </ion-item>
+                        
+                </ion-list>
+        </ion-content>
+</ion-view>
