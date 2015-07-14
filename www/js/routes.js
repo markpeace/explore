@@ -10,7 +10,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
 
         //GENERIC STUBBS
-        var stubbs=['Group', 'Location']
+        var stubbs=['Group', 'Location', 'League']
         stubbs.forEach(function(resource){
 
                 $stateProvider.state('ui.'+resource+"s", {
@@ -51,13 +51,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
                 templateUrl: "pages/splash.html",
                 controller: "Splash"
         })
-
-        $stateProvider.state('migrateroles', {
-                url: "/admin/migrateroles",
-                templateUrl: "pages/admin/migrateroles.html",
-                controller: "MigrateRoles"
-        })
-
+        
         $stateProvider.state("ui.Settings", {
                 url: "/admin/settings",
                 views: {
