@@ -1,12 +1,18 @@
-<!--
-To change this template use Tools | Templates.
--->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+<ion-header-bar class="bar-positive">
+        <button class="button button-icon icon ion-ios-arrow-left" ui-sref="ui.Leagues"></button>
+        <h1 class="title">{{ league.label }}</h1>
+</ion-header-bar>
+<ion-content>        
 
-</body>
-</html>
+        <ion-list>
+
+                <ion-item ng-repeat="group in groups | orderBy : '-checkins' ">
+                        {{group.label}}
+                        <div class="item-note">
+                                {{group.checkins}} Checkins
+                        </div>                        
+                </ion-item>
+
+        </ion-list>
+
+</ion-content>
