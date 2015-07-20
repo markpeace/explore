@@ -4,7 +4,7 @@ app.controller('ListLeagues', function($scope, $state, $stateParams, DataService
         
         var fetchData = function () {
                 DataService.user.groups.data.forEach(function(group) {
-                        alert(group)
+                        alert(group.label)
                         group.leagues.data.forEach(function(league) {
                                 $scope.leagues.push(league)
                         })
