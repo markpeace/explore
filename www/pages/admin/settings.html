@@ -1,6 +1,11 @@
 <ion-view view-title="Groups">
         <ion-content>     
                 <ion-list>
+                        
+                        <ion-item ng-show="parse.usingTestServer && securityLevel===1" ng-click="toggleDatabase()">Switch to Production Database</ion-item>
+                        <ion-item ng-hide="parse.usingTestServer  || securityLevel!=1" ng-click="toggleDatabase()">Switch to Test Database</ion-item>
+
+                        
                         <ion-item ng-click="rebuild_database()">Force Database Rebuild</ion-item>
                 </ion-list>
         </ion-content>

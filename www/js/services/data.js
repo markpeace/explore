@@ -12,29 +12,31 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
 
         Parse.usingTestServer=true
 
-        if(Parse.usingTestServer == false) {
-                var app_id = "KfqGRavMzc841BHvxAsyINMkJaVrsHHGwszMMA9r";
-                var js_key = "mkEtbCsmnhtB0sOSPyI93rH2e4flkWOk1TtWwmH3";                
-        } else {
-                var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
-                var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
+        model.initialise = function () {       
+                               
+                if(Parse.usingTestServer == false) {
+                        var app_id = "KfqGRavMzc841BHvxAsyINMkJaVrsHHGwszMMA9r";
+                        var js_key = "mkEtbCsmnhtB0sOSPyI93rH2e4flkWOk1TtWwmH3";                
+                } else {
+                        var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
+                        var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
 
+
+                }
+
+                ParseConnector.initialise({
+                        app_id: app_id,
+                        javascript_key: js_key
+                }).then(function(returned_model) {
+
+                        returned_model.user.securityLevel = 1;
+
+                        createModels(returned_model)
+                })
 
         }
-
-        Parse.initialize(app_id, js_key);
-
-
-        ParseConnector.initialise({
-                app_id: app_id,
-                javascript_key: js_key
-        }).then(function(returned_model) {
-
-                returned_model.user.securityLevel = 1;
-
-                createModels(returned_model)
-        })
-
+        
+        model.initialise();
 
         var definitions = {
 
@@ -264,6 +266,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
 
                 createModels()
         }
+
 
         return model;   
 
