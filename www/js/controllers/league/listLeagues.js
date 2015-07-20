@@ -4,8 +4,9 @@ app.controller('ListLeagues', function($scope, $state, $stateParams, DataService
 
         var fetchData = function () {
                 DataService.user.groups.data.forEach(function(group) {                        
-                        group.leagues.data.forEach(function(league) {                                
-                                if ($scope.leagues.indexOf(league)>-1) $scope.leagues.push(league);
+
+                        group.leagues.data.forEach(function(league) { 
+                                if($scope.leagues.indexOf(league)===-1) $scope.leagues.push(league);
                         })
                 })
         }
