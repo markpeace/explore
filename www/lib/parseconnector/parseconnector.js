@@ -585,9 +585,11 @@ angular.module("parseconnector", [])
                                         if(!_newRecord.parseObject) {
 
                                                 (new Parse.Query(_model.table))
+
                                                         .get(_newRecord.id).then(function(parseobject) {        
 
                                                         _newRecord.parseObject=parseobject
+                                                        
                                                         if(!onlyParseObject)  {
                                                                 getValues();
                                                         } else {

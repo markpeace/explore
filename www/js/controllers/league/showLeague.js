@@ -3,7 +3,7 @@ app.controller('ShowLeague', function($scope, $q, $state, $stateParams, DataServ
         var fetchData = function () {
                 $scope.league=DataService.league.filterBy({id: $stateParams.id})[0]                
                 $scope.groups = $scope.league.groups.data
-                $scope.groups.forEach(function(group) { group.fetch() })
+                $scope.groups.forEach(function(group) { group.parseObject=null; group.fetch(true).then(group.fetch) })
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
