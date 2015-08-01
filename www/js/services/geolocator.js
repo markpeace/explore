@@ -1,4 +1,4 @@
-app.service('GeoLocator', function($cordovaGeolocation) {
+app.service('GeoLocator', function() {
 
         locationWatcher = {}
 
@@ -19,7 +19,7 @@ app.service('GeoLocator', function($cordovaGeolocation) {
                                 console.error("you must pass a scope variable to the geolocation watcher");    
                                 return;
                         }
-                        /*          
+                            
                         var locationWatcher = $cordovaGeolocation.watchPosition(
                                 params.success,                                                                                  
                                 params.error,
@@ -32,23 +32,9 @@ app.service('GeoLocator', function($cordovaGeolocation) {
 
                         params.scope.$on('$stateChangeStart', function() {                                
                                 navigator.geolocation.clearWatch(locationWatcher);
-                        })      */
+                        })      
 
-
-                        var locationWatcher = $cordovaGeolocation.watchPosition({
-                                maximumAge: 1000, 
-                                timeout: 5000, 
-                                enableHighAccuracy: true
-                        });
-
-                        locationWatcher.then(
-                                null,
-                                params.error,
-                                params.success);
-
-                        params.scope.$on('$stateChangeStart', function() {                                
-                                locationWatcher.clearWatch();
-                        }) 
+                    
 
                         
 
