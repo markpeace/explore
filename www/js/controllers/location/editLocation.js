@@ -1,4 +1,4 @@
-app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state, $stateParams, $q, DataService, GeoLocator) { 
+app.controller('EditLocation', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $state, $stateParams, $q, DataService, GeoLocator) { 
         console.info("adding/editing a location");
 
         $scope.types = ['GPS', 'QR Code', 'Selfie']       
@@ -49,6 +49,12 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
         $scope.save = function() {
 
                 var doSave = function() {
+
+                        $ionicLoading.show({
+                                template: 'Saving Location...'
+                        });
+
+
                         //Remove any categories already attached
                         $scope.location.categories.data.forEach(function(category) {
                                 $scope.location.categories.remove(category)
@@ -60,8 +66,10 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicPopup, $state
                         })
 
                         $scope.location.save().then(function() {
+                                $ionicLoading.hide()
                                 $state.go("ui.Locations");        
                         }, function (e) {
+                                $ionicLoading.hide()
                                 alert(e)
                         });
 
