@@ -20,7 +20,7 @@ app.service('GeoLocator', function() {
                                 return;
                         }
                             
-                        var locationWatcher = $cordovaGeolocation.watchPosition(
+                        var locationWatcher = navigator.geolocation.watchPosition(
                                 params.success,                                                                                  
                                 params.error,
                                 {
