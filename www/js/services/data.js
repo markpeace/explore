@@ -192,8 +192,8 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                                 checkin_icon: function () {
                                         return {
                                                 "GPS" : "ion-location",
-                                                "QR" : "ion-qr-scanner",
-                                                "SELF" : "ion-person",
+                                                "QR Code" : "ion-qr-scanner",
+                                                "Selfie" : "ion-person",
                                         }[this.type]
                                 }                              
                         }

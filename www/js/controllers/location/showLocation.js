@@ -80,10 +80,10 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
                         case "GPS":   
                                 doCheckin();
                                 return;
-                        case "SELF":
+                        case "Selfie":
                                 takePhoto();
                                 return;
-                        case "QR":
+                        case "QR Code":
                                 scanQRCode();
                                 return;
                 }
