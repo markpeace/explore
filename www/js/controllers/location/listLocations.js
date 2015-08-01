@@ -2,10 +2,13 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         $scope.locations = [];          
         $scope.locationIndicator = "*";    
         $scope.securityLevel = 9999
+        $scope.now = Date.now()
+        
+        setInterval(function() {$scope.now = Date.now() }, 1000)
         
         var fetchData = function () {
                 $scope.securityLevel = DataService.user.securityLevel()
-                $scope.locations = DataService.location                               
+                $scope.locations = DataService.location
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
@@ -16,6 +19,7 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                 success: function(e) {
                         $scope.locationIndicator = "";
                         $scope.locations.all().forEach(function(l) {l.updateDistance(e.coords)})
+                        $scope.timestamp=e.timestamp
                 }
         });
 });

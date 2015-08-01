@@ -23,19 +23,18 @@ app.service('GeoLocator', function($interval) {
                         var locationWatcher = $interval(function() {
                                 navigator.geolocation.getCurrentPosition(params.success, params.error, {maximumAge: params.maximumAge, timeout: params.timeout, enableHighAccuracy: params.enableHighAccuracy})
                         }, 3000)*/
-
+                                               
                         var locationWatcher = navigator.geolocation.watchPosition(
                                 params.success,                                                                                  
                                 params.error,
                                 {
-                                        maximumAge: 3000, 
+                                        maximumAge: 1000, 
                                         timeout: 5000, 
                                         enableHighAccuracy: true
                                 }
                         )
 
                         params.scope.$on('$stateChangeStart', function() {                                
-                                //$interval.cancel(locationWatcher);
                                 navigator.geolocation.clearWatch(locationWatcher);
                         })      
 

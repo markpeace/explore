@@ -10,7 +10,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
         //Parse.usingTestServer = true;
         //if(typeof cordova === 'object' && typeof window.WeinreServerId === "undefined") { Parse.usingTestServer = false; }        
 
-        Parse.usingTestServer=false
+        Parse.usingTestServer=true
 
         model.initialise = function () {       
                                
