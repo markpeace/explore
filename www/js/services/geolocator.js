@@ -1,4 +1,4 @@
-app.service('GeoLocator', function($interval) {
+app.service('GeoLocator', function($cordovaGeolocation) {
 
         locationWatcher = {}
 
@@ -19,12 +19,8 @@ app.service('GeoLocator', function($interval) {
                                 console.error("you must pass a scope variable to the geolocation watcher");    
                                 return;
                         }
-                        /*
-                        var locationWatcher = $interval(function() {
-                                navigator.geolocation.getCurrentPosition(params.success, params.error, {maximumAge: params.maximumAge, timeout: params.timeout, enableHighAccuracy: params.enableHighAccuracy})
-                        }, 3000)*/
                                                
-                        var locationWatcher = navigator.geolocation.watchPosition(
+                        var locationWatcher = $cordovaGeolocation.watchPosition(
                                 params.success,                                                                                  
                                 params.error,
                                 {
