@@ -9,12 +9,6 @@
                                 Finding Geolocation...
                         </div>
                 </div>
-
-                 <div class="card">
-                        <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
-                                Geoposition is {{ (now - timestamp)/1000 }} seconds old
-                        </div>
-                </div>
                 
                 <ul class="list">                             
                         <a class="item item-icon-right" ng-repeat="location in locations.all() | orderBy:'distance'" ui-sref="showLocation({id:location.id})">

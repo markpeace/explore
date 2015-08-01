@@ -19,7 +19,6 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                 success: function(e) {
                         $scope.locationIndicator = "";
                         $scope.locations.all().forEach(function(l) {l.updateDistance(e.coords)})
-                        $scope.timestamp=e.timestamp
                 }
         });
 });
