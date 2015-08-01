@@ -241,7 +241,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                                 canPlaySound: false, //Should notifications be allowed to play a sound?
                                 canRunActionsOnWake: true, // Whether to run auto actions outside the app,
                                 onNotification: function(notification) {
-                                        alert("Notification!")
+                                        console.log(notification.alert)
                                 }
                         },{
                                 user_id: model.user.username
