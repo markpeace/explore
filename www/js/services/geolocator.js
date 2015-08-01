@@ -38,7 +38,7 @@ app.service('GeoLocator', function($cordovaGeolocation) {
                         var locationWatcher = $cordovaGeolocation.watchPosition({
                                 maximumAge: 1000, 
                                 timeout: 5000, 
-                                enableHighAccuracy: false
+                                enableHighAccuracy: true
                         });
 
                         locationWatcher.then(
