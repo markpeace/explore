@@ -23,8 +23,7 @@ app.service('GeoLocator', function() {
                         }
 
 
-                        var repoll = function () {
-                                console.debug("found")
+                        var repoll = function (e) {
                                 navigator.geolocation.clearWatch(locationWatcher)
                                 navigator.geolocation.watchPosition(function(e) {
                                         params.success(e)
