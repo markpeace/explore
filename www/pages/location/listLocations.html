@@ -10,18 +10,19 @@
                         </div>
                 </div>
 
+                <div class="card" ng-show="securityLevel<2">
+                        <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
+                                Geolocations found = {{ geocount }}
+                        </div>
+                </div>
+                
+                
                 <div class="card" ng-show="geoerror">
                         <div class="item" style="text-align: center; background-color: salmon;"> 
                                 Geolocation Error: {{geoerror}}
                         </div>
                 </div>
                 
-                <div class="card" ng-show="securityLevel<2 && geocount>0 && !geoerror">
-                        <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
-                                Geolocations found = {{ geocount }}
-                        </div>
-                </div>
-
                 <ul class="list">      
                         
                         <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="showLocation({id:location.id})">
