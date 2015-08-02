@@ -235,7 +235,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                                 model.user.save();
                         });
 
-                        $ionicPush.register({
+                        /*$ionicPush.register({
                                 canShowAlert: false, //Should new pushes show an alert on your screen?
                                 canSetBadge: true, //Should new pushes be allowed to update app icon badges?
                                 canPlaySound: false, //Should notifications be allowed to play a sound?
@@ -245,7 +245,7 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                                 }
                         },{
                                 user_id: model.user.username
-                        }); 
+                        }); */
 
 
                         model._loadcomplete=true;
