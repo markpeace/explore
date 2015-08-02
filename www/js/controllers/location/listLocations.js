@@ -1,6 +1,6 @@
 app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) { 
         $scope.locations = [];          
-        $scope.locationIndicator = "*";    
+        $scope.geocount = 0;    
         $scope.securityLevel = 9999
         $scope.now = Date.now()
         
@@ -16,8 +16,13 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                
         GeoLocator.go({
                 scope:$scope,
+                error: function (e) {
+                        console.log("geolocation error:" +e.message)
+                        $scope.geoerror=e.message
+                },
                 success: function(e) {
-                        $scope.locationIndicator = "";
+                        $scope.geoerror=null;
+                        $scope.geocount = $scope.geocount+1
                         $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})
                 }
         });

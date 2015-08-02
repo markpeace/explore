@@ -1,16 +1,29 @@
-<ion-view view-title="Locations{{ locationIndicator }}">
+<ion-view view-title="Locations">
         <ion-nav-buttons side="right">
                 <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addLocation" ng-show="securityLevel<5"></button>
         </ion-nav-buttons>               
         <ion-content>     
 
-                <div class="card" ng-show="locationIndicator=='*'">
+                <div class="card" ng-show="geocount==0 && !geoerror">
                         <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
                                 Finding Geolocation...
                         </div>
                 </div>
+
+                <div class="card" ng-show="geoerror">
+                        <div class="item" style="text-align: center; background-color: salmon;"> 
+                                Geolocation Error: {{geoerror}}
+                        </div>
+                </div>
                 
-                <ul class="list">                             
+                <div class="card" ng-show="securityLevel<2 && geocount>0 && !geoerror">
+                        <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
+                                Geolocations found = {{ geocount }}
+                        </div>
+                </div>
+
+                <ul class="list">      
+                        
                         <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="showLocation({id:location.id})">
                                 {{location.found() || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} [{{location.distance}}m]
                                 <p>
