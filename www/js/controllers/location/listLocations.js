@@ -8,7 +8,7 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         
         var fetchData = function () {
                 $scope.securityLevel = DataService.user.securityLevel()
-                $scope.locations = DataService.location
+                $scope.locations = DataService.location.all()
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
@@ -18,7 +18,7 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                 scope:$scope,
                 success: function(e) {
                         $scope.locationIndicator = "";
-                        $scope.locations.all().forEach(function(l) {l.updateDistance(e.coords)})
+                        $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})
                 }
         });
 });
