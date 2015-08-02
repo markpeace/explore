@@ -24,13 +24,13 @@ app.service('GeoLocator', function() {
 
 
                         var repoll = function (e) {
-                                navigator.geolocation.clearWatch(locationWatcher)
+                                //navigator.geolocation.clearWatch(locationWatcher)
                                 navigator.geolocation.watchPosition(function(e) {
                                         params.success(e)
                                 }, params.error, params)
                         }
 
-                        locationWatcher = navigator.geolocation.watchPosition(repoll, null, params)
+                        navigator.geolocation.getCurrentPosition(repoll, null, params)
 
                         params.scope.$on('$stateChangeStart', function() {                                
                                 navigator.geolocation.clearWatch(locationWatcher)
