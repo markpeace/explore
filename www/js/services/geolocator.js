@@ -11,7 +11,7 @@ app.service('GeoLocator', function() {
                                 timeout: 10000,
                                 enableHighAccuracy:true,
                                 success: function(e) { console.info("geolocation updated:" + e); },
-                                error: function(e) { console.log("geolocation error: "+ e.message); alert("geolocation error: "+ e.message) }
+                                error: function(e) { console.log("geolocation error: "+ e.message); }
                         }
 
                         var params;
