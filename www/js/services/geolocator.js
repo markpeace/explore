@@ -1,37 +1,44 @@
 app.service('GeoLocator', function() {
 
-        locationWatcher = {}
+        var locationWatcher = {}      
+        
+        var currentCoordinates = {}
+        
+        var successFunction = function () { }
+        var _successFunction = function (e) {
+                currentCoordinates=e
+                successFunction(e)
+        }
+
+        var latestError = null;
+        var errorFunction = function () { }
+        var _errorFunction = function(e) {
+                latestError = e
+                errorFunction(e)
+        }
+        var _params = {
+                enableHighAccuracy: true,
+                maximumAge: 0
+        }
+
+        triggerGeolocation = function() {
+                setInterval(function() {
+                        navigator.geolocation.getCurrentPosition(_successFunction, _errorFunction, _params)                        
+                },3000)
+        }
+
+        document.addEventListener("deviceready", triggerGeolocation);
+        triggerGeolocation();
 
         return {
-
-                go: function (params) {
-
-                        defaults = {
-                                maximumAge:0,
-                                //timeout: 10000,
-                                enableHighAccuracy:true,
-                                success: function(e) { console.info("geolocation updated:" + e); },
-                                error: function(e) { console.log("geolocation error: "+ e.message); }
-                        }
-
-                        var params;
-                        for (var attrname in defaults) { params[attrname] = params[attrname] || defaults[attrname]; }
-
-                        if (!params.scope) {
-                                console.error("you must pass a scope variable to the geolocation watcher");    
-                                return;
-                        }
-
-                        navigator.geolocation.getCurrentPosition(function() {
-                                locationWatcher = navigator.geolocation.watchPosition(params.success, params.error, params)
-                        }, params.error, params)
-
-
-                        params.scope.$on('$stateChangeStart', function() {                                                                
-                                clearInterval(locationWatcher);
-                        })      
-
-
-                }}
+                currentCoordinates: function() { return currentCoordinates },
+                latestError: function() { return latestError },
+                SuccessFunction: function(f) {
+                        successFunction=f
+                }, 
+                ErrorFunction: function(f) {
+                        errorFunction=f
+                }
+        }
 
 });

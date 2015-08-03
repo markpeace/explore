@@ -4,9 +4,7 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         $scope.accuracy = null;
         $scope.securityLevel = 9999
         $scope.now = Date.now()
-        
-        setInterval(function() {$scope.now = Date.now() }, 1000)
-        
+
         var fetchData = function () {
                 $scope.securityLevel = DataService.user.securityLevel()
                 $scope.locations = DataService.location.all()
@@ -14,18 +12,17 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
 
         $scope.$on('DataService:DataLoaded', fetchData)        
         if(DataService._loadcomplete) fetchData();
-               
-        GeoLocator.go({
-                scope:$scope,
-                error: function (e) {
-                        console.log("geolocation error:" +e.message)
-                        $scope.geoerror=e.message
-                },
-                success: function(e) {
-                        $scope.geoerror=null;
-                        $scope.geocount = $scope.geocount+1
-                        $scope.accuracy = e.coords.accuracy
-                        $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})
-                }
-        });
+
+
+        GeoLocator.SuccessFunction(function(e){
+                $scope.geoerror=null;
+                $scope.geocount = $scope.geocount+1
+                $scope.accuracy = e.coords.accuracy
+                $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})
+        })
+        GeoLocator.ErrorFunction(function(e){
+                console.log("geolocation error:" +e.message)
+                $scope.geoerror=e.message
+        })
+
 });
