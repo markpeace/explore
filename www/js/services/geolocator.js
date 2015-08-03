@@ -1,9 +1,9 @@
 app.service('GeoLocator', function() {
 
         var locationWatcher = {}      
-        
+
         var currentCoordinates = {}
-        
+
         var successFunction = function () { }
         var _successFunction = function (e) {
                 console.log("trigger")
@@ -23,11 +23,21 @@ app.service('GeoLocator', function() {
         }
 
         triggerGeolocation = function() {
-                locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)                                        
+
+                setInterval(function() {
+                        navigator.geolocation.clearWatch(locationWatcher)
+                        locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)   
+                }, 5000)
+
         }
 
         document.addEventListener("deviceready", triggerGeolocation);
-        //triggerGeolocation();
+
+        if (typeof cordova != 'object') {
+                alert("manual trigger");
+                triggerGeolocation();             
+        }
+
 
         return {
                 currentCoordinates: function() { return currentCoordinates },

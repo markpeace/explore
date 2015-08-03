@@ -20,6 +20,7 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                 $scope.accuracy = e.coords.accuracy
                 $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})
         })
+        
         GeoLocator.ErrorFunction(function(e){
                 console.log("geolocation error:" +e.message)
                 $scope.geoerror=e.message
