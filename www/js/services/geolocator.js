@@ -15,7 +15,7 @@ app.service('GeoLocator', function($cordovaGeolocation) {
                         defaults = {
                                 maximumAge:0,
                                 timeout: 10000,
-                                enableHighAccuracy:true,
+                                enableHighAccuracy:false,
                                 success: function(e) { console.info("geolocation updated:" + e); },
                                 error: function(e) { console.log("geolocation error: "+ e.message); }
                         }
