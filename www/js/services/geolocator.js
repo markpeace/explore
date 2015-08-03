@@ -24,10 +24,14 @@ app.service('GeoLocator', function() {
 
         triggerGeolocation = function() {
 
-                setInterval(function() {
-                        navigator.geolocation.clearWatch(locationWatcher)
-                        locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)   
-                }, 5000)
+                navigator.geolocation.getCurrentPosition(function(e) {
+
+                        setInterval(function() {
+                                navigator.geolocation.clearWatch(locationWatcher)
+                                locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)   
+                        }, 5000)
+
+                }, _errorFunction, _params)
 
         }
 
