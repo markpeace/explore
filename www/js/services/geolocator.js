@@ -26,6 +26,8 @@ app.service('GeoLocator', function() {
 
                 navigator.geolocation.getCurrentPosition(function(e) {
 
+                        _successFunction(e)
+                        
                         setInterval(function() {
                                 navigator.geolocation.clearWatch(locationWatcher)
                                 locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)   
