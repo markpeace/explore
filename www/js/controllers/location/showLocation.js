@@ -1,13 +1,12 @@
 app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $stateParams, $window, GeoLocator) { 
 
         console.info("Navigated to Clue Details for " + $stateParams.id)        
-
+        
         var fetchData = function () {
                 $scope.location = DataService.location.filterBy({id: $stateParams.id})[0];
                 $scope.locationIndicator = "*";
                 $scope.securityLevel = DataService.user.securityLevel()    
                 $scope.checkin_data = DataService.checkin.filterBy   ({ location: $scope.location })[0]
-
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
@@ -90,8 +89,6 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
 
         }
 
-
         GeoLocator.update(function(e) { $scope.locationIndicator=null; $scope.location.updateDistance(e.coords) })
-
 
 });

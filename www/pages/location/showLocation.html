@@ -1,7 +1,9 @@
 <ion-header-bar class="bar-positive">
         <button class="button button-icon icon ion-ios-arrow-left" ui-sref="ui.Locations"></button>
         <h1 class="title">Location Details{{locationIndicator}}</h1>
-        <button ng-show="location.inRange() && !location.found()" ng-class="'button button-icon icon '+location.checkin_icon()" ng-click="checkIn(location.type)"></button>     
+        
+        <button ng-show="location.inRange() && !location.found()" ng-class="'button button-icon icon '+location.checkin_icon()" ng-click="checkIn(location.type)"></button>                     
+        
 </ion-header-bar>
 <ion-content>        
 
