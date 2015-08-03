@@ -9,7 +9,7 @@ app.service('GeoLocator', function() {
                         defaults = {
                                 maximumAge:0,
                                 timeout: 10000,
-                                enableHighAccuracy:false,
+                                enableHighAccuracy:true,
                                 success: function(e) { console.info("geolocation updated:" + e); },
                                 error: function(e) { console.log("geolocation error: "+ e.message); }
                         }
