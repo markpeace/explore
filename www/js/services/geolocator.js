@@ -1,6 +1,12 @@
 app.service('GeoLocator', function($cordovaGeolocation) {
 
         locationWatcher = {}
+        
+        document.addEventListener("deviceready", function () {
+                
+                alert("device is ready")
+                
+        })
 
         return {
 
