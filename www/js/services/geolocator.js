@@ -5,7 +5,7 @@ app.service('GeoLocator', function() {
         return {
 
                 go: function (params) {
-                        
+
                         defaults = {
                                 maximumAge:0,
                                 timeout: 10000,
@@ -22,8 +22,12 @@ app.service('GeoLocator', function() {
                                 return;
                         }
 
+                        navigator.geolocation.getCurrentPosition(function(e) {
+                                params.success(e)
+                                locationWatcher = navigator.geolocation.watchPosition(params.success, params.error, params)
+                        }, params.error, params )
 
-                        locationWatcher = navigator.geolocation.watchPosition(params.success, params.error, params)
+
 
                         params.scope.$on('$stateChangeStart', function() {                                
                                 locationWatcher.clearWatch();
