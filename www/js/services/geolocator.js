@@ -6,7 +6,7 @@ app.service('GeoLocator', function() {
 
         var successFunction = function () { }
         var _successFunction = function (e) {
-                console.log("trigger")
+                latestError=null
                 currentCoordinates=e
                 successFunction(e)
         }
@@ -34,7 +34,6 @@ app.service('GeoLocator', function() {
         document.addEventListener("deviceready", triggerGeolocation);
 
         if (typeof cordova != 'object') {
-                alert("manual trigger");
                 triggerGeolocation();             
         }
 
