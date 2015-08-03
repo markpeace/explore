@@ -27,7 +27,7 @@ app.service('GeoLocator', function() {
         }
 
         document.addEventListener("deviceready", triggerGeolocation);
-        triggerGeolocation();
+        //triggerGeolocation();
 
         return {
                 currentCoordinates: function() { return currentCoordinates },
