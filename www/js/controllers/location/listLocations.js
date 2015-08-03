@@ -15,6 +15,8 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         var fetchData = function () {
                 $scope.securityLevel = DataService.user.securityLevel()
                 $scope.locations = DataService.location.all()
+                
+                if(e=GeoLocator.currentCoordinates().coords) { $scope.locations.forEach(function(l) {l.updateDistance(e)})   }
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
