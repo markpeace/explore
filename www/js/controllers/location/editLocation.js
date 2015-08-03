@@ -121,23 +121,21 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicLoading, $ion
 
         $scope.triggerGeolocation = function() {
                 console.log("looking for geolocation"); 
-                GeoLocator.go({
-                        scope:$scope,
-                        success: function(e) {
 
-                                $scope.location.geolocation = {}
+                GeoLocator.SuccessFunction(function(e){
+                        $scope.location.geolocation = {}
 
-                                for(v in e.coords) { $scope.location.geolocation[v]=e.coords[v] }
+                        for(v in e.coords) { $scope.location.geolocation[v]=e.coords[v] }
 
-                                if (e.coords.accuracy>accuracy.poor) {
-                                        $scope.geolocationColor = 'red'
-                                } else if (e.coords.accuracy>accuracy.good) {
-                                        $scope.geolocationColor = 'orange'
-                                } else {
-                                        $scope.geolocationColor = 'green'
-                                }                        
-                        }
+                        if (e.coords.accuracy>accuracy.poor) {
+                                $scope.geolocationColor = 'red'
+                        } else if (e.coords.accuracy>accuracy.good) {
+                                $scope.geolocationColor = 'orange'
+                        } else {
+                                $scope.geolocationColor = 'green'
+                        }        
                 })
+
         }
 
         var fetchData = function() {

@@ -91,13 +91,12 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
         }
 
 
-        GeoLocator.go({
-                scope:$scope,
-                success: function(e) {
-                        $scope.locationIndicator = "";
-                        $scope.location.updateDistance(e.coords)
-                        $scope.$apply();
-                }
+        GeoLocator.SuccessFunction(function(e) {
+                
+                $scope.locationIndicator = "";
+                $scope.location.updateDistance(e.coords)
+                $scope.$apply();
+        
         });
 
 });

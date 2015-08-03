@@ -6,6 +6,7 @@ app.service('GeoLocator', function() {
         
         var successFunction = function () { }
         var _successFunction = function (e) {
+                console.log("trigger")
                 currentCoordinates=e
                 successFunction(e)
         }
@@ -22,9 +23,7 @@ app.service('GeoLocator', function() {
         }
 
         triggerGeolocation = function() {
-                setInterval(function() {
-                        navigator.geolocation.getCurrentPosition(_successFunction, _errorFunction, _params)                        
-                },3000)
+                locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)                                        
         }
 
         document.addEventListener("deviceready", triggerGeolocation);
