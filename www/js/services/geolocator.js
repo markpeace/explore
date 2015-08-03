@@ -2,17 +2,18 @@ app.service('GeoLocator', function($cordovaGeolocation) {
 
         locationWatcher = {}
 
-        try {
-                var geolocator = cordova.require("cordova/plugin/geolocation");
-                console.log(geolocator)
-        } catch (ex) {
-                alert(ex)
-        }
-        
         return {
 
                 go: function (params) {
 
+                        try {
+                                var geolocator = cordova.require("cordova/plugin/geolocation");
+                                console.log(geolocator)
+                        } catch (ex) {
+                                alert(ex)
+                        }
+
+                        
                         defaults = {
                                 maximumAge:0,
                                 timeout: 10000,
