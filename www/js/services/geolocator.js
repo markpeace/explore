@@ -1,12 +1,6 @@
 app.service('GeoLocator', function($cordovaGeolocation) {
 
         locationWatcher = {}
-        
-        document.addEventListener("deviceready", function () {
-                
-                alert("device is ready")
-                
-        })
 
         return {
 
@@ -28,15 +22,19 @@ app.service('GeoLocator', function($cordovaGeolocation) {
                                 return;
                         }
 
-                        locationWatcher = $cordovaGeolocation.watchPosition(params);
-                        locationWatcher.then(
-                                null,
-                                params.error,
-                                params.success);
+                        document.addEventListener("deviceready", function () {
 
-                        params.scope.$on('$stateChangeStart', function() {                                
-                               locationWatcher.clearWatch();
-                        })      
+                                locationWatcher = $cordovaGeolocation.watchPosition(params);
+                                locationWatcher.then(
+                                        null,
+                                        params.error,
+                                        params.success);
+
+                                params.scope.$on('$stateChangeStart', function() {                                
+                                        locationWatcher.clearWatch();
+                                })      
+                                
+                        })
 
                 }}
 
