@@ -2,6 +2,13 @@ app.service('GeoLocator', function($cordovaGeolocation) {
 
         locationWatcher = {}
 
+        try {
+                var geolocator = cordova.require("cordova/plugin/geolocation");
+                console.log(geolocator)
+        } catch (ex) {
+                alert(ex)
+        }
+        
         return {
 
                 go: function (params) {
@@ -22,20 +29,50 @@ app.service('GeoLocator', function($cordovaGeolocation) {
                                 return;
                         }
 
-                        document.addEventListener("deviceready", function () {
 
-                                locationWatcher = $cordovaGeolocation.watchPosition(params);
-                                locationWatcher.then(
-                                        null,
-                                        params.error,
-                                        params.success);
+                        locationWatcher = $cordovaGeolocation.watchPosition(params);
+                        locationWatcher.then(
+                                null,
+                                params.error,
+                                params.success);
 
-                                params.scope.$on('$stateChangeStart', function() {                                
-                                        locationWatcher.clearWatch();
-                                })      
-                                
-                        })
+                        params.scope.$on('$stateChangeStart', function() {                                
+                                locationWatcher.clearWatch();
+                        })      
+
 
                 }}
 
 });
+
+/*
+geolocation = {
+                g: this,
+                active: false,
+                attempts:0,
+                targetAccuracy:11,
+                onSuccess:function(e) {
+
+                        geolocation.attempts++
+
+                        if(e.coords.accuracy<$scope.location.geolocation.accuracy) {  
+                                $scope.location.geolocation = e.coords
+                                $scope.$apply()
+                        }
+
+                        if(e.coords.accuracy<geolocation.targetAccuracy) {                                 
+                                navigator.geolocation.clearWatch(geolocation.watch) 
+                                geolocation.active=false;
+                                $scope.location.geolocation=e.coords
+                                $scope.$apply();
+                        }
+
+                },
+                onError:function() {},
+                go: function () {
+                        console.log("looking for location")
+                        geolocation.watch = navigator.geolocation.watchPosition(geolocation.onSuccess, geolocation.onError, { maximumAge: 3000, maxWait: 10000, enableHighAccuracy: true });
+                        geolocation.active=true;
+                }
+        }
+*/
