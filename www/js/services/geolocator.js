@@ -22,11 +22,9 @@ app.service('GeoLocator', function() {
                                 return;
                         }
 
-                        locationWatcher = setInterval(function() {
-                                navigator.geolocation.getCurrentPosition(params.success, params.error, params)
-                        }, 1000)
-                               
-
+                        navigator.geolocation.getCurrentPosition(function() {
+                                locationWatcher = navigator.geolocation.watchPosition(params.success, params.error, params)
+                        }, params.error, params)
 
 
                         params.scope.$on('$stateChangeStart', function() {                                                                
