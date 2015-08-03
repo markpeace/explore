@@ -1,13 +1,16 @@
-app.service('GeoLocator', function() {
+app.service('GeoLocator', function($q, $rootScope) {
 
         var locationWatcher = {}      
 
-        var currentCoordinates = {}
-
+        var currentCoordinates = {timestamp:0}
+        var updateDeferral = $q.defer()
+        
         var successFunction = function () { }
         var _successFunction = function (e) {
                 latestError=null
-                currentCoordinates=e
+                e.timestamp=Date.now()
+                currentCoordinates=e         
+                updateDeferral.notify(e)
                 successFunction(e)
         }
 
@@ -26,12 +29,18 @@ app.service('GeoLocator', function() {
 
                 navigator.geolocation.getCurrentPosition(function(e) {
                         _successFunction(e)
+                        
+                        $rootScope.$on( "$stateChangeSuccess", function() {
+                                updateDeferral.notify(e)
+                        })
+                        
+                        
                         setInterval(function() {
                                 navigator.geolocation.clearWatch(locationWatcher)
                                 locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)   
-                        }, 5000)
+                        }, 10000)
                 }, _errorFunction, _params)
-
+                
         }
 
         document.addEventListener("deviceready", triggerGeolocation);
@@ -49,7 +58,8 @@ app.service('GeoLocator', function() {
                 }, 
                 ErrorFunction: function(f) {
                         errorFunction=f
-                }
+                },
+                update:function(f) { updateDeferral.promise.then(null, null, f) }
         }
 
 });

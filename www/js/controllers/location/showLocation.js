@@ -90,13 +90,8 @@ app.controller('ShowLocation', function($scope, $ionicLoading, DataService, $sta
 
         }
 
-        $scope.geolocator = GeoLocator  
-        $scope.$watch("geolocator.currentCoordinates()",function(e) {
-                if(typeof e.timestamp!="undefined") {
-                        $scope.locationIndicator = "";
-                        $scope.location.updateDistance(e.coords)
-                }
-        })
+
+        GeoLocator.update(function(e) { $scope.locationIndicator=null; $scope.location.updateDistance(e.coords) })
 
 
 });
