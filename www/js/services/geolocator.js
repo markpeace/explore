@@ -1,18 +1,10 @@
-app.service('GeoLocator', function($cordovaGeolocation) {
+app.service('GeoLocator', function() {
 
         locationWatcher = {}
 
         return {
 
                 go: function (params) {
-
-                        try {
-                                var geolocator = cordova.require("cordova/plugin/geolocation");
-                                console.log(geolocator)
-                        } catch (ex) {
-                                alert(ex)
-                        }
-
                         
                         defaults = {
                                 maximumAge:0,
@@ -31,11 +23,7 @@ app.service('GeoLocator', function($cordovaGeolocation) {
                         }
 
 
-                        locationWatcher = $cordovaGeolocation.watchPosition(params);
-                        locationWatcher.then(
-                                null,
-                                params.error,
-                                params.success);
+                        locationWatcher = navigator.geolocation.watchPosition(params.success, params.error, params)
 
                         params.scope.$on('$stateChangeStart', function() {                                
                                 locationWatcher.clearWatch();
