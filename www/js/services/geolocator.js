@@ -8,7 +8,7 @@ app.service('GeoLocator', function() {
 
                         defaults = {
                                 maximumAge:0,
-                                timeout: 10000,
+                                //timeout: 10000,
                                 enableHighAccuracy:true,
                                 success: function(e) { console.info("geolocation updated:" + e); },
                                 error: function(e) { console.log("geolocation error: "+ e.message); }
@@ -22,50 +22,19 @@ app.service('GeoLocator', function() {
                                 return;
                         }
 
-                        navigator.geolocation.getCurrentPosition(function(e) {
+                        locationWatcher = navigator.geolocation.watchPosition(function(e) {
                                 params.success(e)
+                                navigator.geolocation.clearWatch(locationWatcher);
                                 locationWatcher = navigator.geolocation.watchPosition(params.success, params.error, params)
                         }, params.error, params )
 
 
 
-                        params.scope.$on('$stateChangeStart', function() {                                
-                                locationWatcher.clearWatch();
+                        params.scope.$on('$stateChangeStart', function() {                                                                
+                                navigator.geolocation.clearWatch(locationWatcher);
                         })      
 
 
                 }}
 
 });
-
-/*
-geolocation = {
-                g: this,
-                active: false,
-                attempts:0,
-                targetAccuracy:11,
-                onSuccess:function(e) {
-
-                        geolocation.attempts++
-
-                        if(e.coords.accuracy<$scope.location.geolocation.accuracy) {  
-                                $scope.location.geolocation = e.coords
-                                $scope.$apply()
-                        }
-
-                        if(e.coords.accuracy<geolocation.targetAccuracy) {                                 
-                                navigator.geolocation.clearWatch(geolocation.watch) 
-                                geolocation.active=false;
-                                $scope.location.geolocation=e.coords
-                                $scope.$apply();
-                        }
-
-                },
-                onError:function() {},
-                go: function () {
-                        console.log("looking for location")
-                        geolocation.watch = navigator.geolocation.watchPosition(geolocation.onSuccess, geolocation.onError, { maximumAge: 3000, maxWait: 10000, enableHighAccuracy: true });
-                        geolocation.active=true;
-                }
-        }
-*/
