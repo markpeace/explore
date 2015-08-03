@@ -4,6 +4,12 @@
         </ion-nav-buttons>               
         <ion-content>     
 
+                <div class="button-bar bar-positive">
+                        <button class="button" ng-repeat="f in filters" 
+                                ng-class="filter===f ? 'button-dark' : ''"
+                                ng-click="$parent.filter=f">{{f.label}}</button>
+                </div>
+
                 <div class="card" ng-show="geocount==0 && !geoerror">
                         <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
                                 Finding Geolocation...
@@ -15,17 +21,19 @@
                                 {{ geocount }} Geolocations @ {{ accuracy }}m accuracy
                         </div>
                 </div>
-                
-                
+
+
                 <div class="card" ng-show="geoerror">
                         <div class="item item-text-wrap" style="text-align: center; background-color: salmon;"> 
                                 Geolocation Error: {{geoerror}}
                         </div>
                 </div>
-                
+
                 <ul class="list">      
-                        
-                        <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" ui-sref="showLocation({id:location.id})">
+
+                        <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" 
+                           ng-show="location.distance>filter.min && location.distance<filter.max"
+                           ui-sref="showLocation({id:location.id})">
                                 {{location.found() || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} [{{location.distance}}m]
                                 <p>
                                         <span ng-repeat="cat in location.categories.data">
