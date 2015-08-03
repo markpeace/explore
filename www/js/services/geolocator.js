@@ -22,16 +22,15 @@ app.service('GeoLocator', function() {
                                 return;
                         }
 
-                        locationWatcher = navigator.geolocation.watchPosition(function(e) {
-                                params.success(e)
-                                navigator.geolocation.clearWatch(locationWatcher);
-                                locationWatcher = navigator.geolocation.watchPosition(params.success, params.error, params)
-                        }, params.error, params )
+                        locationWatcher = setInterval(function() {
+                                navigator.geolocation.getCurrentPosition(params.success, params.error, params)
+                        }, 1000)
+                               
 
 
 
                         params.scope.$on('$stateChangeStart', function() {                                                                
-                                navigator.geolocation.clearWatch(locationWatcher);
+                                clearInterval(locationWatcher);
                         })      
 
 
