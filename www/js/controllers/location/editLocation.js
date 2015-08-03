@@ -5,8 +5,10 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicLoading, $ion
         $scope.geolocationColor = 'red'
 
         accuracy = { good: 15, poor: 25 }
-
-
+        if (typeof cordova != 'object') {
+                accuracy.poor=35             
+        }
+        
         $scope.takePhoto = function() {
                 navigator.camera.getPicture(function(e) {
                         $scope.location.image=e
@@ -122,7 +124,7 @@ app.controller('EditLocation', function($scope, $ionicModal, $ionicLoading, $ion
         $scope.triggerGeolocation = function() {
                 console.log("looking for geolocation"); 
 
-                GeoLocator.SuccessFunction(function(e){
+                GeoLocator.update(function(e){
                         $scope.location.geolocation = {}
 
                         for(v in e.coords) { $scope.location.geolocation[v]=e.coords[v] }
