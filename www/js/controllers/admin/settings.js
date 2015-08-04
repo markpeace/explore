@@ -17,6 +17,8 @@ app.controller('Settings', function($scope, $ionicDeploy, DataService) {
 
         // Update app code with new release from Ionic Deploy
 
+        alert("doing update")
+        
         try {
                 $ionicDeploy.update().then(function(res) {
                         console.log('Ionic Deploy: Update Success! ', res);
