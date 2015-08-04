@@ -15,20 +15,4 @@ app.controller('Settings', function($scope, $ionicDeploy, DataService) {
                 DataService.rebuildAll();
         }
 
-        // Update app code with new release from Ionic Deploy
-
-        alert("doing update")
-        
-        try {
-                $ionicDeploy.update().then(function(res) {
-                        console.log('Ionic Deploy: Update Success! ', res);
-                }, function(err) {
-                        console.log('Ionic Deploy: Update error! ', err);
-                }, function(prog) {
-                        console.log('Ionic Deploy: Progress... ', prog);
-                });
-        } catch (ex) {
-                alert(ex)
-        }
-
 });
