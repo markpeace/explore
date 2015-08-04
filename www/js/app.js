@@ -11,7 +11,7 @@ if (typeof cordova === 'object') {
         });
 }
 
-app = angular.module('explore', ['ionic', 'ionic.service.core','ionic.service.deploy','ionic.service.push', 'ionic.service.analytics',  'monospaced.qrcode', 'parseconnector']);
+app = angular.module('explore', ['ionic', 'ionic.service.core','ionic.service.push','ionic.service.deploy', 'ionic.service.analytics',  'monospaced.qrcode', 'parseconnector']);
 
 app
         .config(['$ionicAppProvider', function($ionicAppProvider) {

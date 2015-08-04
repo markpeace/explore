@@ -14,5 +14,5 @@ app.controller('Settings', function($scope, $ionicDeploy, DataService) {
                 DataService.initialise();
                 DataService.rebuildAll();
         }
-
+        
 });
