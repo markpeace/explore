@@ -4,7 +4,7 @@ app.service('GeoLocator', function($q, $rootScope) {
 
         var currentCoordinates = {timestamp:0}
         var updateDeferral = $q.defer()
-        
+
         var successFunction = function () { }
         var _successFunction = function (e) {
                 latestError=null
@@ -28,19 +28,26 @@ app.service('GeoLocator', function($q, $rootScope) {
         triggerGeolocation = function() {
 
                 navigator.geolocation.getCurrentPosition(function(e) {
+
                         _successFunction(e)
-                        
+
                         $rootScope.$on( "$stateChangeSuccess", function() {
                                 updateDeferral.notify(e)
                         })
-                        
-                        
-                        setInterval(function() {
+
+
+                        getLocation = function() {     
                                 navigator.geolocation.clearWatch(locationWatcher)
-                                locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)   
-                        }, 10000)
+                                locationWatcher = navigator.geolocation.watchPosition(_successFunction, _errorFunction, _params)
+                        }
+                        getLocation();
+
+                        setInterval(function() {
+                                if(Date.now() - currentCoordinates.timestamp > 7500) getLocation();
+                        }, 1000)
+
                 }, _errorFunction, _params)
-                
+
         }
 
         document.addEventListener("deviceready", triggerGeolocation);
