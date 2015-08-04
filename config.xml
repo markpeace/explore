@@ -37,7 +37,7 @@
         <gap:plugin name="org.apache.cordova.network-information" />
         <gap:plugin name="com.phonegap.plugins.barcodescanner" />
         <gap:plugin name="com.phonegap.plugins.pushplugin" />
-        <!-- <gap:plugin name="com.ionic.deploy" /> -->
+        <gap:plugin name="com.ionic.deploy" />
         
         <icon src="resources/ios/icon/icon.png" gap:platform="ios" width="57" height="57"/>
         <icon src="resources/ios/icon/icon@2x.png" gap:platform="ios"  width="114" height="114"/>
