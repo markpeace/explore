@@ -1,4 +1,4 @@
-app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ionicPush, ParseConnector, $q, $state, $ionicLoading) {
+app.service('DataService', function($rootScope, $ionicPopup, $ionicLoading, $ionicUser, $ionicPush, ParseConnector, $q, $state) {
 
         $ionicLoading.show({
                 template: 'Updating...'
@@ -241,7 +241,10 @@ app.service('DataService', function($rootScope, $ionicLoading, $ionicUser, $ioni
                                 canPlaySound: false, //Should notifications be allowed to play a sound?
                                 canRunActionsOnWake: true, // Whether to run auto actions outside the app,
                                 onNotification: function(notification) {
-                                        alert(notification.alert)
+                                        $ionicPopup.alert({
+                                                title: 'Incoming Message',
+                                                template: notification.alert
+                                        });
                                 }
                         },{
                                 user_id: model.user.username
