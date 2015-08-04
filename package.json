@@ -19,7 +19,8 @@
     {
       "locator": "https://github.com/phonegap-build/PushPlugin.git",
       "id": "com.phonegap.plugins.PushPlugin"
-    }
+    },
+    "ionic-plugin-deploy"
   ],
   "cordovaPlatforms": []
 }
