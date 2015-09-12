@@ -1,15 +1,19 @@
 <ion-view view-title="Locations">
         <ion-nav-buttons side="right">
                 <button class="button button-icon button-clear ion-ios-plus-empty" ui-sref="addLocation" ng-show="securityLevel<5"></button>
-        </ion-nav-buttons>               
-        <ion-content>     
+        </ion-nav-buttons>     
 
-                <div class="button-bar bar-positive">
+        <ion-content>     
+                
+                         <div class="button-bar bar-positive ">
                         <button class="button" ng-repeat="f in filters" 
                                 ng-class="filter===f ? 'button-dark' : ''"
                                 ng-click="changeFilter(f)">{{f.label}}</button>
                 </div>
+                
 <!--
+               
+
                 <div class="card" ng-show="geocount==0 && !geoerror">
                         <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
                                 Finding Geolocation...
@@ -31,10 +35,9 @@
                 </div>
 -->
 
-                <ion-list>
-
-                        <ion-item class="item item-icon-right" collection-repeat="location in locations | orderBy:'distance'" 
-                                  ng-show="location.distance>filter.min && location.distance<filter.max"
+                <ion-list>                        
+                        <ion-item class="item-icon-right" collection-repeat="location in locations | orderBy:'distance' | filter: distanceFilter" 
+                                  
                                   ui-sref="showLocation({id:location.id})">
 
 

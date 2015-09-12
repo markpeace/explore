@@ -14,6 +14,9 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         $scope.changeFilter = function(f) { 
                 $scope.filter=f
         }
+        $scope.distanceFilter = function(location) {
+                return location.distance>$scope.filter.min && location.distance<$scope.filter.max
+        }
         
         var fetchData = function () {
                 

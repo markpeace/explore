@@ -16,8 +16,6 @@ app.service('DataService', function($rootScope, $ionicPopup, $ionicLoading, $ion
                 } else {
                         var app_id = "uvoFo97lY6pA2Bo24ZfHvptkLorJveZmcJ2GIeDz";
                         var js_key = "sYzm2V5ylN7nGNlediCexynKV5HyHRQIxtJMXI4N";
-
-
                 }
 
                 ParseConnector.initialise({
