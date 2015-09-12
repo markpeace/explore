@@ -1,6 +1,6 @@
 {
   "name": "ionic-service-push",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "homepage": "http://ionic.io",
   "authors": [
     "Max Lynch <max@ionicframework.com>",
@@ -19,11 +19,11 @@
   "dependencies": {
     "ionic-service-core": " >= 0.1.9"
   },
-  "_release": "0.1.12",
+  "_release": "0.1.13",
   "_resolution": {
     "type": "version",
-    "tag": "v0.1.12",
-    "commit": "4792ab711f7f9303a23d44e55ef5d49fad086bfe"
+    "tag": "v0.1.13",
+    "commit": "9282282f71f55e6d0e2520e5460fb669a139b171"
   },
   "_source": "git://github.com/driftyco/ionic-service-push-client.git",
   "_target": "~0.1.12",
