@@ -36,7 +36,7 @@
 -->
 
                 <ion-list>                        
-                        <ion-item class="item-icon-right" collection-repeat="location in locations | orderBy:'distance' | filter: distanceFilter" 
+                        <ion-item class="item-icon-right" collection-repeat="location in locations | orderBy:'distance' | filter: distanceFilter | limitTo: displayLimit" 
                                   
                                   ui-sref="showLocation({id:location.id})">
 

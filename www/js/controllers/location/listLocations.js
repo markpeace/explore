@@ -10,21 +10,42 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                 { label: "Distant", min: 1000, max:99999 },
         ]
 
+        $scope.displayLimitIncrements = 5
+        $scope.displayLimit = $scope.displayLimitIncrements 
+
+        $scope.loadMoreData = function() { 
+                $scope.displayLimit+=$scope.displayLimitIncrements 
+                console.log($scope.displayLimit);
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+        }
+        $scope.moreDataCanBeLoaded = function() {
+
+                locations_in_scope = 1;
+
+                $scope.locations.forEach(function(location) {
+                        if(location.distance>$scope.filter.min && location.distance<$scope.filter.max) locations_in_scope++
+                });           
+
+                return $scope.displayLimit<locations_in_scope
+        }       
+
         $scope.filter=$scope.filters[0]
         $scope.changeFilter = function(f) { 
+                $scope.displayLimit = $scope.displayLimitIncrements 
                 $scope.filter=f
         }
-        $scope.distanceFilter = function(location) {
+        $scope.distanceFilter = function(location) {                               
                 return location.distance>$scope.filter.min && location.distance<$scope.filter.max
         }
-        
+
+
         var fetchData = function () {
-                
+
                 $scope.securityLevel = DataService.user.securityLevel()
                 $scope.locations = DataService.location.all()
-                
+
                 if(e=GeoLocator.currentCoordinates().coords) { $scope.locations.forEach(function(l) { l.updateDistance(e) })   }
-        
+
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
@@ -41,6 +62,6 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                 console.log("geolocation error:" +e.message)
                 $scope.geoerror=e.message
         })
-     
- 
+
+
 });
