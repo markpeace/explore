@@ -11,12 +11,17 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
         ]
 
         $scope.filter=$scope.filters[0]
+        $scope.changeFilter = function(f) { 
+                $scope.filter=f
+        }
         
         var fetchData = function () {
+                
                 $scope.securityLevel = DataService.user.securityLevel()
                 $scope.locations = DataService.location.all()
                 
-                if(e=GeoLocator.currentCoordinates().coords) { $scope.locations.forEach(function(l) {l.updateDistance(e)})   }
+                if(e=GeoLocator.currentCoordinates().coords) { $scope.locations.forEach(function(l) { l.updateDistance(e) })   }
+        
         }
 
         $scope.$on('DataService:DataLoaded', fetchData)        
@@ -26,12 +31,13 @@ app.controller('ListLocations', function($scope, $q, DataService, GeoLocator) {
                 $scope.geoerror=null;
                 $scope.geocount = $scope.geocount+1
                 $scope.accuracy = e.coords.accuracy
-                $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})                        
+                $scope.locations.forEach(function(l) {l.updateDistance(e.coords)})               
         })               
 
         GeoLocator.ErrorFunction(function(e){
                 console.log("geolocation error:" +e.message)
                 $scope.geoerror=e.message
         })
-
+     
+ 
 });

@@ -7,9 +7,9 @@
                 <div class="button-bar bar-positive">
                         <button class="button" ng-repeat="f in filters" 
                                 ng-class="filter===f ? 'button-dark' : ''"
-                                ng-click="$parent.filter=f">{{f.label}}</button>
+                                ng-click="changeFilter(f)">{{f.label}}</button>
                 </div>
-
+<!--
                 <div class="card" ng-show="geocount==0 && !geoerror">
                         <div class="item" style="text-align: center; background-color: Harvest Gold;"> 
                                 Finding Geolocation...
@@ -23,15 +23,17 @@
                 </div>
 
 
+
                 <div class="card" ng-show="geoerror">
                         <div class="item item-text-wrap" style="text-align: center; background-color: salmon;"> 
                                 Geolocation Error: {{geoerror}}
                         </div>
                 </div>
+-->
 
                 <ion-list>
 
-                        <ion-item class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" 
+                        <ion-item class="item item-icon-right" collection-repeat="location in locations | orderBy:'distance'" 
                                   ng-show="location.distance>filter.min && location.distance<filter.max"
                                   ui-sref="showLocation({id:location.id})">
 
@@ -52,29 +54,9 @@
 
                 </ion-list>
 
-                <!--
-<ul class="list">      
-
-<a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" 
-ng-show="location.distance>filter.min && location.distance<filter.max"
-ui-sref="showLocation({id:location.id})">
-{{location.found() || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} [{{location.distance}}m]
-<p>
-<span ng-repeat="cat in location.categories.data">
-{{ cat.label }};                   
-</span>
-</p>
-<span ng-hide="location.found()">
-<i class="icon ion-ios-arrow-right" ng-hide="location.inRange()"></i>
-<i class="icon" ng-class="location.checkin_icon()" ng-show="location.inRange()"></i>
-</span>                                
-<i class="icon ion-ios-checkmark-empty" ng-show="location.found()"></i>
-</a>
-</ul>     -->
-
                 <ion-infinite-scroll
-                                     on-infinite="loadMore()"
-                                     distance="1%">
+                                     ng-if="moreDataCanBeLoaded()"
+                                     on-infinite="loadMoreData()">
                 </ion-infinite-scroll>
 
         </ion-content>
