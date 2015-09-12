@@ -29,11 +29,13 @@
                         </div>
                 </div>
 
-                <ul class="list">      
+                <ion-list>
 
-                        <a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" 
-                           ng-show="location.distance>filter.min && location.distance<filter.max"
-                           ui-sref="showLocation({id:location.id})">
+                        <ion-item class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" 
+                                  ng-show="location.distance>filter.min && location.distance<filter.max"
+                                  ui-sref="showLocation({id:location.id})">
+
+
                                 {{location.found() || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} [{{location.distance}}m]
                                 <p>
                                         <span ng-repeat="cat in location.categories.data">
@@ -45,7 +47,35 @@
                                         <i class="icon" ng-class="location.checkin_icon()" ng-show="location.inRange()"></i>
                                 </span>                                
                                 <i class="icon ion-ios-checkmark-empty" ng-show="location.found()"></i>
-                        </a>
-                </ul>     
+
+                        </ion-item>
+
+                </ion-list>
+
+                <!--
+<ul class="list">      
+
+<a class="item item-icon-right" ng-repeat="location in locations | orderBy:'distance'" 
+ng-show="location.distance>filter.min && location.distance<filter.max"
+ui-sref="showLocation({id:location.id})">
+{{location.found() || !location.enigmaticTitle ? location.descriptiveTitle : location.enigmaticTitle }} [{{location.distance}}m]
+<p>
+<span ng-repeat="cat in location.categories.data">
+{{ cat.label }};                   
+</span>
+</p>
+<span ng-hide="location.found()">
+<i class="icon ion-ios-arrow-right" ng-hide="location.inRange()"></i>
+<i class="icon" ng-class="location.checkin_icon()" ng-show="location.inRange()"></i>
+</span>                                
+<i class="icon ion-ios-checkmark-empty" ng-show="location.found()"></i>
+</a>
+</ul>     -->
+
+                <ion-infinite-scroll
+                                     on-infinite="loadMore()"
+                                     distance="1%">
+                </ion-infinite-scroll>
+
         </ion-content>
 </ion-view>
