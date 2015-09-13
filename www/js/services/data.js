@@ -6,7 +6,7 @@ app.service('DataService', function($rootScope, $ionicPopup, $ionicLoading, $ion
 
         var model = {}
  
-        Parse.usingTestServer=false
+        Parse.usingTestServer=true
 
         model.initialise = function () {       
 
